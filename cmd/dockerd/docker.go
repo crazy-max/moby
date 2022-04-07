@@ -11,6 +11,7 @@ import (
 	"github.com/docker/docker/pkg/reexec"
 	"github.com/docker/docker/rootless"
 	"github.com/moby/buildkit/util/apicaps"
+	bkversion "github.com/moby/buildkit/version"
 	"github.com/moby/term"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -67,6 +68,9 @@ func init() {
 	// because the system-wide directories in the current mount namespace are expected to be accessible.
 	// ("rootful" dockerd in rootless dockerd, #38702)
 	honorXDG = rootless.RunningWithRootlessKit()
+
+	// Set BuildKit version.
+	bkversion.Version = dockerversion.BuildKitVersion
 }
 
 func main() {

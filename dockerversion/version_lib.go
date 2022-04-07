@@ -14,4 +14,5 @@ var (
 	PlatformName          = ""
 	ProductName           = ""
 	DefaultProductLicense = ""
+	BuildKitVersion       = ""
 )

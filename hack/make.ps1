@@ -372,6 +372,27 @@ Function Run-IntegrationTests() {
     }
 }
 
+# Same as go-mod-prepare.sh
+Function GoModPrepare() {
+    $gomod = 'module github.com/docker/docker
+
+    go 1.17
+'
+    Set-Content -NoNewline -Path 'go.mod' -Value $gomod
+
+    $winresGomod = 'module github.com/docker/docker/autogen/winresources/dockerd
+
+    go 1.17
+'
+    Set-Content -NoNewline -Path 'hack/make/.resources-windows/go.mod' -Value $winresGomod
+}
+
+# Get BuildKit version from vendor.mod
+Function Get-BuildKitVersion() {
+    GoModPrepare
+    return Invoke-Expression "$env:GO111MODULE='on' ; go list -mod=mod -modfile=vendor.mod -u -m -f '{{.Version}}' github.com/moby/buildkit"
+}
+
 # Start of main code.
 Try {
     Write-Host -ForegroundColor Cyan "INFO: make.ps1 starting at $(Get-Date)"
@@ -421,10 +442,13 @@ Try {
     # Verify GOPATH is set
     if ($env:GOPATH.Length -eq 0) { Throw "Missing GOPATH environment variable. See https://golang.org/doc/code.html#GOPATH" }
 
+    # Set BuildKit version
+    $buildkitVersion = Get-BuildKitVersion
+
     # Run autogen if building binaries or running unit tests.
     if ($Client -or $Daemon -or $TestUnit) {
         Write-Host "INFO: Invoking autogen..."
-        Try { .\hack\make\.go-autogen.ps1 -CommitString $gitCommit -DockerVersion $dockerVersion -Platform "$env:PLATFORM" -Product "$env:PRODUCT" }
+        Try { .\hack\make\.go-autogen.ps1 -CommitString $gitCommit -DockerVersion $dockerVersion -Platform "$env:PLATFORM" -Product "$env:PRODUCT" -BuildKitVersion $buildkitVersion }
         Catch [Exception] { Throw $_ }
     }
 
@@ -515,4 +539,6 @@ Finally {
     Pop-Location # As we pushed to the root of the repo as the very first thing
     if ($global:pushed) { Pop-Location }
     Write-Host -ForegroundColor Cyan "INFO: make.ps1 ended at $(Get-Date)"
+}
+
 }

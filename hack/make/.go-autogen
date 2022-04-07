@@ -14,6 +14,7 @@ LDFLAGS="${LDFLAGS} \
 	-X \"github.com/docker/docker/dockerversion.PlatformName=${PLATFORM}\" \
 	-X \"github.com/docker/docker/dockerversion.ProductName=${PRODUCT}\" \
 	-X \"github.com/docker/docker/dockerversion.DefaultProductLicense=${DEFAULT_PRODUCT_LICENSE}\" \
+	-X \"github.com/docker/docker/dockerversion.BuildKitVersion=$(GO111MODULE=on go list -mod=mod -modfile=vendor.mod -u -m -f '{{.Version}}' "github.com/moby/buildkit")\" \
 "
 
 # Compile the Windows resources into the sources
