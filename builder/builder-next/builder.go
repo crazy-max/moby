@@ -348,6 +348,14 @@ func (b *Builder) Build(ctx context.Context, opt backend.BuildConfig) (*builder.
 		}
 	}
 
+	// inline build info attributes in image config
+	// https://github.com/moby/buildkit/blob/master/frontend/dockerfile/docs/syntax.md#built-in-build-args
+	if exporterName == "moby" || exporterName == "image" {
+		if v, ok := opt.Options.BuildArgs["BUILDKIT_INLINE_BUILDINFO_ATTRS"]; ok {
+			exporterAttrs["buildinfo-attrs"] = *v
+		}
+	}
+
 	cache := controlapi.CacheOptions{}
 
 	if inlineCache := opt.Options.BuildArgs["BUILDKIT_INLINE_CACHE"]; inlineCache != nil {
