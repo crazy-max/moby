@@ -3,6 +3,7 @@ set -eu
 
 : "${OUTPUT=./build}"
 : "${PACKAGE=./cmd/dockerd}"
+: "${TARGETPLATFORM=}"
 
 : "${CGO_ENABLED=}"
 : "${GO_DEBUG=}"
@@ -19,6 +20,9 @@ set -eu
 : "${PRODUCT=}"
 : "${DEFAULT_PRODUCT_LICENSE=}"
 : "${PACKAGER_NAME=}"
+
+# only necessary for non-sandboxed invocation. always off in Dockerfile
+export GO111MODULE=off
 
 if [ -z "$VERSION" ]; then
 	VERSION=$(git describe --match 'v[0-9]*' --dirty='.m' --always --tags | sed 's/^v//' 2> /dev/null || echo "unknown-version")
@@ -115,7 +119,18 @@ if [ "$(go env GOOS)" = "windows" ]; then
 	)
 fi
 
-echo "Building $GO_LINKMODE $BIN_NAME ($TARGETPLATFORM)..."
+# only necessary for non-sandboxed invocation where TARGETPLATFORM is empty
+PLATFORM_NAME=$TARGETPLATFORM
+if [ -z "$PLATFORM_NAME" ]; then
+	PLATFORM_NAME="$(go env GOOS)/$(go env GOARCH)"
+	if [ -n "$(go env GOARM)" ]; then
+		PLATFORM_NAME="$PLATFORM_NAME/$(go env GOARM)"
+	elif [ -n "$(go env GOAMD64)" ] && [ "$(go env GOAMD64)" != "v1" ]; then
+		PLATFORM_NAME="$PLATFORM_NAME/$(go env GOAMD64)"
+	fi
+fi
+
+echo "Building $GO_LINKMODE $BIN_NAME ($PLATFORM_NAME)..."
 (
 	set -x
 	go build -o "${OUTPUT}/${BIN_NAME}${BIN_EXT}" -trimpath -tags "${GO_BUILDTAGS}" ${GO_BUILDMODE} -installsuffix netgo -ldflags "${GO_LDFLAGS}" "${PACKAGE}"
