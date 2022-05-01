@@ -98,7 +98,6 @@ pipeline {
                                   -v "$WORKSPACE/.git:/go/src/github.com/docker/docker/.git" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   -e TEST_FORCE_VALIDATE \
                                   -e VALIDATE_REPO=${GIT_URL} \
@@ -115,7 +114,6 @@ pipeline {
                                   -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   -e VALIDATE_REPO=${GIT_URL} \
                                   -e VALIDATE_BRANCH=${CHANGE_TARGET} \
@@ -157,7 +155,6 @@ pipeline {
                                 docker run --rm -t --privileged \
                                   -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
                                   --name docker-pr$BUILD_NUMBER \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   docker:${GIT_COMMIT} \
                                   hack/make.sh binary
@@ -170,7 +167,6 @@ pipeline {
                                 docker run --rm -t --privileged \
                                   -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
                                   --name docker-pr$BUILD_NUMBER \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   docker:${GIT_COMMIT} \
                                   hack/make.sh cross
@@ -188,7 +184,6 @@ pipeline {
                                   -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   -e VALIDATE_REPO=${GIT_URL} \
                                   -e VALIDATE_BRANCH=${CHANGE_TARGET} \
@@ -209,7 +204,6 @@ pipeline {
                                   -v "$WORKSPACE/.git:/go/src/github.com/docker/docker/.git" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   -e TEST_FORCE_VALIDATE \
                                   -e VALIDATE_REPO=${GIT_URL} \
@@ -297,7 +291,6 @@ pipeline {
                                           -e TESTFLAGS \
                                           -e TEST_SKIP_INTEGRATION \
                                           -e TEST_SKIP_INTEGRATION_CLI \
-                                          -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                           -e DOCKER_GRAPHDRIVER \
                                           -e TIMEOUT \
                                           -e VALIDATE_REPO=${GIT_URL} \
@@ -318,7 +311,6 @@ pipeline {
                                   -v "$WORKSPACE/.git:/go/src/github.com/docker/docker/.git" \
                                   --name ${CONTAINER_NAME}-build \
                                   -e DOCKER_EXPERIMENTAL \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   docker:${GIT_COMMIT} \
                                   hack/make.sh \
@@ -413,7 +405,6 @@ pipeline {
                                 docker run --rm -t --privileged \
                                   -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
                                   --name docker-pr$BUILD_NUMBER \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   -e DOCKER_EXPERIMENTAL \
                                   -e DOCKER_ROOTLESS \
@@ -487,7 +478,7 @@ pipeline {
                         }
                         stage("Integration tests") {
                             environment {
-                                DOCKER_SYSTEMD = '1' // recommended cgroup driver for v2
+                                DEV_SYSTEMD = '1' // recommended cgroup driver for v2
                                 TEST_SKIP_INTEGRATION_CLI = '1' // CLI tests do not support v2
                             }
                             steps {
@@ -495,10 +486,8 @@ pipeline {
                                 docker run --rm -t --privileged \
                                   -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
                                   --name docker-pr$BUILD_NUMBER \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   -e DOCKER_EXPERIMENTAL \
-                                  -e DOCKER_SYSTEMD \
                                   -e TEST_SKIP_INTEGRATION_CLI \
                                   -e TIMEOUT \
                                   -e VALIDATE_REPO=${GIT_URL} \
@@ -588,7 +577,6 @@ pipeline {
                                   -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   -e VALIDATE_REPO=${GIT_URL} \
                                   -e VALIDATE_BRANCH=${CHANGE_TARGET} \
@@ -610,7 +598,6 @@ pipeline {
                                   -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   -e TESTDEBUG \
                                   -e TEST_SKIP_INTEGRATION_CLI \
@@ -697,7 +684,6 @@ pipeline {
                                 docker run --rm -t --privileged \
                                   -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
                                   --name docker-pr$BUILD_NUMBER \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   -e TEST_SKIP_INTEGRATION \
                                   -e TIMEOUT \
@@ -759,7 +745,6 @@ pipeline {
                     // ppc64le machines run on Docker 18.06, and buildkit has some
                     // bugs on that version. Build and use buildx instead.
                     environment {
-                        USE_BUILDX      = '1'
                         DOCKER_BUILDKIT = '0'
                     }
 
@@ -793,7 +778,6 @@ pipeline {
                                   -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   -e VALIDATE_REPO=${GIT_URL} \
                                   -e VALIDATE_BRANCH=${CHANGE_TARGET} \
@@ -815,7 +799,6 @@ pipeline {
                                   -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   -e TESTDEBUG \
                                   -e TEST_SKIP_INTEGRATION_CLI \
@@ -878,7 +861,6 @@ pipeline {
                     // ppc64le machines run on Docker 18.06, and buildkit has some
                     // bugs on that version. Build and use buildx instead.
                     environment {
-                        USE_BUILDX      = '1'
                         DOCKER_BUILDKIT = '0'
                     }
 
@@ -909,7 +891,6 @@ pipeline {
                                 docker run --rm -t --privileged \
                                   -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
                                   --name docker-pr$BUILD_NUMBER \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   -e TEST_SKIP_INTEGRATION \
                                   -e TIMEOUT \
@@ -995,7 +976,6 @@ pipeline {
                                   -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   -e VALIDATE_REPO=${GIT_URL} \
                                   -e VALIDATE_BRANCH=${CHANGE_TARGET} \
@@ -1017,7 +997,6 @@ pipeline {
                                   -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
-                                  -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
                                   -e TESTDEBUG \
                                   -e TEST_SKIP_INTEGRATION_CLI \

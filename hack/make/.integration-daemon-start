@@ -3,7 +3,7 @@
 # see test-integration for example usage of this script
 
 base="$ABS_DEST/.."
-export PATH="$base/dynbinary-daemon:$base/binary-daemon:$PATH"
+export PATH="$base/binary:$PATH"
 
 export TEST_CLIENT_BINARY=docker
 
@@ -31,7 +31,7 @@ if [ -z "$DOCKER_TEST_HOST" ]; then
 fi
 
 if ! command -v dockerd &> /dev/null; then
-	echo >&2 'error: binary-daemon or dynbinary-daemon must be run before .integration-daemon-start'
+	echo >&2 'error: binary must be run before .integration-daemon-start'
 	false
 fi
 
@@ -79,7 +79,6 @@ if [ -n "$DOCKER_ROOTLESS" ]; then
 		echo >&2 '# DOCKER_ROOTLESS requires TEST_SKIP_INTEGRATION_CLI to be set'
 		exit 1
 	fi
-	ln -sf "$(command -v vpnkit."$(uname -m)")" /usr/local/bin/vpnkit
 	user="unprivilegeduser"
 	uid=$(id -u $user)
 	# shellcheck disable=SC2174

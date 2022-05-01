@@ -79,12 +79,12 @@ from the upstream Golang perspective.
 
 Please use our build script ("./hack/make.sh") for compilation.
 
-### `DOCKER_BUILDTAGS`
+### `GO_BUILDTAGS`
 
 If you're building a binary that might be used on platforms that include
 seccomp, you will need to use the `seccomp` build tag:
 ```bash
-export DOCKER_BUILDTAGS='seccomp'
+export GO_BUILDTAGS='seccomp'
 ```
 
 There are build tags for disabling graphdrivers as well. By default, support
@@ -92,22 +92,22 @@ for all graphdrivers are built in.
 
 To disable btrfs:
 ```bash
-export DOCKER_BUILDTAGS='exclude_graphdriver_btrfs'
+export GO_BUILDTAGS='exclude_graphdriver_btrfs'
 ```
 
 To disable devicemapper:
 ```bash
-export DOCKER_BUILDTAGS='exclude_graphdriver_devicemapper'
+export GO_BUILDTAGS='exclude_graphdriver_devicemapper'
 ```
 
 To disable aufs:
 ```bash
-export DOCKER_BUILDTAGS='exclude_graphdriver_aufs'
+export GO_BUILDTAGS='exclude_graphdriver_aufs'
 ```
 
 NOTE: if you need to set more than one build tag, space separate them:
 ```bash
-export DOCKER_BUILDTAGS='apparmor exclude_graphdriver_aufs'
+export GO_BUILDTAGS='apparmor exclude_graphdriver_aufs'
 ```
 
 ## System Dependencies

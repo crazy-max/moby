@@ -108,9 +108,6 @@ the list of dirs in the TEST_INTEGRATION_DIR environment variable.
 You can also explicitly skip either suite by setting (any value) in
 TEST_SKIP_INTEGRATION and/or TEST_SKIP_INTEGRATION_CLI environment variables.
 
-Flags specific to each suite can be set in the TESTFLAGS_INTEGRATION and
-TESTFLAGS_INTEGRATION_CLI environment variables.
-
 If all you want is to specify a test filter to run, you can set the
 `TEST_FILTER` environment variable. This ends up getting passed directly to `go
 test -run` (or `go test -check-f`, depending on the test suite). It will also
