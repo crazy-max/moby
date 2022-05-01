@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+set -e
+
+: "${OUTPUT=./build}"
+
+mkdir -p "$OUTPUT"
+
+# dockerd
+PACKAGE=./cmd/dockerd ./hack/build/binary
+
+# docker-proxy
+ldflags=""
+if [ "$GO_LINKMODE" = "static" ] && [ "$(go env GOOS)" = "linux" ]; then
+	ldflags="-linkmode=external"
+fi
+GO_LDFLAGS="$ldflags" PACKAGE=./cmd/docker-proxy ./hack/build/binary

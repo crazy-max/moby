@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+set -eu
+
+: "${OUTPUT=./build}"
+: "${PACKAGE=./cmd/dockerd}"
+
+: "${CGO_ENABLED=}"
+: "${GO_DEBUG=}"
+: "${GO_STRIP=}"
+: "${GO_LINKMODE=static}"
+: "${GO_LDFLAGS=}"
+: "${GO_BUILDMODE=}"
+: "${GO_BUILDTAGS=apparmor seccomp}"
+
+: "${VERSION=}"
+: "${GITCOMMIT=}"
+: "${BUILDTIME=}"
+: "${PLATFORM=}"
+: "${PRODUCT=}"
+: "${DEFAULT_PRODUCT_LICENSE=}"
+: "${PACKAGER_NAME=}"
+
+if [ -z "$VERSION" ]; then
+	VERSION=$(git describe --match 'v[0-9]*' --dirty='.m' --always --tags | sed 's/^v//' 2> /dev/null || echo "unknown-version")
+fi
+if [ -z "$GITCOMMIT" ]; then
+	GITCOMMIT=$(git rev-parse --short HEAD 2> /dev/null || true)
+fi
+if [ -z "$BUILDTIME" ]; then
+	BUILDTIME=$(date -u --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +"%Y-%m-%dT%H:%M:%SZ")
+fi
+
+BIN_NAME=$(basename "$PACKAGE")
+BIN_EXT=
+if [ "$(go env GOOS)" = "windows" ]; then
+	BIN_EXT=.exe
+fi
+
+if [ -z "$CGO_ENABLED" ]; then
+	case "$(go env GOOS)/$(go env GOARCH)" in
+		darwin/* | windows/amd64 | linux/amd64 | linux/arm64 | linux/arm | linux/s390x | linux/ppc64le | linux/riscv*)
+			export CGO_ENABLED=1
+			;;
+		*)
+			export CGO_ENABLED=0
+			;;
+	esac
+fi
+
+# -buildmode=pie is not supported on Windows and Linux on mips, riscv64 and ppc64be.
+# https://github.com/golang/go/blob/77aa209b386a184e7f4b44938f2a05a1b5c5a3cf/src/cmd/internal/sys/supported.go#L89-L99
+if [ "$CGO_ENABLED" = "1" ]; then
+	case "$(go env GOOS)/$(go env GOARCH)" in
+		windows/* | linux/mips* | linux/riscv* | linux/ppc64)
+			# TODO remove windows in Go 1.15+: https://github.com/golang/go/commit/95f382139043059a2a0780ba577b53893408f7e4
+			# TODO remove riscv64 in Go 1.16+: https://github.com/golang/go/commit/8eb846fd37eb7bded8a1cf6932be2c59069863e5
+			;;
+		*)
+			GO_BUILDMODE="-buildmode=pie"
+			;;
+	esac
+fi
+
+GO_LDFLAGS="${GO_LDFLAGS} \
+	-X \"github.com/docker/docker/dockerversion.Version=${VERSION}\" \
+	-X \"github.com/docker/docker/dockerversion.GitCommit=${GITCOMMIT}\" \
+	-X \"github.com/docker/docker/dockerversion.BuildTime=${BUILDTIME}\" \
+	-X \"github.com/docker/docker/dockerversion.PlatformName=${PLATFORM}\" \
+	-X \"github.com/docker/docker/dockerversion.ProductName=${PRODUCT}\" \
+	-X \"github.com/docker/docker/dockerversion.DefaultProductLicense=${DEFAULT_PRODUCT_LICENSE}\" \
+"
+
+if [ -z "$GO_DEBUG" ]; then
+	GO_LDFLAGS="${GO_LDFLAGS} -w"
+fi
+
+if [ -n "$GO_STRIP" ]; then
+	GO_LDFLAGS="${GO_LDFLAGS} -s"
+fi
+
+if [ "$CGO_ENABLED" = "1" ] && [ "$GO_LINKMODE" = "static" ] && [ "$(go env GOOS)" = "linux" ]; then
+	GO_LDFLAGS="$GO_LDFLAGS -extldflags -static"
+fi
+
+if [ "$CGO_ENABLED" = "1" ] && [ "$GO_LINKMODE" = "static" ]; then
+	GO_BUILDTAGS="$GO_BUILDTAGS netgo osusergo static_build"
+fi
+
+if [ "$CGO_ENABLED" = "1" ] && [ "$(go env GOOS)" != "windows" ] && [ "$GO_LINKMODE" != "static" ]; then
+	# pkcs11 cannot be compiled statically if CGO is enabled (and glibc is used)
+	GO_BUILDTAGS="$GO_BUILDTAGS pkcs11"
+fi
+
+if pkg-config 'libsystemd >= 209' 2> /dev/null; then
+	GO_BUILDTAGS="$GO_BUILDTAGS journald"
+elif pkg-config 'libsystemd-journal' 2> /dev/null; then
+	GO_BUILDTAGS="$GO_BUILDTAGS journald journald_compat"
+fi
+
+if [ "$GO_LINKMODE" != "static" ]; then
+	# test whether "libdevmapper.h" is new enough to support deferred remove
+	# functionality. We favour libdm_dlsym_deferred_remove over
+	# libdm_no_deferred_remove in dynamic cases because the binary could be shipped
+	# with a newer libdevmapper than the one it was built with.
+	if command -v gcc &> /dev/null && ! (echo -e '#include <libdevmapper.h>\nint main() { dm_task_deferred_remove(NULL); }' | gcc -xc - -o /dev/null $(pkg-config --libs devmapper 2> /dev/null) &> /dev/null); then
+		GO_BUILDTAGS="$GO_BUILDTAGS libdm dlsym_deferred_remove"
+	fi
+fi
+
+# compile the Windows resources into the sources
+if [ "$(go env GOOS)" = "windows" ]; then
+	(
+		. hack/build/mkwinres
+		go generate -v "${PACKAGE}"
+	)
+fi
+
+echo "Building $GO_LINKMODE $BIN_NAME ($TARGETPLATFORM)..."
+(
+	set -x
+	go build -o "${OUTPUT}/${BIN_NAME}${BIN_EXT}" -trimpath -tags "${GO_BUILDTAGS}" ${GO_BUILDMODE} -installsuffix netgo -ldflags "${GO_LDFLAGS}" "${PACKAGE}"
+	# see https://github.com/golang/go/issues/9369#issuecomment-69864440 for why -installsuffix is necessary here
+)
