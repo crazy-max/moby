@@ -288,6 +288,15 @@ RUN --mount=type=bind,target=.,ro \
   && xx-verify $([ "$GO_LINKMODE" = "static" ] && echo "--static") /out/dockerd$([ "$(go env GOOS)" = "windows" ] && echo ".exe") \
   && xx-verify $([ "$GO_LINKMODE" = "static" ] && echo "--static") /out/docker-proxy$([ "$(go env GOOS)" = "windows" ] && echo ".exe")
 
+# stage used in Dockerfile.dev through linked context with bake
+FROM scratch AS devdeps
+COPY --from=tini             /out/ /
+COPY --from=runc             /out/ /
+COPY --from=containerd       /out/ /
+COPY --from=rootlesskit      /out/ /
+COPY --from=containerutility /out/ /
+COPY --from=vpnkit           /     /
+
 FROM scratch AS releaser-binary
 COPY --from=tini         /out/ /
 COPY --from=build        /out  /

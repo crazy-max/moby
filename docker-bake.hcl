@@ -125,3 +125,39 @@ target "bundle" {
 target "bundle-cross" {
   inherits = ["bundle", "_platforms"]
 }
+
+#
+# dev
+#
+
+variable "DEV_IMAGE" {
+  default = "docker-dev"
+}
+variable "DEV_SYSTEMD" {
+  default = "false"
+}
+
+target "dev" {
+  inherits = ["_common"]
+  dockerfile = "Dockerfile.dev"
+  target = "dev"
+  args = {
+    DEV_SYSTEMD = DEV_SYSTEMD
+  }
+  tags = [DEV_IMAGE]
+  output = ["type=docker"]
+  contexts = {
+    deps = "target:_devdeps"
+  }
+}
+
+#
+# result of following targets are used as a base image in other targets. This
+# is useful to avoid stages deduplication in our Dockerfiles.
+# https://github.com/docker/buildx/blob/master/docs/reference/buildx_bake.md#using-a-result-of-one-target-as-a-base-image-in-another-target
+#
+
+target "_devdeps" {
+  inherits = ["_common"]
+  target = "devdeps"
+}

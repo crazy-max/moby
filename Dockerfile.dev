@@ -1,0 +1,263 @@
+# syntax=docker/dockerfile:1
+
+ARG BASE_VARIANT=bullseye
+ARG GO_VERSION=1.18.1
+ARG XX_VERSION=1.1.0
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG DEV_SYSTEMD
+
+ARG GOSWAGGER_VERSION=c56166c036004ba7a3a321e5951ba472b9ae298c
+ARG GOTESTSUM_VERSION=v1.7.0
+ARG SHFMT_VERSION=v3.0.2
+ARG GOLANGCI_LINT_VERSION=v1.44.0
+ARG GOTOML_VERSION=v1.8.1
+ARG CRIU_VERSION=v3.16.1
+ARG REGISTRY_VERSION=v2.3.0
+ARG REGISTRY_VERSION_SCHEMA1=v2.1.0
+ARG DOCKERCLI_VERSION=v17.06.2-ce
+
+# cross compilation helper
+FROM --platform=$BUILDPLATFORM tonistiigi/xx:${XX_VERSION} AS xx
+
+# stage used as linked contexts with bake. see dev target in docker-bake.hcl
+FROM deps
+
+# base
+FROM --platform=$BUILDPLATFORM golang:${GO_VERSION}-${BASE_VARIANT} AS base
+COPY --from=xx / /
+RUN echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
+ARG APT_MIRROR
+RUN sed -ri "s/(httpredir|deb).debian.org/${APT_MIRROR:-deb.debian.org}/g" /etc/apt/sources.list \
+  && sed -ri "s/(security).debian.org/${APT_MIRROR:-security.debian.org}/g" /etc/apt/sources.list
+ENV GO111MODULE=off
+ARG DEBIAN_FRONTEND
+RUN --mount=type=cache,sharing=locked,id=moby-devbase-aptlib,target=/var/lib/apt \
+  --mount=type=cache,sharing=locked,id=moby-devbase-aptcache,target=/var/cache/apt \
+  apt-get update && apt-get install --no-install-recommends -y bash file git make lld
+
+# go-swagger
+FROM base AS swagger-src
+WORKDIR /usr/src
+# Currently uses a fork from https://github.com/kolyshkin/go-swagger/tree/golang-1.13-fix
+# TODO: move to under moby/ or fix upstream go-swagger to work for us.
+RUN git clone https://github.com/kolyshkin/go-swagger.git swagger
+
+FROM base AS swagger
+ARG GOSWAGGER_VERSION
+WORKDIR /go/src/github.com/go-swagger/go-swagger
+RUN --mount=from=swagger-src,src=/usr/src/swagger,rw \
+  --mount=type=cache,target=/root/.cache \
+  git fetch origin \
+  && git checkout -q "$GOSWAGGER_VERSION" \
+  && go build -o /out/swagger ./cmd/swagger
+
+# go-toml
+FROM base AS tomll
+ARG GOTOML_VERSION
+RUN --mount=type=cache,target=/root/.cache/go-build \
+  --mount=type=cache,target=/go/pkg/mod \
+  GOBIN=/out GO111MODULE=on go install "github.com/pelletier/go-toml/cmd/tomll@${GOTOML_VERSION}" \
+  && /out/tomll --help
+
+# gotestsum
+FROM base AS gotestsum
+ARG GOTESTSUM_VERSION
+RUN --mount=type=cache,target=/root/.cache/go-build \
+  --mount=type=cache,target=/go/pkg/mod \
+  GOBIN=/out GO111MODULE=on go install "gotest.tools/gotestsum@${GOTESTSUM_VERSION}" \
+  && /out/gotestsum --version
+
+# shfmt
+FROM base AS shfmt
+ARG SHFMT_VERSION
+RUN --mount=type=cache,target=/root/.cache/go-build \
+  --mount=type=cache,target=/go/pkg/mod \
+  GOBIN=/out GO111MODULE=on go install "mvdan.cc/sh/v3/cmd/shfmt@${SHFMT_VERSION}" \
+  && /out/shfmt --version
+
+# golangci-lint
+FROM base AS golangci-lint
+ARG GOLANGCI_LINT_VERSION
+RUN --mount=type=cache,target=/root/.cache/go-build \
+  --mount=type=cache,target=/go/pkg/mod \
+  GOBIN=/out GO111MODULE=on go install "github.com/golangci/golangci-lint/cmd/golangci-lint@${GOLANGCI_LINT_VERSION}" \
+  && /out/golangci-lint --version
+
+# criu
+FROM base AS criu-src
+WORKDIR /usr/src
+RUN git clone https://github.com/checkpoint-restore/criu.git criu
+
+FROM base AS criu-base
+WORKDIR /go/src/github.com/checkpoint-restore/criu
+ARG DEBIAN_FRONTEND
+RUN --mount=type=cache,sharing=locked,id=moby-criu-aptlib,target=/var/lib/apt \
+  --mount=type=cache,sharing=locked,id=moby-criu-aptcache,target=/var/cache/apt \
+  apt-get update && apt-get install -y clang libc6-dev gcc \
+  libprotobuf-dev libprotobuf-c-dev protobuf-c-compiler protobuf-compiler python3-protobuf libnet1-dev libnl-3-dev libcap-dev
+
+FROM criu-base AS criu
+ARG CRIU_VERSION
+RUN --mount=from=criu-src,src=/usr/src/criu,rw \
+  --mount=type=cache,target=/root/.cache \
+  git fetch origin \
+  && git checkout -q "$CRIU_VERSION" \
+  && make \
+  && xx-verify ./criu/criu \
+  && mkdir /out \
+  && mv ./criu/criu /out/
+
+# registry
+FROM base AS registry-src
+WORKDIR /usr/src
+RUN git clone https://github.com/distribution/distribution.git registry
+
+FROM base AS registry-base
+WORKDIR /go/src/github.com/docker/distribution
+ENV CGO_ENABLED=0
+
+FROM registry-base AS registry
+ARG REGISTRY_VERSION
+ARG REGISTRY_VERSION_SCHEMA1
+RUN --mount=from=registry-src,src=/usr/src/registry,rw \
+  --mount=type=cache,target=/root/.cache \
+  --mount=type=cache,target=/go/pkg/mod \
+  git fetch origin \
+  && git checkout -q "$REGISTRY_VERSION" \
+  && export GOPATH="/go/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" \
+  && go build -o /out/registry-v2 -v ./cmd/registry \
+  && xx-verify /out/registry-v2 \
+  && git checkout -q "$REGISTRY_VERSION_SCHEMA1" \
+  && go build -o /out/registry-v2-schema1 -v ./cmd/registry \
+  && xx-verify /out/registry-v2-schema1
+
+# dockercli
+FROM base AS dockercli-src
+WORKDIR /usr/src/dockercli
+RUN git clone https://github.com/docker/cli.git .
+ARG DOCKERCLI_VERSION
+RUN git fetch origin && git checkout -q "$DOCKERCLI_VERSION"
+
+FROM base AS dockercli-base
+WORKDIR /go/src/github.com/docker/cli
+ENV CGO_ENABLED=0
+
+FROM dockercli-base AS dockercli
+RUN --mount=from=dockercli-src,src=/usr/src/dockercli/components/cli,rw \
+  --mount=type=cache,target=/root/.cache \
+  --mount=type=cache,target=/go/pkg/mod \
+  go build -o /out/docker -v ./cmd/docker \
+  && xx-verify /out/docker
+
+# frozen images
+FROM base AS frozen-images
+ARG DEBIAN_FRONTEND
+RUN --mount=type=cache,sharing=locked,id=moby-frozenimages-aptlib,target=/var/lib/apt \
+  --mount=type=cache,sharing=locked,id=moby-frozenimages-aptcache,target=/var/cache/apt \
+  apt-get update && apt-get install -y skopeo && mkdir /out
+ARG TARGETOS
+ARG TARGETARCH
+ARG TARGETVARIANT
+ENV OS=$TARGETOS
+ENV ARCH=$TARGETARCH
+ENV VARIANT=$TARGETVARIANT
+RUN skopeo copy docker://busybox@sha256:95cf004f559831017cdf4628aaf1bb30133677be8702a8c5f2994629f637a209 --additional-tag busybox:latest docker-archive:///out/busybox-latest.tar
+RUN skopeo copy docker://busybox@sha256:1f81263701cddf6402afe9f33fca0266d9fff379e59b1748f33d3072da71ee85 --additional-tag busybox:glibc docker-archive:///out/busybox-glibc.tar
+RUN skopeo copy docker://debian@sha256:dacf278785a4daa9de07596ec739dbc07131e189942772210709c5c0777e8437 --additional-tag debian:bullseye-slim docker-archive:///out/debian-bullseye-slim.tar
+RUN skopeo copy docker://hello-world@sha256:d58e752213a51785838f9eed2b7a498ffa1cb3aa7f946dda11af39286c3db9a9 --additional-tag hello-world:latest docker-archive:///out/hello-world-latest.tar
+RUN skopeo copy docker://arm32v7/hello-world@sha256:50b8560ad574c779908da71f7ce370c0a2471c098d44d1c8f6b513c5a55eeeb1 --additional-tag arm32v7/hello-world:latest docker-archive:///out/arm32v7-hello-world-latest.tar
+
+FROM base AS dev-systemd-false
+COPY --from=swagger       /out/ /usr/local/bin/
+COPY --from=tomll         /out/ /usr/local/bin/
+COPY --from=gotestsum     /out/ /usr/local/bin/
+COPY --from=shfmt         /out/ /usr/local/bin/
+COPY --from=golangci-lint /out/ /usr/local/bin/
+COPY --from=criu          /out/ /usr/local/bin/
+COPY --from=registry      /out/ /usr/local/bin/
+COPY --from=dockercli     /out/ /usr/local/cli/
+COPY --from=frozen-images /out/ /docker-frozen-images
+COPY --from=deps          /     /usr/local/bin/
+ENV PATH=/usr/local/cli:$PATH
+ARG GO_BUILDTAGS
+ENV GO_BUILDTAGS="${GO_BUILDTAGS}"
+WORKDIR /go/src/github.com/docker/docker
+VOLUME /var/lib/docker
+VOLUME /home/unprivilegeduser/.local/share/docker
+# Wrap all commands in the "docker-in-docker" script to allow nested containers
+ENTRYPOINT ["hack/dind"]
+
+FROM dev-systemd-false AS dev-systemd-true
+ARG DEBIAN_FRONTEND
+RUN --mount=type=cache,sharing=locked,id=moby-systemd-aptlib,target=/var/lib/apt \
+  --mount=type=cache,sharing=locked,id=moby-systemd-aptcache,target=/var/cache/apt \
+  apt-get update && apt-get install -y --no-install-recommends dbus dbus-user-session systemd systemd-sysv
+RUN mkdir -p hack \
+  && curl -o hack/dind-systemd https://raw.githubusercontent.com/AkihiroSuda/containerized-systemd/b70bac0daeea120456764248164c21684ade7d0d/docker-entrypoint.sh \
+  && chmod +x hack/dind-systemd
+ENTRYPOINT ["hack/dind-systemd"]
+
+FROM dev-systemd-${DEV_SYSTEMD} AS dev-base
+ARG DEBIAN_FRONTEND
+RUN groupadd -r docker \
+  && useradd --create-home --gid docker unprivilegeduser \
+  && mkdir -p /home/unprivilegeduser/.local/share/docker \
+  && chown -R unprivilegeduser /home/unprivilegeduser
+# Let us use a .bashrc file
+RUN ln -sfv /go/src/github.com/docker/docker/.bashrc ~/.bashrc
+# Activate bash completion and include Docker's completion if mounted with DOCKER_BASH_COMPLETION_PATH
+RUN echo "source /usr/share/bash-completion/bash_completion" >> /etc/bash.bashrc
+RUN ln -s /usr/local/completion/bash/docker /etc/bash_completion.d/docker
+RUN ldconfig
+# This should only install packages that are specifically needed for the dev environment and nothing else
+# Do you really need to add another package here? Can it be done in a different build stage?
+RUN --mount=type=cache,sharing=locked,id=moby-dev-aptlib,target=/var/lib/apt \
+  --mount=type=cache,sharing=locked,id=moby-dev-aptcache,target=/var/cache/apt \
+  apt-get update && apt-get install -y --no-install-recommends \
+    apparmor \
+    bash-completion \
+    bzip2 \
+    inetutils-ping \
+    iproute2 \
+    iptables \
+    jq \
+    libcap2-bin \
+    libnet1 \
+    libnl-3-200 \
+    libprotobuf-c1 \
+    net-tools \
+    patch \
+    pigz \
+    python3-pip \
+    python3-setuptools \
+    python3-wheel \
+    sudo \
+    thin-provisioning-tools \
+    uidmap \
+    vim \
+    vim-common \
+    xfsprogs \
+    xz-utils \
+    zip \
+    zstd
+# Switch to use iptables instead of nftables (to match the CI hosts)
+# TODO use some kind of runtime auto-detection instead if/when nftables is supported (https://github.com/moby/moby/issues/26824)
+RUN update-alternatives --set iptables  /usr/sbin/iptables-legacy  || true && \
+  update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy || true && \
+  update-alternatives --set arptables /usr/sbin/arptables-legacy || true
+RUN pip3 install yamllint==1.26.1
+# Packages required to build
+RUN --mount=type=cache,sharing=locked,id=moby-dev-aptlib,target=/var/lib/apt \
+  --mount=type=cache,sharing=locked,id=moby-dev-aptcache,target=/var/cache/apt \
+  apt-get install --no-install-recommends -y binutils gcc g++ pkg-config dpkg-dev \
+    libapparmor-dev \
+    libbtrfs-dev \
+    libdevmapper-dev \
+    libseccomp-dev \
+    libsecret-1-dev \
+    libsystemd-dev \
+    libudev-dev
+
+FROM dev-base AS dev
+COPY . .
