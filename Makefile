@@ -87,7 +87,8 @@ DOCKERDEV_ENVS := \
 	-e PLATFORM \
 	-e DEFAULT_PRODUCT_LICENSE \
 	-e PRODUCT \
-	-e PACKAGER_NAME
+	-e PACKAGER_NAME \
+	-e GITHUB_ACTIONS
 # note: we _cannot_ add "-e GO_BUILDTAGS" here because even if it's unset in the shell, that would shadow the "ENV GO_BUILDTAGS" set in our Dockerfile, which is very important for our official builds
 
 # to allow `make BIND_DIR=. shell` or `make BIND_DIR= test`

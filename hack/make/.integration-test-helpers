@@ -156,6 +156,7 @@ test_env() {
 			PATH="$PATH" \
 			TEMP="$TEMP" \
 			TEST_CLIENT_BINARY="$TEST_CLIENT_BINARY" \
+			GITHUB_ACTIONS="$GITHUB_ACTIONS" \
 			"$@"
 	)
 }
