@@ -1,11 +1,10 @@
 # syntax=docker/dockerfile:1
 
-ARG BASE_VARIANT=bullseye
+ARG BASE_IMAGE="ubuntu:20.04"
 ARG GO_VERSION=1.18.1
 ARG XX_VERSION=1.1.0
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG APT_MIRROR=deb.debian.org
 ARG GO_LINKMODE=static
 ARG DEV_SYSTEMD=false
 
@@ -40,20 +39,40 @@ RUN mkdir -p /out
 FROM scratch AS binary-dummy
 COPY --from=build-dummy / /
 
-FROM --platform=$BUILDPLATFORM golang:${GO_VERSION}-${BASE_VARIANT} AS base
+FROM --platform=$BUILDPLATFORM ${BASE_IMAGE} AS golang
+ARG DEBIAN_FRONTEND
+RUN apt-get update && apt-get install --no-install-recommends -y ca-certificates curl jq
+WORKDIR /golang
+RUN curl -m30 --retry 5 --retry-connrefused --retry-delay 5 -sSL "https://go.dev/dl/?mode=json&include=all" -o "godist.json"
+ARG GO_VERSION
+ARG BUILDOS
+ARG BUILDARCH
+ENV PATH="/usr/local/go/bin:$PATH"
+RUN <<EOT
+GO_DIST_FILE=go${GO_VERSION%.0}.${BUILDOS}-${BUILDARCH}.tar.gz
+GO_DIST_URL=https://golang.org/dl/${GO_DIST_FILE}
+SHA256=$(cat godist.json | jq -r ".[] | select(.version==\"go${GO_VERSION%.0}\") | .files[] | select(.filename==\"$GO_DIST_FILE\").sha256")
+curl -sSL "$GO_DIST_URL.asc" -o "go.tgz.asc"
+curl -sSL "$GO_DIST_URL" -o "go.tgz"
+echo "$SHA256 *go.tgz" | sha256sum -c -
+tar -C /usr/local -xzf go.tgz
+go version
+EOT
+
+FROM --platform=$BUILDPLATFORM ${BASE_IMAGE} AS base
 COPY --from=xx / /
 RUN echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
-ARG APT_MIRROR
-RUN sed -ri "s/(httpredir|deb).debian.org/${APT_MIRROR:-deb.debian.org}/g" /etc/apt/sources.list \
-  && sed -ri "s/(security).debian.org/${APT_MIRROR:-security.debian.org}/g" /etc/apt/sources.list
 ENV GO111MODULE=off
 ARG DEBIAN_FRONTEND
-# bullseye-backports for cmake
-RUN echo "deb https://deb.debian.org/debian bullseye-backports main contrib non-free" >> /etc/apt/sources.list
 RUN --mount=type=cache,sharing=locked,id=moby-base-aptlib,target=/var/lib/apt \
-    --mount=type=cache,sharing=locked,id=moby-base-aptcache,target=/var/cache/apt \
-  apt-get update && apt-get install --no-install-recommends -y bash file git make lld && \
-  apt-get -y -t bullseye-backports install cmake
+  --mount=type=cache,sharing=locked,id=moby-base-aptcache,target=/var/cache/apt \
+  apt-get update && apt-get install --no-install-recommends -y bash ca-certificates cmake file git make lld
+# install go
+COPY --from=golang /usr/local/go /usr/local/go
+ENV GOROOT="/usr/local/go"
+ENV GOPATH="/go"
+ENV PATH="$GOPATH/bin:/usr/local/go/bin:$PATH"
+RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 
 # go-winres
 FROM base AS gowinres
