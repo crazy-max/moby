@@ -13,7 +13,7 @@ test.main
 .editorconfig
 .gopath/
 .go-pkg-cache/
-bundles/
+/build
 cli/winresources/**/winres.json
 cli/winresources/**/*.syso
 cmd/dockerd/dockerd

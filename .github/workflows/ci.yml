@@ -11,17 +11,22 @@ on:
   pull_request:
 
 env:
-  BUNDLES_OUTPUT: ./bundles
+  PLATFORM: "Docker Engine - Community"
+  PRODUCT: "Moby"
+  DEFAULT_PRODUCT_LICENSE: "Community Engine"
+  PACKAGER_NAME: "Docker, Inc."
 
 jobs:
-  build:
+  binary:
     runs-on: ubuntu-20.04
+    env:
+      BINARY_OUTPUT: ./build
     strategy:
       fail-fast: false
       matrix:
-        target:
-          - binary
-          - dynbinary
+        linkmode:
+          - static
+          - dynamic
     steps:
       -
         name: Checkout
@@ -35,24 +40,38 @@ jobs:
         name: Build
         uses: docker/bake-action@v1
         with:
-          targets: ${{ matrix.target }}
+          targets: binary
           set: |
-            *.cache-from=type=gha,scope=build-${{ matrix.target }}
-            *.cache-to=type=gha,scope=build-${{ matrix.target }}
+            *.cache-from=type=gha,scope=build-${{ matrix.linkmode }}
+            *.cache-to=type=gha,scope=build-${{ matrix.linkmode }}
+        env:
+          GO_LINKMODE: ${{ matrix.linkmode }}
+      -
+        name: List artifacts
+        run: |
+          tree -nh ${{ env.BINARY_OUTPUT }}
+      -
+        name: Check artifacts
+        run: |
+          find ${{ env.BINARY_OUTPUT }} -type f -exec file -e ascii -- {} +
       -
         name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.target }}
-          path: ${{ env.BUNDLES_OUTPUT }}
+          name: binary-${{ matrix.linkmode }}
+          path: ${{ env.BINARY_OUTPUT }}
           if-no-files-found: error
           retention-days: 7
 
   cross:
     runs-on: ubuntu-20.04
+    env:
+      BUNDLE_OUTPUT: ./build
     strategy:
       fail-fast: false
       matrix:
+        target:
+          - bundle
         platform:
           - linux/amd64
           - linux/arm/v5
@@ -75,30 +94,40 @@ jobs:
           platform=${{ matrix.platform }}
           echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
       -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       -
         name: Build
         uses: docker/bake-action@v1
         with:
-          targets: cross
+          targets: ${{ matrix.target }}
           set: |
-            *.cache-from=type=gha,scope=cross-${{ env.PLATFORM_PAIR }}
-            *.cache-to=type=gha,scope=cross-${{ env.PLATFORM_PAIR }}
-        env:
-          DOCKER_CROSSPLATFORMS: ${{ matrix.platform }}
+            *.platform=${{ matrix.platform }}
+            *.cache-from=type=gha,scope=cross-${{ matrix.target }}-${{ env.PLATFORM_PAIR }}
+            *.cache-to=type=gha,scope=cross-${{ matrix.target }}-${{ env.PLATFORM_PAIR }}
+      -
+        name: List artifacts
+        run: |
+          tree -nh ${{ env.BUNDLE_OUTPUT }}
+      -
+        name: Check artifacts
+        run: |
+          find ${{ env.BUNDLE_OUTPUT }} -type f -exec file -e ascii -- {} +
       -
         name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: cross-${{ env.PLATFORM_PAIR }}
-          path: ${{ env.BUNDLES_OUTPUT }}
+          name: cross-${{ matrix.target }}-${{ env.PLATFORM_PAIR }}
+          path: ${{ env.BUNDLE_OUTPUT }}
           if-no-files-found: error
           retention-days: 7
 
   test-buildkit:
     needs:
-      - build
+      - binary
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -143,7 +172,7 @@ jobs:
         name: Download binary artifacts
         uses: actions/download-artifact@v3
         with:
-          name: binary
+          name: binary-static
           path: ./buildkit/build/moby/
       -
         name: Update daemon.json
@@ -159,7 +188,7 @@ jobs:
         env:
           CONTEXT: "."
           TEST_DOCKERD: "1"
-          TEST_DOCKERD_BINARY: "./build/moby/binary-daemon/dockerd"
+          TEST_DOCKERD_BINARY: "./build/moby/dockerd"
           TESTPKGS: "${{ matrix.pkg }}"
           TESTFLAGS: "-v --parallel=1 --timeout=30m --run=//worker=dockerd$"
           SKIP_INTEGRATION_TESTS: "${{ matrix.skip-integration-tests }}"
