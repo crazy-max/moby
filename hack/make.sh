@@ -35,7 +35,6 @@ DEFAULT_BUNDLES=(
 	dynbinary
 	test-integration
 	test-docker-py
-	cross
 )
 
 if [ "$AUTO_GOPATH" ]; then
