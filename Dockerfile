@@ -1,6 +1,9 @@
 # syntax=docker/dockerfile:1
 
-ARG BASE_IMAGE="ubuntu:20.04"
+ARG UBUNTU_BASE="ubuntu:20.04"
+# debian base is only used for armel builds
+ARG DEBIAN_BASE="debian:bullseye"
+
 ARG GO_VERSION=1.18.1
 ARG XX_VERSION=1.1.0
 
@@ -33,34 +36,31 @@ ARG DOCKERCLI_VERSION=v17.06.2-ce
 # cross compilation helper
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:${XX_VERSION} AS xx
 
+# go base image to retrieve /usr/local/go
+FROM --platform=$BUILDPLATFORM golang:${GO_VERSION} AS golang
+
 # dummy stage to make sure the image is built for unsupported deps
 FROM --platform=$BUILDPLATFORM busybox AS build-dummy
 RUN mkdir -p /out
 FROM scratch AS binary-dummy
 COPY --from=build-dummy / /
 
-FROM --platform=$BUILDPLATFORM ${BASE_IMAGE} AS golang
-ARG DEBIAN_FRONTEND
-RUN apt-get update && apt-get install --no-install-recommends -y ca-certificates curl jq
-WORKDIR /golang
-RUN curl -m30 --retry 5 --retry-connrefused --retry-delay 5 -sSL "https://go.dev/dl/?mode=json&include=all" -o "godist.json"
-ARG GO_VERSION
-ARG BUILDOS
-ARG BUILDARCH
-ENV PATH="/usr/local/go/bin:$PATH"
-RUN <<EOT
-GO_DIST_FILE=go${GO_VERSION%.0}.${BUILDOS}-${BUILDARCH}.tar.gz
-GO_DIST_URL=https://golang.org/dl/${GO_DIST_FILE}
-SHA256=$(cat godist.json | jq -r ".[] | select(.version==\"go${GO_VERSION%.0}\") | .files[] | select(.filename==\"$GO_DIST_FILE\").sha256")
-curl -sSL "$GO_DIST_URL.asc" -o "go.tgz.asc"
-curl -sSL "$GO_DIST_URL" -o "go.tgz"
-echo "$SHA256 *go.tgz" | sha256sum -c -
-tar -C /usr/local -xzf go.tgz
-go version
-EOT
+FROM --platform=$BUILDPLATFORM ${UBUNTU_BASE} AS base-ubuntu
+FROM --platform=$BUILDPLATFORM ${DEBIAN_BASE} AS base-debian
+FROM base-ubuntu AS base-windows
+FROM base-ubuntu AS base-linux-amd64
+FROM base-debian AS base-linux-armv5
+FROM base-debian AS base-linux-armv6
+FROM base-ubuntu AS base-linux-armv7
+FROM base-ubuntu AS base-linux-arm64
+FROM base-ubuntu AS base-linux-ppc64le
+FROM base-ubuntu AS base-linux-riscv64
+FROM base-ubuntu AS base-linux-s390x
 
-FROM --platform=$BUILDPLATFORM ${BASE_IMAGE} AS base
+FROM base-linux-${TARGETARCH}${TARGETVARIANT} AS base-linux
+FROM base-${TARGETOS} AS base
 COPY --from=xx / /
+ENV XX_APT_PREFER_CROSS=1
 RUN echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
 ENV GO111MODULE=off
 ARG DEBIAN_FRONTEND
@@ -169,8 +169,6 @@ RUN git clone https://github.com/krallin/tini.git tini
 FROM base AS tini-base
 WORKDIR /go/src/github.com/krallin/tini
 ARG DEBIAN_FRONTEND
-RUN apt-get update && apt-get install -y clang
-ENV XX_CC_PREFER_LINKER=ld
 ARG TARGETPLATFORM
 RUN --mount=type=cache,sharing=locked,id=moby-tini-aptlib,target=/var/lib/apt \
     --mount=type=cache,sharing=locked,id=moby-tini-aptcache,target=/var/cache/apt \
@@ -184,7 +182,7 @@ RUN --mount=from=tini-src,src=/usr/src/tini,rw \
   export TINI_TARGET=$([ "$GO_LINKMODE" = "static" ] && echo "tini-static" || echo "tini") \
   && git fetch origin \
   && git checkout -q "$TINI_VERSION" \
-  && cmake $(xx-clang --print-cmake-defines) . \
+  && CC=$(xx-info)-gcc cmake . \
   && make "$TINI_TARGET" \
   && xx-verify $([ "$GO_LINKMODE" = "static" ] && echo "--static") "$TINI_TARGET" \
   && mkdir /out \
