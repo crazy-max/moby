@@ -31,3 +31,19 @@ ALL_OUTPUT=./bin docker buildx bake all
 # build all for all supported platforms
 docker buildx bake all-cross
 ```
+
+It's also possible to build directly using the `make.sh` script in `hack/make`
+outside the Dockerfile but this is **not recommended** as you're not sandboxed.
+You might also need to install additional dependencies and have a working local dev
+environment:
+
+```shell
+# build dockerd
+./hack/make.sh binary-daemon
+
+# build docker-proxy
+./hack/make.sh binary-proxy
+
+# build both
+./hack/make.sh binary
+```
