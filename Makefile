@@ -1,21 +1,17 @@
 .PHONY: all binary dynbinary build cross help install manpages run shell test test-docker-py test-integration test-unit validate win
 
 BUILDX_VERSION ?= v0.8.2
-
-ifdef USE_BUILDX
-BUILDX ?= $(shell command -v buildx)
-BUILDX ?= $(shell command -v docker-buildx)
-DOCKER_BUILDX_CLI_PLUGIN_PATH ?= ~/.docker/cli-plugins/docker-buildx
-BUILDX ?= $(shell if [ -x "$(DOCKER_BUILDX_CLI_PLUGIN_PATH)" ]; then echo $(DOCKER_BUILDX_CLI_PLUGIN_PATH); fi)
-endif
-
-ifndef USE_BUILDX
-DOCKER_BUILDKIT := 1
-export DOCKER_BUILDKIT
+ifneq (, $(BUILDX_BIN))
+	BUILDX := $(BUILDX_BIN)
+else ifneq (, $(shell docker buildx version))
+	BUILDX := docker buildx
+else ifneq (, $(shell which buildx))
+	BUILDX := $(which buildx)
 endif
 
 BUILDX ?= bundles/buildx
 DOCKER ?= docker
+DOCKER_BUILDKIT ?= 1
 
 # set the graph driver as the current graphdriver if not set
 DOCKER_GRAPHDRIVER := $(if $(DOCKER_GRAPHDRIVER),$(DOCKER_GRAPHDRIVER),$(shell docker info 2>&1 | grep "Storage Driver" | sed 's/.*: //'))
@@ -145,12 +141,7 @@ DOCKER_BUILD_ARGS += --build-arg=SYSTEMD=true
 endif
 
 BUILD_OPTS := ${BUILD_APT_MIRROR} ${DOCKER_BUILD_ARGS} ${DOCKER_BUILD_OPTS} -f "$(DOCKERFILE)"
-ifdef USE_BUILDX
-BUILD_OPTS += $(BUILDX_BUILD_EXTRA_OPTS)
 BUILD_CMD := $(BUILDX) build
-else
-BUILD_CMD := $(DOCKER) build
-endif
 
 # This is used for the legacy "build" target and anything still depending on it
 BUILD_CROSS =
@@ -197,15 +188,12 @@ run: build ## run the docker daemon in a container
  
 .PHONY: build
 ifeq ($(BIND_DIR), .)
-build: shell_target := --target=dev
+build: shell_target := --target=dev-base
 else
-build: shell_target := --target=final
-endif
-ifdef USE_BUILDX
-build: buildx_load := --load
+build: shell_target := --target=dev
 endif
 build: buildx
-	$(BUILD_CMD) $(BUILD_OPTS) $(shell_target) $(buildx_load) $(BUILD_CROSS) -t "$(DOCKER_IMAGE)" .
+	$(BUILD_CMD) $(BUILD_OPTS) $(shell_target) $(BUILD_CROSS) --load -t "$(DOCKER_IMAGE)" .
 
 shell: build  ## start a shell inside the build env
 	$(DOCKER_RUN_DOCKER) bash
@@ -255,12 +243,11 @@ swagger-docs: ## preview the API documentation
 		bfirsh/redoc:1.14.0
 
 .PHONY: buildx
-ifdef USE_BUILDX
 ifeq ($(BUILDX), bundles/buildx)
-buildx: bundles/buildx ## build buildx cli tool
-endif
-endif
-
-bundles/buildx: bundles ## build buildx CLI tool
+buildx: bundles/buildx ## download buildx CLI tool
+bundles/buildx:
 	curl -fsSL https://raw.githubusercontent.com/moby/buildkit/70deac12b5857a1aa4da65e90b262368e2f71500/hack/install-buildx | VERSION="$(BUILDX_VERSION)" BINDIR="$(@D)" bash
 	$@ version
+else
+buildx: bundles
+endif
