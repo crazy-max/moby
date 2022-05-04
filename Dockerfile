@@ -1,11 +1,14 @@
 # syntax=docker/dockerfile:1
 
-ARG BASE_VARIANT=bullseye
+# ubuntu base is only used for riscv64 builds
+# we also need to keep debian to be able to build for armel
+ARG DEBIAN_BASE="debian:bullseye"
+ARG UBUNTU_BASE="ubuntu:22.04"
+
 ARG GO_VERSION=1.18.1
 ARG XX_VERSION=1.1.0
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG APT_MIRROR=deb.debian.org
 ARG GO_LINKMODE=static
 ARG DEV_SYSTEMD=false
 
@@ -34,26 +37,53 @@ ARG DOCKERCLI_VERSION=v17.06.2-ce
 # cross compilation helper
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:${XX_VERSION} AS xx
 
+# go base image to retrieve /usr/local/go
+FROM --platform=$BUILDPLATFORM golang:${GO_VERSION} AS golang
+
 # dummy stage to make sure the image is built for unsupported deps
 FROM --platform=$BUILDPLATFORM busybox AS build-dummy
 RUN mkdir -p /out
 FROM scratch AS binary-dummy
 COPY --from=build-dummy / /
 
-FROM --platform=$BUILDPLATFORM golang:${GO_VERSION}-${BASE_VARIANT} AS base
+# base
+FROM --platform=$BUILDPLATFORM ${UBUNTU_BASE} AS base-ubuntu
+FROM --platform=$BUILDPLATFORM ${DEBIAN_BASE} AS base-debian
+FROM base-debian AS base-windows
+FROM base-debian AS base-linux-amd64
+FROM base-debian AS base-linux-armv5
+FROM base-debian AS base-linux-armv6
+FROM base-debian AS base-linux-armv7
+FROM base-debian AS base-linux-arm64
+FROM base-debian AS base-linux-ppc64le
+FROM base-ubuntu AS base-linux-riscv64
+FROM base-debian AS base-linux-s390x
+
+FROM base-linux-${TARGETARCH}${TARGETVARIANT} AS base-linux
+FROM base-${TARGETOS} AS base
 COPY --from=xx / /
+ENV XX_APT_PREFER_CROSS=1
 RUN echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
-ARG APT_MIRROR
-RUN sed -ri "s/(httpredir|deb).debian.org/${APT_MIRROR:-deb.debian.org}/g" /etc/apt/sources.list \
-  && sed -ri "s/(security).debian.org/${APT_MIRROR:-security.debian.org}/g" /etc/apt/sources.list
 ENV GO111MODULE=off
 ARG DEBIAN_FRONTEND
-# bullseye-backports for cmake
-RUN echo "deb https://deb.debian.org/debian bullseye-backports main contrib non-free" >> /etc/apt/sources.list
 RUN --mount=type=cache,sharing=locked,id=moby-base-aptlib,target=/var/lib/apt \
-    --mount=type=cache,sharing=locked,id=moby-base-aptcache,target=/var/cache/apt \
-  apt-get update && apt-get install --no-install-recommends -y bash file git make lld && \
-  apt-get -y -t bullseye-backports install cmake
+  --mount=type=cache,sharing=locked,id=moby-base-aptcache,target=/var/cache/apt \
+  apt-get update && apt-get install --no-install-recommends -y \
+    bash \
+    ca-certificates \
+    cmake \
+    file \
+    gcc \
+    git \
+    libc6-dev \
+    make \
+    lld \
+    pkg-config
+COPY --from=golang /usr/local/go /usr/local/go
+ENV GOROOT="/usr/local/go"
+ENV GOPATH="/go"
+ENV PATH="$GOPATH/bin:/usr/local/go/bin:$PATH"
+RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 
 # go-winres
 FROM base AS gowinres
@@ -150,8 +180,6 @@ RUN git clone https://github.com/krallin/tini.git tini
 FROM base AS tini-base
 WORKDIR /go/src/github.com/krallin/tini
 ARG DEBIAN_FRONTEND
-RUN apt-get update && apt-get install -y clang
-ENV XX_CC_PREFER_LINKER=ld
 ARG TARGETPLATFORM
 RUN --mount=type=cache,sharing=locked,id=moby-tini-aptlib,target=/var/lib/apt \
     --mount=type=cache,sharing=locked,id=moby-tini-aptcache,target=/var/cache/apt \
@@ -165,7 +193,7 @@ RUN --mount=from=tini-src,src=/usr/src/tini,rw \
   export TINI_TARGET=$([ "$GO_LINKMODE" = "static" ] && echo "tini-static" || echo "tini") \
   && git fetch origin \
   && git checkout -q "$TINI_VERSION" \
-  && cmake $(xx-clang --print-cmake-defines) . \
+  && CC=$(xx-info)-gcc cmake . \
   && make "$TINI_TARGET" \
   && xx-verify $([ "$GO_LINKMODE" = "static" ] && echo "--static") "$TINI_TARGET" \
   && mkdir /out \
@@ -321,7 +349,7 @@ ARG DEBIAN_FRONTEND
 RUN --mount=type=cache,sharing=locked,id=moby-criu-aptlib,target=/var/lib/apt \
   --mount=type=cache,sharing=locked,id=moby-criu-aptcache,target=/var/cache/apt \
   apt-get update && apt-get install -y clang libc6-dev gcc \
-  libprotobuf-dev libprotobuf-c-dev protobuf-c-compiler protobuf-compiler python3-protobuf libnet1-dev libnl-3-dev libcap-dev
+  libprotobuf-dev libprotobuf-c-dev protobuf-c-compiler protobuf-compiler python3-protobuf libnl-3-dev libnet-dev libnl-genl-3-dev libcap-dev
 
 FROM criu-base AS criu
 ARG CRIU_VERSION
