@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
-
 set -e
 
-(
-	GO_PACKAGE='github.com/docker/docker/cmd/docker-proxy'
-	BINARY_SHORT_NAME='docker-proxy'
+[ -z "$KEEPDEST" ] && rm -rf "$DEST"
 
-	source "${MAKEDIR}/.binary"
+(
+	if [ -n "$DEST" ]; then
+		OUTPUT="$(dirname "$DEST")/binary"
+		export OUTPUT
+	fi
+	if [ "$(go env GOOS)" = "linux" ]; then
+		export GO_LDFLAGS="-linkmode=external"
+	fi
+	export PACKAGE=./cmd/docker-proxy
+	. hack/make/.binary
 )
