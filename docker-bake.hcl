@@ -95,7 +95,7 @@ group "default" {
 #
 
 variable "BINARY_OUTPUT" {
-  default = "./dist/binary"
+  default = GO_LINKMODE == "static" ? "./dist/binary" : "./dist/dynbinary"
 }
 
 target "binary" {
