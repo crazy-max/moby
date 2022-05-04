@@ -32,3 +32,19 @@ BUNDLE_OUTPUT=./bin docker buildx bake bundle
 # build bundle for all supported platforms
 docker buildx bake bundle-cross
 ```
+
+It's also possible to build directly using the scripts in `hack/make` folder
+outside the Dockerfile but this is **not recommended** as you're not sandboxed.
+You might also need to install additional dependencies and have a working local dev
+environment:
+
+```shell
+# build dockerd
+./hack/make/binary-daemon
+
+# build docker-proxy
+./hack/make/binary-daemon
+
+# build both
+./hack/make/binary
+```
