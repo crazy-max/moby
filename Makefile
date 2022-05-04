@@ -85,7 +85,7 @@ DOCKER_ENVS := \
 # to allow `make BIND_DIR=. shell` or `make BIND_DIR= test`
 # (default to no bind mount if DOCKER_HOST is set)
 # note: BINDDIR is supported for backwards-compatibility here
-BIND_DIR := $(if $(BINDDIR),$(BINDDIR),$(if $(DOCKER_HOST),,bundles))
+BIND_DIR := $(if $(BINDDIR),$(BINDDIR),$(if $(DOCKER_HOST),,dist))
 
 # DOCKER_MOUNT can be overriden, but use at your own risk!
 ifndef DOCKER_MOUNT
@@ -94,8 +94,8 @@ DOCKER_MOUNT := $(if $(DOCKER_BINDDIR_MOUNT_OPTS),$(DOCKER_MOUNT):$(DOCKER_BINDD
 
 # This allows the test suite to be able to run without worrying about the underlying fs used by the container running the daemon (e.g. aufs-on-aufs), so long as the host running the container is running a supported fs.
 # The volume will be cleaned up when the container is removed due to `--rm`.
-# Note that `BIND_DIR` will already be set to `bundles` if `DOCKER_HOST` is not set (see above BIND_DIR line), in such case this will do nothing since `DOCKER_MOUNT` will already be set.
-DOCKER_MOUNT := $(if $(DOCKER_MOUNT),$(DOCKER_MOUNT),-v /go/src/github.com/docker/docker/bundles) -v "$(CURDIR)/.git:/go/src/github.com/docker/docker/.git"
+# Note that `BIND_DIR` will already be set to `dist` if `DOCKER_HOST` is not set (see above BIND_DIR line), in such case this will do nothing since `DOCKER_MOUNT` will already be set.
+DOCKER_MOUNT := $(if $(DOCKER_MOUNT),$(DOCKER_MOUNT),-v /go/src/github.com/docker/docker/dist) -v "$(CURDIR)/.git:/go/src/github.com/docker/docker/.git"
 
 DOCKER_MOUNT_CACHE := -v docker-dev-cache:/root/.cache -v docker-mod-cache:/go/pkg/mod/
 DOCKER_MOUNT_CLI := $(if $(DOCKER_CLI_PATH),-v $(shell dirname $(DOCKER_CLI_PATH)):/usr/local/cli,)
@@ -153,9 +153,6 @@ dynbinary: buildx ## build dynamically linked linux binaries
 
 cross: buildx ## cross build the binaries
 	$(BAKE_CMD) binary-cross
-
-bundles:
-	mkdir bundles
 
 .PHONY: clean
 clean: clean-cache

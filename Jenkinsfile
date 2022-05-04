@@ -22,6 +22,7 @@ pipeline {
         booleanParam(name: 'dco', defaultValue: true, description: 'Run the DCO check')
     }
     environment {
+        DIST_FOLDER         = 'dist'
         DOCKER_BUILDKIT     = '1'
         DOCKER_EXPERIMENTAL = '1'
         DOCKER_GRAPHDRIVER  = 'overlay2'
@@ -94,7 +95,7 @@ pipeline {
                             steps {
                                 sh '''
                                 docker run --rm -t --privileged \
-                                  -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
+                                  -v "$WORKSPACE/${DIST_FOLDER}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
                                   -v "$WORKSPACE/.git:/go/src/github.com/docker/docker/.git" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
@@ -112,7 +113,7 @@ pipeline {
                             steps {
                                 sh '''
                                 docker run --rm -t --privileged \
-                                  -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
+                                  -v "$WORKSPACE/${DIST_FOLDER}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
                                   -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
@@ -127,7 +128,7 @@ pipeline {
                             }
                             post {
                                 always {
-                                    junit testResults: 'bundles/test-docker-py/junit-report.xml', allowEmptyResults: true
+                                    junit testResults: '${DIST_FOLDER}/test-docker-py/junit-report.xml', allowEmptyResults: true
 
                                     sh '''
                                     echo "Ensuring container killed."
@@ -143,7 +144,7 @@ pipeline {
                                         sh '''
                                         bundleName=docker-py
                                         echo "Creating ${bundleName}-bundles.tar.gz"
-                                        tar -czf ${bundleName}-bundles.tar.gz bundles/test-docker-py/*.xml bundles/test-docker-py/*.log
+                                        tar -czf ${bundleName}-bundles.tar.gz ${DIST_FOLDER}/test-docker-py/*.xml ${DIST_FOLDER}/test-docker-py/*.log
                                         '''
 
                                         archiveArtifacts artifacts: '*-bundles.tar.gz', allowEmptyArchive: true
@@ -155,7 +156,7 @@ pipeline {
                             steps {
                                 sh '''
                                 docker run --rm -t --privileged \
-                                  -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
+                                  -v "$WORKSPACE/${DIST_FOLDER}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
@@ -172,7 +173,7 @@ pipeline {
                                 '''
                                 sh '''
                                 docker run --rm -t --privileged \
-                                  -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
+                                  -v "$WORKSPACE/${DIST_FOLDER}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
                                   -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
@@ -185,7 +186,7 @@ pipeline {
                             }
                             post {
                                 always {
-                                    junit testResults: 'bundles/junit-report*.xml', allowEmptyResults: true
+                                    junit testResults: '${DIST_FOLDER}/junit-report*.xml', allowEmptyResults: true
                                 }
                             }
                         }
@@ -224,7 +225,7 @@ pipeline {
                                 sh '''
                                 bundleName=unit
                                 echo "Creating ${bundleName}-bundles.tar.gz"
-                                tar -czvf ${bundleName}-bundles.tar.gz bundles/junit-report*.xml bundles/go-test-report*.json bundles/profile*.out
+                                tar -czvf ${bundleName}-bundles.tar.gz ${DIST_FOLDER}/junit-report*.xml ${DIST_FOLDER}/go-test-report*.json ${DIST_FOLDER}/profile*.out
                                 '''
 
                                 archiveArtifacts artifacts: '*-bundles.tar.gz', allowEmptyArchive: true
@@ -275,8 +276,8 @@ pipeline {
                                 run_tests() {
                                         [ -n "$TESTDEBUG" ] && rm= || rm=--rm;
                                         docker run $rm -t --privileged \
-                                          -v "$WORKSPACE/bundles/${TEST_INTEGRATION_DEST}:/go/src/github.com/docker/docker/bundles" \
-                                          -v "$WORKSPACE/bundles/dynbinary-daemon:/go/src/github.com/docker/docker/bundles/dynbinary-daemon" \
+                                          -v "$WORKSPACE/${DIST_FOLDER}/${TEST_INTEGRATION_DEST}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
+                                          -v "$WORKSPACE/${DIST_FOLDER}/dynbinary:/go/src/github.com/docker/docker/${DIST_FOLDER}/dynbinary" \
                                           -v "$WORKSPACE/.git:/go/src/github.com/docker/docker/.git" \
                                           --name "$CONTAINER_NAME" \
                                           -e KEEPBUNDLE=1 \
@@ -301,7 +302,7 @@ pipeline {
                                 CONTAINER_NAME=docker-pr$BUILD_NUMBER
 
                                 docker run --rm -t --privileged \
-                                  -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
+                                  -v "$WORKSPACE/${DIST_FOLDER}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
                                   -v "$WORKSPACE/.git:/go/src/github.com/docker/docker/.git" \
                                   --name ${CONTAINER_NAME}-build \
                                   -e DOCKER_EXPERIMENTAL \
@@ -329,7 +330,7 @@ pipeline {
                             }
                             post {
                                 always {
-                                    junit testResults: 'bundles/**/*-report.xml', allowEmptyResults: true
+                                    junit testResults: '${DIST_FOLDER}/**/*-report.xml', allowEmptyResults: true
                                 }
                             }
                         }
@@ -353,7 +354,7 @@ pipeline {
                                 bundleName=amd64
                                 echo "Creating ${bundleName}-bundles.tar.gz"
                                 # exclude overlay2 directories
-                                find bundles -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
+                                find ${DIST_FOLDER} -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
                                 '''
 
                                 archiveArtifacts artifacts: '*-bundles.tar.gz', allowEmptyArchive: true
@@ -398,7 +399,7 @@ pipeline {
                             steps {
                                 sh '''
                                 docker run --rm -t --privileged \
-                                  -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
+                                  -v "$WORKSPACE/${DIST_FOLDER}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
@@ -416,7 +417,7 @@ pipeline {
                             }
                             post {
                                 always {
-                                    junit testResults: 'bundles/**/*-report.xml', allowEmptyResults: true
+                                    junit testResults: '${DIST_FOLDER}/**/*-report.xml', allowEmptyResults: true
                                 }
                             }
                         }
@@ -439,7 +440,7 @@ pipeline {
                                 bundleName=amd64-rootless
                                 echo "Creating ${bundleName}-bundles.tar.gz"
                                 # exclude overlay2 directories
-                                find bundles -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
+                                find ${DIST_FOLDER} -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
                                 '''
 
                                 archiveArtifacts artifacts: '*-bundles.tar.gz', allowEmptyArchive: true
@@ -480,7 +481,7 @@ pipeline {
                             steps {
                                 sh '''
                                 docker run --rm -t --privileged \
-                                  -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
+                                  -v "$WORKSPACE/${DIST_FOLDER}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
@@ -498,7 +499,7 @@ pipeline {
                             }
                             post {
                                 always {
-                                    junit testResults: 'bundles/**/*-report.xml', allowEmptyResults: true
+                                    junit testResults: '${DIST_FOLDER}/**/*-report.xml', allowEmptyResults: true
                                 }
                             }
                         }
@@ -521,7 +522,7 @@ pipeline {
                                 bundleName=amd64-cgroup2
                                 echo "Creating ${bundleName}-bundles.tar.gz"
                                 # exclude overlay2 directories
-                                find bundles -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
+                                find ${DIST_FOLDER} -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
                                 '''
 
                                 archiveArtifacts artifacts: '*-bundles.tar.gz', allowEmptyArchive: true
@@ -572,7 +573,7 @@ pipeline {
                                 '''
                                 sh '''
                                 docker run --rm -t --privileged \
-                                  -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
+                                  -v "$WORKSPACE/${DIST_FOLDER}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
                                   -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
@@ -585,7 +586,7 @@ pipeline {
                             }
                             post {
                                 always {
-                                    junit testResults: 'bundles/junit-report*.xml', allowEmptyResults: true
+                                    junit testResults: '${DIST_FOLDER}/junit-report*.xml', allowEmptyResults: true
                                 }
                             }
                         }
@@ -594,7 +595,7 @@ pipeline {
                             steps {
                                 sh '''
                                 docker run --rm -t --privileged \
-                                  -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
+                                  -v "$WORKSPACE/${DIST_FOLDER}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
                                   -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
@@ -612,7 +613,7 @@ pipeline {
                             }
                             post {
                                 always {
-                                    junit testResults: 'bundles/**/*-report.xml', allowEmptyResults: true
+                                    junit testResults: '${DIST_FOLDER}/**/*-report.xml', allowEmptyResults: true
                                 }
                             }
                         }
@@ -635,7 +636,7 @@ pipeline {
                                 bundleName=s390x-integration
                                 echo "Creating ${bundleName}-bundles.tar.gz"
                                 # exclude overlay2 directories
-                                find bundles -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
+                                find ${DIST_FOLDER} -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
                                 '''
 
                                 archiveArtifacts artifacts: '*-bundles.tar.gz', allowEmptyArchive: true
@@ -682,7 +683,7 @@ pipeline {
                             steps {
                                 sh '''
                                 docker run --rm -t --privileged \
-                                  -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
+                                  -v "$WORKSPACE/${DIST_FOLDER}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
@@ -698,7 +699,7 @@ pipeline {
                             }
                             post {
                                 always {
-                                    junit testResults: 'bundles/**/*-report.xml', allowEmptyResults: true
+                                    junit testResults: '${DIST_FOLDER}/**/*-report.xml', allowEmptyResults: true
                                 }
                             }
                         }
@@ -721,7 +722,7 @@ pipeline {
                                 bundleName=s390x-integration-cli
                                 echo "Creating ${bundleName}-bundles.tar.gz"
                                 # exclude overlay2 directories
-                                find bundles -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
+                                find ${DIST_FOLDER} -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
                                 '''
 
                                 archiveArtifacts artifacts: '*-bundles.tar.gz', allowEmptyArchive: true
@@ -764,8 +765,8 @@ pipeline {
                         stage("Build dev image") {
                             steps {
                                 sh '''
-                                make bundles/buildx
-                                bundles/buildx build --load --force-rm --build-arg APT_MIRROR -t docker:${GIT_COMMIT} .
+                                make ${DIST_FOLDER}/buildx
+                                ${DIST_FOLDER}/buildx build --load --force-rm --build-arg APT_MIRROR -t docker:${GIT_COMMIT} .
                                 '''
                             }
                         }
@@ -776,7 +777,7 @@ pipeline {
                                 '''
                                 sh '''
                                 docker run --rm -t --privileged \
-                                  -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
+                                  -v "$WORKSPACE/${DIST_FOLDER}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
                                   -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
@@ -789,7 +790,7 @@ pipeline {
                             }
                             post {
                                 always {
-                                    junit testResults: 'bundles/junit-report*.xml', allowEmptyResults: true
+                                    junit testResults: '${DIST_FOLDER}/junit-report*.xml', allowEmptyResults: true
                                 }
                             }
                         }
@@ -798,7 +799,7 @@ pipeline {
                             steps {
                                 sh '''
                                 docker run --rm -t --privileged \
-                                  -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
+                                  -v "$WORKSPACE/${DIST_FOLDER}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
                                   -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
@@ -816,7 +817,7 @@ pipeline {
                             }
                             post {
                                 always {
-                                    junit testResults: 'bundles/**/*-report.xml', allowEmptyResults: true
+                                    junit testResults: '${DIST_FOLDER}/**/*-report.xml', allowEmptyResults: true
                                 }
                             }
                         }
@@ -839,7 +840,7 @@ pipeline {
                                 bundleName=ppc64le-integration
                                 echo "Creating ${bundleName}-bundles.tar.gz"
                                 # exclude overlay2 directories
-                                find bundles -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
+                                find ${DIST_FOLDER} -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
                                 '''
 
                                 archiveArtifacts artifacts: '*-bundles.tar.gz', allowEmptyArchive: true
@@ -882,8 +883,8 @@ pipeline {
                         stage("Build dev image") {
                             steps {
                                 sh '''
-                                make bundles/buildx
-                                bundles/buildx build --load --force-rm --build-arg APT_MIRROR -t docker:${GIT_COMMIT} .
+                                make ${DIST_FOLDER}/buildx
+                                ${DIST_FOLDER}/buildx build --load --force-rm --build-arg APT_MIRROR -t docker:${GIT_COMMIT} .
                                 '''
                             }
                         }
@@ -892,7 +893,7 @@ pipeline {
                             steps {
                                 sh '''
                                 docker run --rm -t --privileged \
-                                  -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
+                                  -v "$WORKSPACE/${DIST_FOLDER}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
                                   -e DOCKER_GRAPHDRIVER \
@@ -908,7 +909,7 @@ pipeline {
                             }
                             post {
                                 always {
-                                    junit testResults: 'bundles/**/*-report.xml', allowEmptyResults: true
+                                    junit testResults: '${DIST_FOLDER}/**/*-report.xml', allowEmptyResults: true
                                 }
                             }
                         }
@@ -931,7 +932,7 @@ pipeline {
                                 bundleName=ppc64le-integration-cli
                                 echo "Creating ${bundleName}-bundles.tar.gz"
                                 # exclude overlay2 directories
-                                find bundles -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
+                                find ${DIST_FOLDER} -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
                                 '''
 
                                 archiveArtifacts artifacts: '*-bundles.tar.gz', allowEmptyArchive: true
@@ -977,7 +978,7 @@ pipeline {
                                 '''
                                 sh '''
                                 docker run --rm -t --privileged \
-                                  -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
+                                  -v "$WORKSPACE/${DIST_FOLDER}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
                                   -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
@@ -990,7 +991,7 @@ pipeline {
                             }
                             post {
                                 always {
-                                    junit testResults: 'bundles/junit-report*.xml', allowEmptyResults: true
+                                    junit testResults: '${DIST_FOLDER}/junit-report*.xml', allowEmptyResults: true
                                 }
                             }
                         }
@@ -999,7 +1000,7 @@ pipeline {
                             steps {
                                 sh '''
                                 docker run --rm -t --privileged \
-                                  -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" \
+                                  -v "$WORKSPACE/${DIST_FOLDER}:/go/src/github.com/docker/docker/${DIST_FOLDER}" \
                                   --name docker-pr$BUILD_NUMBER \
                                   -e DOCKER_EXPERIMENTAL \
                                   -e DOCKER_GITCOMMIT=${GIT_COMMIT} \
@@ -1017,7 +1018,7 @@ pipeline {
                             }
                             post {
                                 always {
-                                    junit testResults: 'bundles/**/*-report.xml', allowEmptyResults: true
+                                    junit testResults: '${DIST_FOLDER}/**/*-report.xml', allowEmptyResults: true
                                 }
                             }
                         }
@@ -1040,7 +1041,7 @@ pipeline {
                                 bundleName=arm64-integration
                                 echo "Creating ${bundleName}-bundles.tar.gz"
                                 # exclude overlay2 directories
-                                find bundles -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
+                                find ${DIST_FOLDER} -path '*/root/*overlay2' -prune -o -type f \\( -name '*-report.json' -o -name '*.log' -o -name '*.prof' -o -name '*-report.xml' \\) -print | xargs tar -czf ${bundleName}-bundles.tar.gz
                                 '''
 
                                 archiveArtifacts artifacts: '*-bundles.tar.gz', allowEmptyArchive: true
@@ -1094,7 +1095,7 @@ pipeline {
                     }
                     post {
                         always {
-                            junit testResults: 'bundles/junit-report-*.xml', allowEmptyResults: true
+                            junit testResults: '${DIST_FOLDER}/junit-report-*.xml', allowEmptyResults: true
                             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE', message: 'Failed to create bundles.tar.gz') {
                                 powershell '''
                                 cd $env:WORKSPACE
@@ -1102,7 +1103,7 @@ pipeline {
                                 Write-Host -ForegroundColor Green "Creating ${bundleName}-bundles.zip"
 
                                 # archiveArtifacts does not support env-vars to , so save the artifacts in a fixed location
-                                Compress-Archive -Path "bundles/CIDUT.out", "bundles/CIDUT.err", "bundles/junit-report-*.xml" -CompressionLevel Optimal -DestinationPath "${bundleName}-bundles.zip"
+                                Compress-Archive -Path "${DIST_FOLDER}/CIDUT.out", "${DIST_FOLDER}/CIDUT.err", "${DIST_FOLDER}/junit-report-*.xml" -CompressionLevel Optimal -DestinationPath "${bundleName}-bundles.zip"
                                 '''
 
                                 archiveArtifacts artifacts: '*-bundles.zip', allowEmptyArchive: true
@@ -1157,7 +1158,7 @@ pipeline {
                     }
                     post {
                         always {
-                            junit testResults: 'bundles/junit-report-*.xml', allowEmptyResults: true
+                            junit testResults: '${DIST_FOLDER}/junit-report-*.xml', allowEmptyResults: true
                             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE', message: 'Failed to create bundles.zip') {
                                 powershell '''
                                 cd $env:WORKSPACE
@@ -1165,7 +1166,7 @@ pipeline {
                                 Write-Host -ForegroundColor Green "Creating ${bundleName}-bundles.zip"
 
                                 # archiveArtifacts does not support env-vars to , so save the artifacts in a fixed location
-                                Compress-Archive -Path "bundles/CIDUT.out", "bundles/CIDUT.err", "bundles/junit-report-*.xml" -CompressionLevel Optimal -DestinationPath "${bundleName}-bundles.zip"
+                                Compress-Archive -Path "${DIST_FOLDER}/CIDUT.out", "${DIST_FOLDER}/CIDUT.err", "${DIST_FOLDER}/junit-report-*.xml" -CompressionLevel Optimal -DestinationPath "${bundleName}-bundles.zip"
                                 '''
 
                                 archiveArtifacts artifacts: '*-bundles.zip', allowEmptyArchive: true
@@ -1221,7 +1222,7 @@ pipeline {
                     }
                     post {
                         always {
-                            junit testResults: 'bundles/junit-report-*.xml', allowEmptyResults: true
+                            junit testResults: '${DIST_FOLDER}/junit-report-*.xml', allowEmptyResults: true
                             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE', message: 'Failed to create bundles.zip') {
                                 powershell '''
                                 cd $env:WORKSPACE
@@ -1229,7 +1230,7 @@ pipeline {
                                 Write-Host -ForegroundColor Green "Creating ${bundleName}-bundles.zip"
 
                                 # archiveArtifacts does not support env-vars to , so save the artifacts in a fixed location
-                                Compress-Archive -Path "bundles/CIDUT.out", "bundles/CIDUT.err", "bundles/containerd.out", "bundles/containerd.err", "bundles/junit-report-*.xml" -CompressionLevel Optimal -DestinationPath "${bundleName}-bundles.zip"
+                                Compress-Archive -Path "${DIST_FOLDER}/CIDUT.out", "${DIST_FOLDER}/CIDUT.err", "${DIST_FOLDER}/containerd.out", "${DIST_FOLDER}/containerd.err", "${DIST_FOLDER}/junit-report-*.xml" -CompressionLevel Optimal -DestinationPath "${bundleName}-bundles.zip"
                                 '''
 
                                 archiveArtifacts artifacts: '*-bundles.zip', allowEmptyArchive: true

@@ -190,7 +190,7 @@ Function Execute-Build($type, $additionalBuildTags, $directory, $ldflags) {
                     $optParm + `
                     " -tags """ + $buildTags + """" + `
                     " -ldflags """ + $ldflags + """" + `
-                    " -o $root\bundles\"+$directory+".exe"
+                    " -o $root\dist\"+$directory+".exe"
     Invoke-Expression $buildCommand
     if ($LASTEXITCODE -ne 0) { Throw "Failed to compile $type" }
     Pop-Location; $global:pushed=$False
@@ -328,7 +328,7 @@ Function Run-UnitTests() {
     $pkgList = $pkgList | Select-String -NotMatch "github.com/docker/docker/integration"
     $pkgList = $pkgList -replace "`r`n", " "
 
-    $goTestArg = "--format=standard-verbose --jsonfile=bundles\go-test-report-unit-tests.json --junitfile=bundles\junit-report-unit-tests.xml -- " + $raceParm + " -cover -ldflags -w -a """ + "-test.timeout=10m" + """ $pkgList"
+    $goTestArg = "--format=standard-verbose --jsonfile=dist\go-test-report-unit-tests.json --junitfile=dist\junit-report-unit-tests.xml -- " + $raceParm + " -cover -ldflags -w -a """ + "-test.timeout=10m" + """ $pkgList"
     Write-Host "INFO: Invoking unit tests run with $GOTESTSUM_LOCATION\gotestsum.exe $goTestArg"
     $pinfo = New-Object System.Diagnostics.ProcessStartInfo
     $pinfo.FileName = "$GOTESTSUM_LOCATION\gotestsum.exe"
@@ -345,7 +345,7 @@ Function Run-UnitTests() {
 # Run the integration tests
 Function Run-IntegrationTests() {
     $escRoot = [Regex]::Escape($root)
-    $env:DOCKER_INTEGRATION_DAEMON_DEST = $bundlesDir + "\tmp"
+    $env:DOCKER_INTEGRATION_DAEMON_DEST = $distDir + "\tmp"
     $dirs = go list -test -f '{{- if ne .ForTest `"`" -}}{{- .Dir -}}{{- end -}}' .\integration\...
     ForEach($dir in $dirs) {
         # Normalize directory name for using in the test results files.
@@ -362,8 +362,8 @@ Function Run-IntegrationTests() {
         {
             $normDir = $normDir.TrimEnd("-")
         }
-        $jsonFilePath = $bundlesDir + "\go-test-report-int-tests-$normDir" + ".json"
-        $xmlFilePath = $bundlesDir + "\junit-report-int-tests-$normDir" + ".xml"
+        $jsonFilePath = $distDir + "\go-test-report-int-tests-$normDir" + ".json"
+        $xmlFilePath = $distDir + "\junit-report-int-tests-$normDir" + ".xml"
         Set-Location $dir
         Write-Host "Running $($PWD.Path)"
         $pinfo = New-Object System.Diagnostics.ProcessStartInfo
@@ -387,10 +387,10 @@ Try {
     $root = $(Split-Path $MyInvocation.MyCommand.Definition -Parent | Split-Path -Parent)
     Push-Location $root
 
-    # Ensure the bundles directory exists
-    $bundlesDir = $root + "\bundles"
-    Set-Variable bundlesDir -option ReadOnly
-    New-Item -Force $bundlesDir -ItemType Directory | Out-Null
+    # Ensure the dist directory exists
+    $distDir = $root + "\dist"
+    Set-Variable distDir -option ReadOnly
+    New-Item -Force $distDir -ItemType Directory | Out-Null
 
     # Handle the "-All" shortcut to turn on all things we can handle.
     # Note we expressly only include the items which can run in a container - the validations tests cannot
@@ -479,7 +479,7 @@ Try {
                     if (-not ($entry = $zip.Entries | Where-Object { $_.Name -eq "docker.exe" })) {
                         Throw "Cannot find docker.exe in $url"
                     }
-                    [System.IO.Compression.ZipFileExtensions]::ExtractToFile($entry, "$PWD\bundles\docker.exe", $true)
+                    [System.IO.Compression.ZipFileExtensions]::ExtractToFile($entry, "$PWD\dist\docker.exe", $true)
                 }
                 Finally {
                     $zip.Dispose()

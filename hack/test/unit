@@ -26,13 +26,13 @@ echo "${libnetwork_pkg_list}" | grep --fixed-strings "libnetwork/drivers/bridge"
 		hack/make.sh binary-proxy install-proxy
 	fi
 
-mkdir -p bundles
+mkdir -p dist
 
 if [ -n "${base_pkg_list}" ]; then
-	gotestsum --format=standard-quiet --jsonfile=bundles/go-test-report.json --junitfile=bundles/junit-report.xml -- \
+	gotestsum --format=standard-quiet --jsonfile=dist/go-test-report.json --junitfile=dist/junit-report.xml -- \
 		"${BUILDFLAGS[@]}" \
 		-cover \
-		-coverprofile=bundles/profile.out \
+		-coverprofile=dist/profile.out \
 		-covermode=atomic \
 		${TESTFLAGS} \
 		${base_pkg_list}
@@ -41,10 +41,10 @@ if [ -n "${libnetwork_pkg_list}" ]; then
 	# libnetwork tests invoke iptables, and cannot be run in parallel. Execute
 	# tests within /libnetwork with '-p=1' to run them sequentially. See
 	# https://github.com/moby/moby/issues/42458#issuecomment-873216754 for details.
-	gotestsum --format=standard-quiet --jsonfile=bundles/go-test-report-libnetwork.json --junitfile=bundles/junit-report-libnetwork.xml -- \
+	gotestsum --format=standard-quiet --jsonfile=dist/go-test-report-libnetwork.json --junitfile=dist/junit-report-libnetwork.xml -- \
 		"${BUILDFLAGS[@]}" \
 		-cover \
-		-coverprofile=bundles/profile-libnetwork.out \
+		-coverprofile=dist/profile-libnetwork.out \
 		-covermode=atomic \
 		-p=1 \
 		${TESTFLAGS} \

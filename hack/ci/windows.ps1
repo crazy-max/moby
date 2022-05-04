@@ -483,7 +483,7 @@ Try {
     }
 
     # Following at the moment must be docker\docker as it's dictated by dockerfile.Windows
-    $contPath="$COMMITHASH`:c`:\gopath\src\github.com\docker\docker\bundles"
+    $contPath="$COMMITHASH`:c`:\gopath\src\github.com\docker\docker\dist"
 
     # After https://github.com/docker/docker/pull/30290, .git was added to .dockerignore. Therefore
     # we have to calculate unsupported outside of the container, and pass the commit ID in through
@@ -786,18 +786,18 @@ Try {
         $ErrorActionPreference = "Stop"
 
         # Saving where jenkins will take a look at.....
-        New-Item -Force -ItemType Directory bundles | Out-Null
-        $unitTestsContPath="$ContainerNameForUnitTests`:c`:\gopath\src\github.com\docker\docker\bundles"
+        New-Item -Force -ItemType Directory dist | Out-Null
+        $unitTestsContPath="$ContainerNameForUnitTests`:c`:\gopath\src\github.com\docker\docker\dist"
         $JunitExpectedContFilePath = "$unitTestsContPath\junit-report-unit-tests.xml"
-        docker cp $JunitExpectedContFilePath "bundles"
+        docker cp $JunitExpectedContFilePath "dist"
         if (-not($LastExitCode -eq 0)) {
-            Throw "ERROR: Failed to docker cp the unit tests report ($JunitExpectedContFilePath) to bundles"
+            Throw "ERROR: Failed to docker cp the unit tests report ($JunitExpectedContFilePath) to dist"
         }
 
-        if (Test-Path "bundles\junit-report-unit-tests.xml") {
-            Write-Host -ForegroundColor Magenta "INFO: Unit tests results(bundles\junit-report-unit-tests.xml) exist. pwd=$pwd"
+        if (Test-Path "dist\junit-report-unit-tests.xml") {
+            Write-Host -ForegroundColor Magenta "INFO: Unit tests results(dist\junit-report-unit-tests.xml) exist. pwd=$pwd"
         } else {
-            Write-Host -ForegroundColor Magenta "ERROR: Unit tests results(bundles\junit-report-unit-tests.xml) do not exist. pwd=$pwd"
+            Write-Host -ForegroundColor Magenta "ERROR: Unit tests results(dist\junit-report-unit-tests.xml) do not exist. pwd=$pwd"
         }
 
         if (-not($TestRunExitCode -eq 0)) {
@@ -838,8 +838,8 @@ Try {
         $env:OrigDOCKER_HOST="$env:DOCKER_HOST"
 
         #https://blogs.technet.microsoft.com/heyscriptingguy/2011/09/20/solve-problems-with-external-command-lines-in-powershell/ is useful to see tokenising
-        $jsonFilePath = "..\\bundles\\go-test-report-intcli-tests.json"
-        $xmlFilePath = "..\\bundles\\junit-report-intcli-tests.xml"
+        $jsonFilePath = "..\\dist\\go-test-report-intcli-tests.json"
+        $xmlFilePath = "..\\dist\\junit-report-intcli-tests.xml"
         $c = "gotestsum --format=standard-verbose --jsonfile=$jsonFilePath --junitfile=$xmlFilePath -- "
         if ($null -ne $env:INTEGRATION_TEST_NAME) { # Makes is quicker for debugging to be able to run only a subset of the integration tests
             $c += "`"-test.run`" "
@@ -962,18 +962,18 @@ Finally {
     # Save the daemon under test log
     if ($daemonStarted -eq 1) {
         Set-Location "$env:SOURCES_DRIVE`:\$env:SOURCES_SUBDIR\src\github.com\docker\docker"
-        Write-Host -ForegroundColor Green "INFO: Saving daemon under test log ($env:TEMP\dut.out) to bundles\CIDUT.out"
-        Copy-Item  "$env:TEMP\dut.out" "bundles\CIDUT.out" -Force -ErrorAction SilentlyContinue
-        Write-Host -ForegroundColor Green "INFO: Saving daemon under test log ($env:TEMP\dut.err) to bundles\CIDUT.err"
-        Copy-Item  "$env:TEMP\dut.err" "bundles\CIDUT.err" -Force -ErrorAction SilentlyContinue
+        Write-Host -ForegroundColor Green "INFO: Saving daemon under test log ($env:TEMP\dut.out) to dist\CIDUT.out"
+        Copy-Item  "$env:TEMP\dut.out" "dist\CIDUT.out" -Force -ErrorAction SilentlyContinue
+        Write-Host -ForegroundColor Green "INFO: Saving daemon under test log ($env:TEMP\dut.err) to dist\CIDUT.err"
+        Copy-Item  "$env:TEMP\dut.err" "dist\CIDUT.err" -Force -ErrorAction SilentlyContinue
 
-        Write-Host -ForegroundColor Green "INFO: Saving containerd logs to bundles"
+        Write-Host -ForegroundColor Green "INFO: Saving containerd logs to dist"
         if (Test-Path -Path "$env:TEMP\containerd.out") {
-            Copy-Item "$env:TEMP\containerd.out" "bundles\containerd.out" -Force -ErrorAction SilentlyContinue
-            Copy-Item "$env:TEMP\containerd.err" "bundles\containerd.err" -Force -ErrorAction SilentlyContinue
+            Copy-Item "$env:TEMP\containerd.out" "dist\containerd.out" -Force -ErrorAction SilentlyContinue
+            Copy-Item "$env:TEMP\containerd.err" "dist\containerd.err" -Force -ErrorAction SilentlyContinue
         } else {
-            "" | Out-File -FilePath "bundles\containerd.out"
-            "" | Out-File -FilePath "bundles\containerd.err"
+            "" | Out-File -FilePath "dist\containerd.out"
+            "" | Out-File -FilePath "dist\containerd.err"
         }
     }
 

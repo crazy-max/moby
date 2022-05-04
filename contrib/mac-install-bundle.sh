@@ -11,7 +11,7 @@ errexit() {
 
 [ $# -eq 1 ] || errexit "Usage: $0 install|undo"
 
-BUNDLE="bundles/$(cat VERSION)"
+BUNDLE="dist/$(cat VERSION)"
 BUNDLE_PATH="$PWD/$BUNDLE"
 CLIENT_PATH="$BUNDLE_PATH/cross/darwin/amd64/docker"
 DATABASE="$HOME/Library/Containers/com.docker.docker/Data/database"

@@ -130,7 +130,7 @@ can take over 15 minutes to complete.
    ```none
    Successfully built 3d872560918e
    Successfully tagged docker-dev:dry-run-test
-   docker run --rm -i --privileged -e BUILDFLAGS -e KEEPBUNDLE -e DOCKER_BUILD_GOGC -e DOCKER_BUILD_PKGS -e DOCKER_CLIENTONLY -e DOCKER_DEBUG -e DOCKER_EXPERIMENTAL -e DOCKER_GITCOMMIT -e DOCKER_GRAPHDRIVER=devicemapper -e DOCKER_REMAP_ROOT -e DOCKER_STORAGE_OPTS -e DOCKER_USERLANDPROXY -e TESTDIRS -e TESTFLAGS -e TIMEOUT -v "home/ubuntu/repos/docker/bundles:/go/src/github.com/docker/docker/bundles" -t "docker-dev:dry-run-test" bash
+   docker run --rm -i --privileged -e BUILDFLAGS -e KEEPBUNDLE -e DOCKER_BUILD_GOGC -e DOCKER_BUILD_PKGS -e DOCKER_CLIENTONLY -e DOCKER_DEBUG -e DOCKER_EXPERIMENTAL -e DOCKER_GITCOMMIT -e DOCKER_GRAPHDRIVER=devicemapper -e DOCKER_REMAP_ROOT -e DOCKER_STORAGE_OPTS -e DOCKER_USERLANDPROXY -e TESTDIRS -e TESTFLAGS -e TIMEOUT -v "home/ubuntu/repos/docker/dist:/go/src/github.com/docker/docker/dist" -t "docker-dev:dry-run-test" bash
    #
    ```
 
@@ -147,12 +147,13 @@ can take over 15 minutes to complete.
 
    ```none
    # hack/make.sh binary
-   Removing bundles/
+   Removing dist/
 
-   ---> Making bundle: binary (in bundles/binary)
-   Building: bundles/binary-daemon/dockerd-17.06.0-dev
-   Created binary: bundles/binary-daemon/dockerd-17.06.0-dev
-   Copying nested executables into bundles/binary-daemon
+   ---> Making bundle: binary (in dist/binary)
+   Building static dockerd (linux/amd64)...
+   Created binary: dist/binary/dockerd
+   Building static docker-proxy (linux/amd64)...
+   Created binary: dist/binary/docker-proxy
 
    ```
 

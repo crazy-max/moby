@@ -153,7 +153,7 @@ Then run one of the following from an (elevated) Windows PowerShell prompt:
 
 ## Windows limitations
 
-Don't attempt to use a bind mount to pass a local directory as the bundles
+Don't attempt to use a bind mount to pass a local directory as the dist
 target directory.
 It does not work (golang attempts for follow a mapped folder incorrectly).
 Instead, use docker cp as per the example.

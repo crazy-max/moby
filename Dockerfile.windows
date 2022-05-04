@@ -79,8 +79,8 @@
 # 5. Copy the binaries out of the container, replacing HostPath with an appropriate destination 
 #    folder on the host system where you want the binaries to be located.
 #
-#    >>   docker cp binaries:C:\gopath\src\github.com\docker\docker\bundles\docker.exe C:\HostPath\docker.exe
-#    >>   docker cp binaries:C:\gopath\src\github.com\docker\docker\bundles\dockerd.exe C:\HostPath\dockerd.exe
+#    >>   docker cp binaries:C:\gopath\src\github.com\docker\docker\dist\docker.exe C:\HostPath\docker.exe
+#    >>   docker cp binaries:C:\gopath\src\github.com\docker\docker\dist\dockerd.exe C:\HostPath\dockerd.exe
 #
 #
 # 6. (Optional) Remove the interim container holding the built executable binaries:
@@ -132,7 +132,7 @@
 # Important notes:
 # ---------------
 #
-# Don't attempt to use a bind mount to pass a local directory as the bundles target
+# Don't attempt to use a bind mount to pass a local directory as the dist target
 # directory. It does not work (golang attempts for follow a mapped folder incorrectly).
 # Instead, use docker cp as per the example.
 #
@@ -268,7 +268,7 @@ RUN `
   Remove-Item C:\containerd.tar; `
   `
   # Ensure all directories exist that we will require below....
-  $srcDir = """$Env:GOPATH`\src\github.com\docker\docker\bundles"""; `
+  $srcDir = """$Env:GOPATH`\src\github.com\docker\docker\dist"""; `
   Write-Host INFO: Ensuring existence of directory $srcDir...; `
   New-Item -Force -ItemType Directory -Path $srcDir | Out-Null; `
   `
