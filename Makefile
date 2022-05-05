@@ -41,7 +41,6 @@ export VALIDATE_ORIGIN_BRANCH
 # make DOCKER_LDFLAGS="-X github.com/docker/docker/daemon/graphdriver.priority=overlay2,devicemapper" dynbinary
 #
 DOCKER_ENVS := \
-	-e DOCKER_CROSSPLATFORMS \
 	-e BUILD_APT_MIRROR \
 	-e BUILDFLAGS \
 	-e KEEPBUNDLE \
@@ -142,19 +141,11 @@ endif
 
 BUILD_OPTS := ${BUILD_APT_MIRROR} ${DOCKER_BUILD_ARGS} ${DOCKER_BUILD_OPTS} -f "$(DOCKERFILE)"
 BUILD_CMD := $(BUILDX) build
-
-# This is used for the legacy "build" target and anything still depending on it
-BUILD_CROSS =
-ifdef DOCKER_CROSS
-BUILD_CROSS = --build-arg CROSS=$(DOCKER_CROSS)
-endif
-ifdef DOCKER_CROSSPLATFORMS
-BUILD_CROSS = --build-arg CROSS=true
-endif
+BAKE_CMD := $(BUILDX) bake
 
 default: binary
 
-all: build ## validate all checks, build linux binaries, run all tests,\ncross build non-linux binaries, and generate archives
+all: build ## validate all checks, build linux binaries and run all tests
 	$(DOCKER_RUN_DOCKER) bash -c 'hack/validate/default && hack/make.sh'
 
 binary: buildx ## build statically linked linux binaries
@@ -163,9 +154,8 @@ binary: buildx ## build statically linked linux binaries
 dynbinary: buildx ## build dynamically linked linux binaries
 	DOCKER_LINKMODE=dynamic $(BAKE_CMD) binary
 
-cross: BUILD_OPTS += --build-arg CROSS=true --build-arg DOCKER_CROSSPLATFORMS
-cross: buildx ## cross build the binaries for darwin, freebsd and\nwindows
-	$(BUILD_CMD) $(BUILD_OPTS) --output=bundles/ --target=$@ $(VERSION_AUTOGEN_ARGS) .
+cross: buildx ## cross build the binaries
+	$(BAKE_CMD) binary-cross
 
 bundles:
 	mkdir bundles
@@ -193,13 +183,13 @@ else
 build: shell_target := --target=dev
 endif
 build: buildx
-	$(BUILD_CMD) $(BUILD_OPTS) $(shell_target) $(BUILD_CROSS) --load -t "$(DOCKER_IMAGE)" .
+	$(BUILD_CMD) $(BUILD_OPTS) $(shell_target) --load -t "$(DOCKER_IMAGE)" .
 
 shell: build  ## start a shell inside the build env
 	$(DOCKER_RUN_DOCKER) bash
 
 test: build test-unit ## run the unit, integration and docker-py tests
-	$(DOCKER_RUN_DOCKER) hack/make.sh dynbinary cross test-integration test-docker-py
+	$(DOCKER_RUN_DOCKER) hack/make.sh dynbinary test-integration test-docker-py
 
 test-docker-py: build ## run the docker-py tests
 	$(DOCKER_RUN_DOCKER) hack/make.sh dynbinary test-docker-py
@@ -224,7 +214,7 @@ validate: build ## validate DCO, Seccomp profile generation, gofmt,\n./pkg/ isol
 	$(DOCKER_RUN_DOCKER) hack/validate/all
 
 win: build ## cross build the binary for windows
-	$(DOCKER_RUN_DOCKER) DOCKER_CROSSPLATFORMS=windows/amd64 hack/make.sh cross
+	$(BAKE_CMD) --set *.platform=windows/amd64 binary
 
 .PHONY: swagger-gen
 swagger-gen:
