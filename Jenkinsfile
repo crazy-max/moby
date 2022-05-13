@@ -286,7 +286,7 @@ pipeline {
                                         [ -n "$TESTDEBUG" ] && rm= || rm=--rm;
                                         docker run $rm -t --privileged \
                                           -v "$WORKSPACE/bundles/${TEST_INTEGRATION_DEST}:/go/src/github.com/docker/docker/bundles" \
-                                          -v "$WORKSPACE/bundles/dynbinary-daemon:/go/src/github.com/docker/docker/bundles/dynbinary-daemon" \
+                                          -v "$WORKSPACE/bundles/dynbinary:/go/src/github.com/docker/docker/bundles/dynbinary" \
                                           -v "$WORKSPACE/.git:/go/src/github.com/docker/docker/.git" \
                                           --name "$CONTAINER_NAME" \
                                           -e KEEPBUNDLE=1 \

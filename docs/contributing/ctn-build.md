@@ -12,6 +12,7 @@ docker buildx bake
 BINARY_OUTPUT=./bin docker buildx bake
 
 # build dynamically linked binaries
+# output to ./bundles/dynbinary by default
 DOCKER_LINKMODE=dynamic docker buildx bake
 
 # build binaries for all supported platforms
