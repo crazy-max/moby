@@ -39,31 +39,6 @@ DEFAULT_BUNDLES=(
 	cross
 )
 
-VERSION=${VERSION:-dev}
-! BUILDTIME=$(date -u -d "@${SOURCE_DATE_EPOCH:-$(date +%s)}" --rfc-3339 ns 2> /dev/null | sed -e 's/ /T/')
-if [ "$DOCKER_GITCOMMIT" ]; then
-	GITCOMMIT="$DOCKER_GITCOMMIT"
-elif command -v git &> /dev/null && [ -e .git ] && git rev-parse &> /dev/null; then
-	GITCOMMIT=$(git rev-parse --short HEAD)
-	if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
-		GITCOMMIT="$GITCOMMIT-unsupported"
-		echo "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-		echo "# GITCOMMIT = $GITCOMMIT"
-		echo "# The version you are building is listed as unsupported because"
-		echo "# there are some files in the git repository that are in an uncommitted state."
-		echo "# Commit these changes, or add to .gitignore to remove the -unsupported from the version."
-		echo "# Here is the current list:"
-		git status --porcelain --untracked-files=no
-		echo "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-	fi
-else
-	echo >&2 'error: .git directory missing and DOCKER_GITCOMMIT not specified'
-	echo >&2 '  Please either build with the .git directory accessible, or specify the'
-	echo >&2 '  exact (--short) commit hash you are building using DOCKER_GITCOMMIT for'
-	echo >&2 '  future accountability in diagnosing build issues.  Thanks!'
-	exit 1
-fi
-
 if [ "$AUTO_GOPATH" ]; then
 	rm -rf .gopath
 	mkdir -p .gopath/src/"$(dirname "${DOCKER_PKG}")"

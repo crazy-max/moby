@@ -161,18 +161,16 @@ ifdef DOCKER_CROSSPLATFORMS
 BUILD_CROSS = --build-arg CROSS=true
 endif
 
-VERSION_AUTOGEN_ARGS = --build-arg VERSION --build-arg DOCKER_GITCOMMIT --build-arg PRODUCT --build-arg PLATFORM --build-arg DEFAULT_PRODUCT_LICENSE --build-arg PACKAGER_NAME
-
 default: binary
 
 all: build ## validate all checks, build linux binaries, run all tests,\ncross build non-linux binaries, and generate archives
 	$(DOCKER_RUN_DOCKER) bash -c 'hack/validate/default && hack/make.sh'
 
 binary: buildx ## build statically linked linux binaries
-	$(BUILD_CMD) $(BUILD_OPTS) --output=bundles/ --target=$@ $(VERSION_AUTOGEN_ARGS) .
+	$(BAKE_CMD) binary
 
 dynbinary: buildx ## build dynamically linked linux binaries
-	$(BUILD_CMD) $(BUILD_OPTS) --output=bundles/ --target=$@ $(VERSION_AUTOGEN_ARGS) .
+	DOCKER_LINKMODE=dynamic $(BAKE_CMD) binary
 
 cross: BUILD_OPTS += --build-arg CROSS=true --build-arg DOCKER_CROSSPLATFORMS
 cross: buildx ## cross build the binaries for darwin, freebsd and\nwindows

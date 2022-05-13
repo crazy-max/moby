@@ -91,7 +91,7 @@ group "default" {
 #
 
 variable "BINARY_OUTPUT" {
-  default = "./bundles/binary"
+  default = DOCKER_LINKMODE == "static" ? "./bundles/binary" : "./bundles/dynbinary"
 }
 
 target "binary" {
