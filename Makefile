@@ -17,8 +17,6 @@ DOCKER_BUILDKIT ?= 1
 DOCKER_GRAPHDRIVER := $(if $(DOCKER_GRAPHDRIVER),$(DOCKER_GRAPHDRIVER),$(shell docker info 2>&1 | grep "Storage Driver" | sed 's/.*: //'))
 export DOCKER_GRAPHDRIVER
 
-# get OS/Arch of docker engine
-DOCKER_OSARCH := $(shell bash -c 'source hack/make/.detect-daemon-osarch && echo $${DOCKER_ENGINE_OSARCH}')
 DOCKERFILE := $(shell bash -c 'source hack/make/.detect-daemon-osarch && echo $${DOCKERFILE}')
 
 DOCKER_GITCOMMIT := $(shell git rev-parse --short HEAD || echo unsupported)
@@ -42,8 +40,13 @@ export VALIDATE_ORIGIN_BRANCH
 #
 DOCKER_ENVS := \
 	-e BUILD_APT_MIRROR \
-	-e BUILDFLAGS \
 	-e KEEPBUNDLE \
+	-e DOCKER_DEBUG \
+	-e DOCKER_STRIP \
+	-e DOCKER_LINKMODE \
+	-e DOCKER_LDFLAGS \
+	-e DOCKER_BUILDMODE \
+	-e DOCKER_BUILDFLAGS \
 	-e DOCKER_BUILD_ARGS \
 	-e DOCKER_BUILD_GOGC \
 	-e DOCKER_BUILD_OPTS \
@@ -51,11 +54,9 @@ DOCKER_ENVS := \
 	-e DOCKER_BUILDKIT \
 	-e DOCKER_BASH_COMPLETION_PATH \
 	-e DOCKER_CLI_PATH \
-	-e DOCKER_DEBUG \
 	-e DOCKER_EXPERIMENTAL \
 	-e DOCKER_GITCOMMIT \
 	-e DOCKER_GRAPHDRIVER \
-	-e DOCKER_LDFLAGS \
 	-e DOCKER_PORT \
 	-e DOCKER_REMAP_ROOT \
 	-e DOCKER_ROOTLESS \
@@ -71,8 +72,6 @@ DOCKER_ENVS := \
 	-e TESTDEBUG \
 	-e TESTDIRS \
 	-e TESTFLAGS \
-	-e TESTFLAGS_INTEGRATION \
-	-e TESTFLAGS_INTEGRATION_CLI \
 	-e TEST_FILTER \
 	-e TIMEOUT \
 	-e VALIDATE_REPO \
