@@ -64,16 +64,8 @@ else
 	exit 1
 fi
 
-if [ "$AUTO_GOPATH" ]; then
-	rm -rf .gopath
-	mkdir -p .gopath/src/"$(dirname "${DOCKER_PKG}")"
-	ln -sf ../../../.. .gopath/src/"${DOCKER_PKG}"
-	export GOPATH="${PWD}/.gopath"
-fi
-
 if [ ! "$GOPATH" ]; then
 	echo >&2 'error: missing GOPATH; please see https://golang.org/doc/code.html#GOPATH'
-	echo >&2 '  alternatively, set AUTO_GOPATH=1'
 	exit 1
 fi
 
