@@ -526,6 +526,32 @@ RUN <<EOT
 EOT
 ENTRYPOINT ["hack/dind-systemd"]
 
+FROM base AS dev-light-base
+COPY --link --from=tini             /out/ /usr/local/bin/
+COPY --link --from=runc             /out/ /usr/local/bin/
+COPY --link --from=containerd       /out/ /usr/local/bin/
+COPY --link --from=rootlesskit      /out/ /usr/local/bin/
+COPY --link --from=dockercli        /out/ /usr/local/cli/
+WORKDIR /go/src/github.com/docker/docker
+# set dev environment as safe git directory
+RUN git config --global --add safe.directory $GOPATH/src/github.com/docker/docker
+RUN --mount=type=cache,sharing=locked,id=moby-build-aptlib,target=/var/lib/apt \
+    --mount=type=cache,sharing=locked,id=moby-build-aptcache,target=/var/cache/apt \
+    apt-get update && apt-get install -y --no-install-recommends \
+      binutils \
+      curl \
+      dpkg-dev \
+      g++ \
+      gcc \
+      libapparmor-dev \
+      libbtrfs-dev \
+      libdevmapper-dev \
+      libseccomp-dev \
+      libsecret-1-dev \
+      libsystemd-dev \
+      libudev-dev \
+      pkg-config
+
 FROM dev-systemd-${SYSTEMD} AS dev-base
 ARG DEBIAN_FRONTEND
 RUN groupadd -r docker
@@ -679,6 +705,14 @@ COPY --link --from=release-binary /out /
 # > docker buildx bake all
 FROM scratch AS all
 COPY --link --from=release-all /out /
+
+# usage:
+# > docker buildx bake dev-light
+# > docker run --rm docker-dev-light hack/make.sh dynbinary
+# > docker run --rm --privileged docker-dev-light hack/dind hack/make.sh test-unit
+# > docker run --rm --privileged -v /var/lib/docker docker-dev-light hack/dind hack/make.sh dynbinary test-integration
+FROM dev-light-base AS dev-light
+COPY . .
 
 # usage:
 # > make shell

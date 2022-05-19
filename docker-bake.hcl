@@ -146,3 +146,10 @@ target "dev" {
   tags = [DEV_IMAGE]
   output = ["type=docker"]
 }
+
+target "dev-light" {
+  inherits = ["_common"]
+  target = "dev-light"
+  tags = ["docker-dev-light"]
+  output = ["type=docker"]
+}
