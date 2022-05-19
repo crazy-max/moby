@@ -1,6 +1,10 @@
 # syntax=docker/dockerfile:1
 
-ARG BASE_IMAGE="debian:bullseye"
+# ubuntu base is only used for riscv64 builds
+# we also need to keep debian to be able to build for armel
+ARG DEBIAN_BASE="debian:bullseye"
+ARG UBUNTU_BASE="ubuntu:22.04"
+
 ARG GO_VERSION=1.18.2
 ARG XX_VERSION=1.1.0
 
@@ -52,13 +56,24 @@ RUN mkdir -p /out
 FROM scratch AS binary-dummy
 COPY --from=build-dummy / /
 
-FROM --platform=$BUILDPLATFORM ${BASE_IMAGE} AS base
+# base
+FROM --platform=$BUILDPLATFORM ${UBUNTU_BASE} AS base-ubuntu
+FROM --platform=$BUILDPLATFORM ${DEBIAN_BASE} AS base-debian
+FROM base-debian AS base-windows
+FROM base-debian AS base-linux-amd64
+FROM base-debian AS base-linux-armv5
+FROM base-debian AS base-linux-armv6
+FROM base-debian AS base-linux-armv7
+FROM base-debian AS base-linux-arm64
+FROM base-debian AS base-linux-ppc64le
+FROM base-ubuntu AS base-linux-riscv64
+FROM base-debian AS base-linux-s390x
+
+FROM base-linux-${TARGETARCH}${TARGETVARIANT} AS base-linux
+FROM base-${TARGETOS} AS base
 COPY --from=xx / /
 ENV XX_APT_PREFER_CROSS=1
 RUN echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
-ARG APT_MIRROR
-RUN sed -ri "s/(httpredir|deb).debian.org/${APT_MIRROR:-deb.debian.org}/g" /etc/apt/sources.list \
- && sed -ri "s/(security).debian.org/${APT_MIRROR:-security.debian.org}/g" /etc/apt/sources.list
 ENV GO111MODULE=off
 ARG DEBIAN_FRONTEND
 RUN --mount=type=cache,sharing=locked,id=moby-base-aptlib,target=/var/lib/apt \

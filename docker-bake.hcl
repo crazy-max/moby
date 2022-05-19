@@ -1,6 +1,3 @@
-variable "APT_MIRROR" {
-  default = "deb.debian.org"
-}
 variable "GO_VERSION" {
   default = "1.18.1"
 }
@@ -56,7 +53,6 @@ variable "PACKAGER_NAME" {
 target "_common" {
   args = {
     BUILDKIT_CONTEXT_KEEP_GIT_DIR = 1 # https://github.com/moby/buildkit/blob/master/frontend/dockerfile/docs/syntax.md#built-in-build-args
-    APT_MIRROR = APT_MIRROR
     GO_VERSION = GO_VERSION
     DOCKER_DEBUG = DOCKER_DEBUG
     DOCKER_STRIP = DOCKER_STRIP
@@ -80,6 +76,7 @@ target "_platforms" {
     "linux/arm/v7",
     "linux/arm64",
     "linux/ppc64le",
+    "linux/riscv64",
     "linux/s390x",
     "windows/amd64",
     "windows/arm64"
