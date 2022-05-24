@@ -648,6 +648,28 @@ FROM base AS release-all
 COPY --from=releaser-all / /out
 RUN find /out/ -type f \( ! -iname "checksums.txt" \) -print0 | sort -z | xargs -r0 shasum -a 256 -b | sed 's# .*/#  #' > /out/checksums.txt
 
+# smoke tests
+# usage:
+# > docker builx bake binary-smoketest
+FROM --platform=$TARGETPLATFORM $BASE_IMAGE AS smoketest-binary
+WORKDIR /usr/local/bin
+COPY --link --from=tini        /out/ .
+COPY --link --from=runc        /out/ .
+COPY --link --from=containerd  /out/ .
+COPY --link --from=rootlesskit /out/ .
+COPY --link --from=build       /out/ .
+RUN <<EOT
+  set -ex
+  docker-init -s -- date
+  runc --version
+  containerd --version
+  containerd-shim-runc-v2 -v
+  rootlesskit --version
+  rootlesskit-docker-proxy --help
+  dockerd --version
+  docker-proxy --help
+EOT
+
 # usage:
 # > docker buildx bake binary
 # > DOCKER_LINKMODE=dynamic docker buildx bake binary
