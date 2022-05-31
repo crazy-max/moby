@@ -1,0 +1,12 @@
+name: 'Setup Runner'
+description: 'Composite action to set up the GitHub Runner for jobs in the test.yml workflow'
+
+runs:
+  using: composite
+  steps:
+    - run: |
+        sudo modprobe ipv6
+        sudo modprobe ip6table_filter
+        echo '{"experimental":true,"ipv6":true,"fixed-cidr-v6":"2001:db8:1::/64"}' | sudo tee /etc/docker/daemon.json
+        sudo service docker restart
+      shell: bash

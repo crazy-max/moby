@@ -10,6 +10,9 @@ on:
       - 'v*'
   pull_request:
 
+env:
+  DOCKER_EXPERIMENTAL: 1
+
 jobs:
   smoke:
     runs-on: ubuntu-20.04
@@ -47,3 +50,215 @@ jobs:
             *.cache-to=type=gha,scope=binary-smoketest-${{ env.PLATFORM_PAIR }}
         env:
           DOCKER_LINKMODE: static
+
+  devimage:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        mode:
+          - ""
+          - systemd
+    steps:
+      -
+        name: Prepare
+        run: |
+          if [ "${{ matrix.mode }}" = "systemd" ]; then
+            echo "SYSTEMD=true" >> $GITHUB_ENV
+          fi
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Build dev image
+        uses: docker/bake-action@v1
+        with:
+          targets: dev
+          set: |
+            *.cache-from=type=gha,scope=cross-bundle-linux-amd64
+            *.cache-from=type=gha,scope=dev${{ matrix.mode }}
+            *.cache-to=type=gha,scope=dev${{ matrix.mode }},mode=max
+            *.output=type=cacheonly
+
+  unit:
+    runs-on: ubuntu-20.04
+    needs:
+      - devimage
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up runner
+        uses: ./.github/actions/setup-runner
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Build dev image
+        uses: docker/bake-action@v1
+        with:
+          targets: dev
+          set: |
+            dev.cache-from=type=gha,scope=dev
+      -
+        name: Test
+        run: |
+          make test-unit
+
+  docker-py:
+    runs-on: ubuntu-20.04
+    needs:
+      - devimage
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up runner
+        uses: ./.github/actions/setup-runner
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Build dev image
+        uses: docker/bake-action@v1
+        with:
+          targets: dev
+          set: |
+            dev.cache-from=type=gha,scope=dev
+      -
+        name: Test
+        run: |
+          make test-docker-py
+      -
+        name: Test daemon logs
+        if: always()
+        run: |
+          cat bundles/test-docker-py/docker.log
+
+  integration-flaky:
+    runs-on: ubuntu-20.04
+    needs:
+      - devimage
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up runner
+        uses: ./.github/actions/setup-runner
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Build dev image
+        uses: docker/bake-action@v1
+        with:
+          targets: dev
+          set: |
+            dev.cache-from=type=gha,scope=dev
+      -
+        name: Test
+        run: |
+          make test-integration-flaky
+        env:
+          TEST_SKIP_INTEGRATION_CLI: 1
+
+  integration:
+    runs-on: ubuntu-20.04
+    needs:
+      - devimage
+    strategy:
+      fail-fast: false
+      matrix:
+        mode:
+          - ""
+          - rootless
+          - cgroup2
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up runner
+        uses: ./.github/actions/setup-runner
+      -
+        name: Prepare
+        run: |
+          CACHE_DEV_SCOPE=dev
+          if [ "${{ matrix.mode }}" = "rootless" ]; then
+            echo "DOCKER_ROOTLESS=1" >> $GITHUB_ENV
+          fi
+          if [ "${{ matrix.mode }}" = "cgroup2" ]; then
+            echo "SYSTEMD=true" >> $GITHUB_ENV
+            CACHE_DEV_SCOPE="${CACHE_DEV_SCOPE}systemd"
+          fi
+          echo "CACHE_DEV_SCOPE=${CACHE_DEV_SCOPE}" >> $GITHUB_ENV
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Build dev image
+        uses: docker/bake-action@v1
+        with:
+          targets: dev
+          set: |
+            dev.cache-from=type=gha,scope=${{ env.CACHE_DEV_SCOPE }}
+      -
+        name: Test
+        run: |
+          make test-integration
+        env:
+          TEST_SKIP_INTEGRATION_CLI: 1
+      -
+        name: Test daemon logs
+        if: always()
+        run: |
+          cat bundles/test-integration/docker.log
+
+  integration-cli:
+    runs-on: ubuntu-20.04
+    needs:
+      - devimage
+    strategy:
+      fail-fast: false
+      matrix:
+        testsuite:
+          - DockerSuite
+          - DockerNetworkSuite|DockerHubPullSuite|DockerRegistrySuite|DockerSchema1RegistrySuite|DockerRegistryAuthTokenSuite|DockerRegistryAuthHtpasswdSuite
+          - DockerSwarmSuite
+          - DockerDaemonSuite
+          - DockerExternalVolumeSuite
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up runner
+        uses: ./.github/actions/setup-runner
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Build dev image
+        uses: docker/bake-action@v1
+        with:
+          targets: dev
+          set: |
+            dev.cache-from=type=gha,scope=dev
+      -
+        name: Test
+        run: |
+          make test-integration
+        env:
+          TEST_SKIP_INTEGRATION: 1
+          TESTFLAGS: "-test.run Test(${{ matrix.testsuite }})/"
+      -
+        name: Test daemon logs
+        if: always()
+        run: |
+          cat bundles/test-integration/docker.log
