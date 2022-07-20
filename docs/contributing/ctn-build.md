@@ -9,7 +9,7 @@ docker buildx bake
 
 # build binaries for the current host platform
 # output to ./bin
-BINARY_OUTPUT=./bin docker buildx bake
+DESTDIR=./bin docker buildx bake
 
 # build dynamically linked binaries
 # output to ./bundles/dynbinary by default
@@ -27,7 +27,7 @@ docker buildx bake all
 
 # build all for the current host platform
 # output to ./bin
-ALL_OUTPUT=./bin docker buildx bake all
+DESTDIR=./bin docker buildx bake all
 
 # build all for all supported platforms
 docker buildx bake all-cross

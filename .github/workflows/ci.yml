@@ -24,7 +24,7 @@ jobs:
   binary:
     runs-on: ubuntu-20.04
     env:
-      BINARY_OUTPUT: ./build
+      DESTDIR: ./build
     strategy:
       fail-fast: false
       matrix:
@@ -53,24 +53,24 @@ jobs:
       -
         name: List artifacts
         run: |
-          tree -nh ${{ env.BINARY_OUTPUT }}
+          tree -nh ${{ env.DESTDIR }}
       -
         name: Check artifacts
         run: |
-          find ${{ env.BINARY_OUTPUT }} -type f -exec file -e ascii -- {} +
+          find ${{ env.DESTDIR }} -type f -exec file -e ascii -- {} +
       -
         name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: binary-${{ matrix.linkmode }}
-          path: ${{ env.BINARY_OUTPUT }}
+          path: ${{ env.DESTDIR }}
           if-no-files-found: error
           retention-days: 7
 
   cross:
     runs-on: ubuntu-20.04
     env:
-      ALL_OUTPUT: ./build
+      DESTDIR: ./build
     strategy:
       fail-fast: false
       matrix:
@@ -115,17 +115,17 @@ jobs:
       -
         name: List artifacts
         run: |
-          tree -nh ${{ env.ALL_OUTPUT }}
+          tree -nh ${{ env.DESTDIR }}
       -
         name: Check artifacts
         run: |
-          find ${{ env.ALL_OUTPUT }} -type f -exec file -e ascii -- {} +
+          find ${{ env.DESTDIR }} -type f -exec file -e ascii -- {} +
       -
         name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: cross-${{ matrix.target }}-${{ env.PLATFORM_PAIR }}
-          path: ${{ env.ALL_OUTPUT }}
+          path: ${{ env.DESTDIR }}
           if-no-files-found: error
           retention-days: 7
 

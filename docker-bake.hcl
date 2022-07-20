@@ -50,6 +50,15 @@ variable "PACKAGER_NAME" {
   default = ""
 }
 
+# Defines the output folder
+variable "DESTDIR" {
+  default = ""
+}
+function "bindir" {
+  params = [defaultdir]
+  result = DESTDIR != "" ? DESTDIR : "./bundles/${defaultdir}"
+}
+
 target "_common" {
   args = {
     BUILDKIT_CONTEXT_KEEP_GIT_DIR = 1 # https://github.com/moby/buildkit/blob/master/frontend/dockerfile/docs/syntax.md#built-in-build-args
@@ -90,14 +99,10 @@ group "default" {
 # binaries targets build dockerd, docker-proxy and docker-init
 #
 
-variable "BINARY_OUTPUT" {
-  default = DOCKER_LINKMODE == "static" ? "./bundles/binary" : "./bundles/dynbinary"
-}
-
 target "binary" {
   inherits = ["_common"]
   target = "binary"
-  output = [BINARY_OUTPUT]
+  output = [bindir(DOCKER_LINKMODE == "static" ? "binary" : "dynbinary")]
 }
 
 target "binary-cross" {
@@ -120,14 +125,10 @@ target "binary-smoketest" {
 # all targets build binaries and extra tools as well (containerd, runc, ...)
 #
 
-variable "ALL_OUTPUT" {
-  default = "./bundles/all"
-}
-
 target "all" {
   inherits = ["_common"]
   target = "all"
-  output = [ALL_OUTPUT]
+  output = [bindir("all")]
 }
 
 target "all-cross" {
