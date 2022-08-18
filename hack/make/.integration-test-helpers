@@ -10,7 +10,6 @@ if [ -z "${MAKEDIR}" ]; then
 	MAKEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 	export MAKEDIR
 fi
-source "${MAKEDIR}/.go-autogen"
 
 # Set defaults
 : "${TEST_REPEAT:=1}"
@@ -113,7 +112,7 @@ build_test_suite_binary() {
 	local dir="$1"
 	local out="$2"
 	echo Building test suite binary "$dir/$out"
-	go test -c -o "$dir/$out" -ldflags "$LDFLAGS" "${BUILDFLAGS[@]}" "$dir"
+	go test -c -o "$dir/$out" -ldflags "$DOCKER_LDFLAGS" "${DOCKER_BUILDFLAGS[@]}" "$dir"
 }
 
 cleanup_test_suite_binaries() {
