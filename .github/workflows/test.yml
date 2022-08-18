@@ -1,0 +1,53 @@
+name: test
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'master'
+      - '[0-9]+.[0-9]{2}'
+    tags:
+      - 'v*'
+  pull_request:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
+          - linux/ppc64le
+          - linux/s390x
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Prepare
+        run: |
+          platform=${{ matrix.platform }}
+          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Test
+        uses: docker/bake-action@v2
+        with:
+          targets: binary-smoketest
+          set: |
+            *.platform=${{ matrix.platform }}
+            *.cache-from=type=gha,scope=binary-smoketest-${{ env.PLATFORM_PAIR }}
+            *.cache-to=type=gha,scope=binary-smoketest-${{ env.PLATFORM_PAIR }}
+        env:
+          DOCKER_LINKMODE: static
