@@ -1,7 +1,7 @@
 The Moby Project
 ================
 
-![Moby Project logo](docs/static_files/moby-project-logo.png "The Moby Project")
+![Moby Project logo](docs/static_files/moby-project-logo.png "The Moby Project") 
 
 Moby is an open-source project created by Docker to enable and accelerate software containerization.
 
