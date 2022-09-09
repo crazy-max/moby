@@ -107,6 +107,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        worker:
+          - dockerd
+          - containerd
         pkg:
           - ./client
           - ./cmd/buildctl
@@ -154,7 +157,13 @@ jobs:
       -
         name: Update daemon.json
         run: |
-          sudo rm /etc/docker/daemon.json
+          if [ ! -e /etc/docker/daemon.json ]; then
+           echo '{}' | sudo tee /etc/docker/daemon.json >/dev/null
+          fi
+          if [ "${{ matrix.worker }}" = "containerd" ]; then
+            DOCKERD_CONFIG=$(jq '.+{"features":{"containerd-snapshotter", true}}' /etc/docker/daemon.json)
+            sudo tee /etc/docker/daemon.json <<<"$DOCKERD_CONFIG" >/dev/null
+          fi
           sudo service docker restart
           docker version
           docker info
@@ -164,9 +173,9 @@ jobs:
           ./hack/test ${{ matrix.typ }}
         env:
           CONTEXT: "."
-          TEST_DOCKERD: "1"
+          TEST_DOCKERD: "${{ matrix.worker == 'dockerd' }}"
           TEST_DOCKERD_BINARY: "./build/moby/binary-daemon/dockerd"
           TESTPKGS: "${{ matrix.pkg }}"
-          TESTFLAGS: "-v --parallel=1 --timeout=30m --run=//worker=dockerd$"
+          TESTFLAGS: "-v --parallel=1 --timeout=30m --run=//worker=${{ matrix.worker }}$"
           SKIP_INTEGRATION_TESTS: "${{ matrix.skip-integration-tests }}"
         working-directory: buildkit
