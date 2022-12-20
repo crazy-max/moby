@@ -32,8 +32,8 @@ build, so the source of truth for the current version of each dependency is
 whatever is in "./vendor".
 
 If you would rather (or must, due to distro policy) package these dependencies
-yourself, take a look at "vendor.mod" for an easy-to-parse list of the
-exact version for each.
+yourself, take a look at "go.mod" for an easy-to-parse list of the exact
+version for each.
 
 ## Stripping Binaries
 
