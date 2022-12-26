@@ -1,21 +1,21 @@
-package service // import "github.com/docker/docker/volume/service"
+package service
 
 import (
 	"context"
 	"strconv"
 	"sync/atomic"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/filters"
-	volumetypes "github.com/docker/docker/api/types/volume"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/pkg/directory"
-	"github.com/docker/docker/pkg/idtools"
-	"github.com/docker/docker/pkg/plugingetter"
-	"github.com/docker/docker/pkg/stringid"
-	"github.com/docker/docker/volume"
-	"github.com/docker/docker/volume/drivers"
-	"github.com/docker/docker/volume/service/opts"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/filters"
+	volumetypes "github.com/docker/docker/v24/api/types/volume"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/pkg/directory"
+	"github.com/docker/docker/v24/pkg/idtools"
+	"github.com/docker/docker/v24/pkg/plugingetter"
+	"github.com/docker/docker/v24/pkg/stringid"
+	"github.com/docker/docker/v24/volume"
+	"github.com/docker/docker/v24/volume/drivers"
+	"github.com/docker/docker/v24/volume/service/opts"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

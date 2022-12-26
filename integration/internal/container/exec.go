@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"context"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/client"
-	"github.com/docker/docker/pkg/stdcopy"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/client"
+	"github.com/docker/docker/v24/pkg/stdcopy"
 )
 
 // ExecResult represents a result returned from Exec()

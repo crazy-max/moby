@@ -1,11 +1,11 @@
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"context"
 	"fmt"
 
-	containertypes "github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/container"
+	containertypes "github.com/docker/docker/v24/api/types/container"
+	"github.com/docker/docker/v24/container"
 )
 
 // ContainerRestart stops and starts a container. It attempts to

@@ -12,9 +12,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/docker/docker/libnetwork/etchosts"
-	"github.com/docker/docker/libnetwork/resolvconf"
-	"github.com/docker/docker/libnetwork/types"
+	"github.com/docker/docker/v24/libnetwork/etchosts"
+	"github.com/docker/docker/v24/libnetwork/resolvconf"
+	"github.com/docker/docker/v24/libnetwork/types"
 	"github.com/sirupsen/logrus"
 )
 

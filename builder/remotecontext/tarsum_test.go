@@ -1,13 +1,13 @@
-package remotecontext // import "github.com/docker/docker/builder/remotecontext"
+package remotecontext
 
 import (
 	"os"
 	"path/filepath"
 	"testing"
 
-	"github.com/docker/docker/builder"
-	"github.com/docker/docker/pkg/archive"
-	"github.com/docker/docker/pkg/reexec"
+	"github.com/docker/docker/v24/builder"
+	"github.com/docker/docker/v24/pkg/archive"
+	"github.com/docker/docker/v24/pkg/reexec"
 	"github.com/pkg/errors"
 	"gotest.tools/v3/skip"
 )

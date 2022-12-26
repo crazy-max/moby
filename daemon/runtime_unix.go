@@ -11,9 +11,9 @@ import (
 	"strings"
 
 	v2runcoptions "github.com/containerd/containerd/runtime/v2/runc/options"
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/daemon/config"
-	"github.com/docker/docker/errdefs"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/daemon/config"
+	"github.com/docker/docker/v24/errdefs"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

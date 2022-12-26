@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
-	"github.com/docker/docker/api/types/backend"
-	"github.com/docker/docker/builder"
-	"github.com/docker/docker/errdefs"
+	"github.com/docker/docker/v24/api/types/backend"
+	"github.com/docker/docker/v24/builder"
+	"github.com/docker/docker/v24/errdefs"
 )
 
 // GetImageAndReleasableLayer returns an image and releaseable layer for a

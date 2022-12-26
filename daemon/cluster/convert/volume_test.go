@@ -3,7 +3,7 @@ package convert
 import (
 	"testing"
 
-	volumetypes "github.com/docker/docker/api/types/volume"
+	volumetypes "github.com/docker/docker/v24/api/types/volume"
 	swarmapi "github.com/moby/swarmkit/v2/api"
 
 	"gotest.tools/v3/assert"

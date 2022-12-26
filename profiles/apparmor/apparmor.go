@@ -1,7 +1,7 @@
 //go:build linux
 // +build linux
 
-package apparmor // import "github.com/docker/docker/profiles/apparmor"
+package apparmor
 
 import (
 	"bufio"
@@ -11,7 +11,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/docker/docker/pkg/aaparser"
+	"github.com/docker/docker/v24/pkg/aaparser"
 )
 
 var (

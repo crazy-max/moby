@@ -1,10 +1,10 @@
-package config // import "github.com/docker/docker/daemon/config"
+package config
 
 import (
 	"os"
 	"testing"
 
-	"github.com/docker/docker/opts"
+	"github.com/docker/docker/v24/opts"
 	"github.com/spf13/pflag"
 	"gotest.tools/v3/assert"
 	is "gotest.tools/v3/assert/cmp"

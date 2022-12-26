@@ -1,4 +1,4 @@
-package dockerfile // import "github.com/docker/docker/builder/dockerfile"
+package dockerfile
 
 import (
 	"bytes"
@@ -8,10 +8,10 @@ import (
 	"strings"
 
 	"github.com/containerd/containerd/platforms"
-	"github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/api/types/mount"
-	"github.com/docker/docker/pkg/idtools"
-	"github.com/docker/docker/pkg/jsonmessage"
+	"github.com/docker/docker/v24/api/types/container"
+	"github.com/docker/docker/v24/api/types/mount"
+	"github.com/docker/docker/v24/pkg/idtools"
+	"github.com/docker/docker/v24/pkg/jsonmessage"
 	"golang.org/x/sys/windows"
 )
 

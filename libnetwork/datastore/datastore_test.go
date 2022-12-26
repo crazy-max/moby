@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/docker/docker/libnetwork/options"
+	"github.com/docker/docker/v24/libnetwork/options"
 	"gotest.tools/v3/assert"
 )
 

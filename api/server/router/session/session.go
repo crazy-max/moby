@@ -1,6 +1,6 @@
-package session // import "github.com/docker/docker/api/server/router/session"
+package session
 
-import "github.com/docker/docker/api/server/router"
+import "github.com/docker/docker/v24/api/server/router"
 
 // sessionRouter is a router to talk with the session controller
 type sessionRouter struct {

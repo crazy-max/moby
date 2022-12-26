@@ -1,7 +1,7 @@
 //go:build linux
 // +build linux
 
-package devmapper // import "github.com/docker/docker/daemon/graphdriver/devmapper"
+package devmapper
 
 import (
 	"bufio"
@@ -18,14 +18,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/docker/docker/daemon/graphdriver"
-	"github.com/docker/docker/dockerversion"
-	"github.com/docker/docker/pkg/devicemapper"
-	"github.com/docker/docker/pkg/dmesg"
-	"github.com/docker/docker/pkg/idtools"
-	"github.com/docker/docker/pkg/loopback"
-	"github.com/docker/docker/pkg/parsers"
-	"github.com/docker/docker/pkg/parsers/kernel"
+	"github.com/docker/docker/v24/daemon/graphdriver"
+	"github.com/docker/docker/v24/dockerversion"
+	"github.com/docker/docker/v24/pkg/devicemapper"
+	"github.com/docker/docker/v24/pkg/dmesg"
+	"github.com/docker/docker/v24/pkg/idtools"
+	"github.com/docker/docker/v24/pkg/loopback"
+	"github.com/docker/docker/v24/pkg/parsers"
+	"github.com/docker/docker/v24/pkg/parsers/kernel"
 	units "github.com/docker/go-units"
 	"github.com/moby/sys/mount"
 	"github.com/opencontainers/selinux/go-selinux/label"

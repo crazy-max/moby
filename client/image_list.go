@@ -1,13 +1,13 @@
-package client // import "github.com/docker/docker/client"
+package client
 
 import (
 	"context"
 	"encoding/json"
 	"net/url"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/filters"
-	"github.com/docker/docker/api/types/versions"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/filters"
+	"github.com/docker/docker/v24/api/types/versions"
 )
 
 // ImageList returns a list of images in the docker host.

@@ -139,7 +139,7 @@ try {
     }
 
     # Generate
-    go generate -v "github.com/docker/docker/cmd/dockerd"
+    go generate -v "github.com/docker/docker/v24/cmd/dockerd"
     if ($LASTEXITCODE -ne 0) { Throw "Failed to generate version info" }
 }
 Catch [Exception] {

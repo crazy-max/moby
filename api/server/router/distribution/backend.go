@@ -1,11 +1,11 @@
-package distribution // import "github.com/docker/docker/api/server/router/distribution"
+package distribution
 
 import (
 	"context"
 
 	"github.com/docker/distribution"
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/api/types/registry"
+	"github.com/docker/docker/v24/api/types/registry"
 )
 
 // Backend is all the methods that need to be implemented

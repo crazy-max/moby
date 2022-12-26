@@ -1,4 +1,4 @@
-package container // import "github.com/docker/docker/api/server/router/container"
+package container
 
 import (
 	"context"
@@ -7,12 +7,12 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/docker/docker/api/server/httputils"
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/api/types/versions"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/pkg/stdcopy"
+	"github.com/docker/docker/v24/api/server/httputils"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/container"
+	"github.com/docker/docker/v24/api/types/versions"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/pkg/stdcopy"
 	"github.com/sirupsen/logrus"
 )
 

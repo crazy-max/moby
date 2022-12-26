@@ -10,10 +10,10 @@ import (
 	"net"
 	"strings"
 
-	"github.com/docker/docker/libnetwork/ipamutils"
-	"github.com/docker/docker/libnetwork/ns"
-	"github.com/docker/docker/libnetwork/resolvconf"
-	"github.com/docker/docker/libnetwork/types"
+	"github.com/docker/docker/v24/libnetwork/ipamutils"
+	"github.com/docker/docker/v24/libnetwork/ns"
+	"github.com/docker/docker/v24/libnetwork/resolvconf"
+	"github.com/docker/docker/v24/libnetwork/types"
 	"github.com/pkg/errors"
 	"github.com/vishvananda/netlink"
 )

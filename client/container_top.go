@@ -1,4 +1,4 @@
-package client // import "github.com/docker/docker/client"
+package client
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/v24/api/types/container"
 )
 
 // ContainerTop shows process information from within a container.

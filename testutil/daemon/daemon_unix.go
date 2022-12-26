@@ -1,7 +1,7 @@
 //go:build !windows
 // +build !windows
 
-package daemon // import "github.com/docker/docker/testutil/daemon"
+package daemon
 
 import (
 	"os/exec"

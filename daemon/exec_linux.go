@@ -1,11 +1,11 @@
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"context"
 
 	"github.com/containerd/containerd/pkg/apparmor"
-	"github.com/docker/docker/container"
-	"github.com/docker/docker/oci/caps"
+	"github.com/docker/docker/v24/container"
+	"github.com/docker/docker/v24/oci/caps"
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 )
 

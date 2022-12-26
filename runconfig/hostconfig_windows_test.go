@@ -1,12 +1,12 @@
 //go:build windows
 // +build windows
 
-package runconfig // import "github.com/docker/docker/runconfig"
+package runconfig
 
 import (
 	"testing"
 
-	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/v24/api/types/container"
 )
 
 func TestValidatePrivileged(t *testing.T) {

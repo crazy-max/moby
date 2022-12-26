@@ -3,7 +3,7 @@ package null
 import (
 	"testing"
 
-	"github.com/docker/docker/libnetwork/types"
+	"github.com/docker/docker/v24/libnetwork/types"
 )
 
 func TestDriver(t *testing.T) {

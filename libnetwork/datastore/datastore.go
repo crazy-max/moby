@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/docker/docker/libnetwork/discoverapi"
-	"github.com/docker/docker/libnetwork/types"
+	"github.com/docker/docker/v24/libnetwork/discoverapi"
+	"github.com/docker/docker/v24/libnetwork/types"
 	"github.com/docker/libkv"
 	"github.com/docker/libkv/store"
 )

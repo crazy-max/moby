@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/docker/docker/api/types/swarm"
+	"github.com/docker/docker/v24/api/types/swarm"
 	"github.com/pkg/errors"
 	"gotest.tools/v3/assert"
 )

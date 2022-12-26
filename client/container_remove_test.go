@@ -1,4 +1,4 @@
-package client // import "github.com/docker/docker/client"
+package client
 
 import (
 	"bytes"
@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/errdefs"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/errdefs"
 	"gotest.tools/v3/assert"
 )
 

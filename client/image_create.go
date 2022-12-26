@@ -1,4 +1,4 @@
-package client // import "github.com/docker/docker/client"
+package client
 
 import (
 	"context"
@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/registry"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/registry"
 )
 
 // ImageCreate creates a new image based on the parent options.

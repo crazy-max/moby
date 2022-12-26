@@ -1,4 +1,4 @@
-package images // import "github.com/docker/docker/daemon/images"
+package images
 
 import (
 	"context"
@@ -11,17 +11,17 @@ import (
 
 	"github.com/containerd/containerd/platforms"
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/builder/dockerfile"
-	"github.com/docker/docker/builder/remotecontext"
-	"github.com/docker/docker/dockerversion"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/image"
-	"github.com/docker/docker/layer"
-	"github.com/docker/docker/pkg/archive"
-	"github.com/docker/docker/pkg/progress"
-	"github.com/docker/docker/pkg/streamformatter"
-	"github.com/docker/docker/pkg/system"
+	"github.com/docker/docker/v24/api/types/container"
+	"github.com/docker/docker/v24/builder/dockerfile"
+	"github.com/docker/docker/v24/builder/remotecontext"
+	"github.com/docker/docker/v24/dockerversion"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/image"
+	"github.com/docker/docker/v24/layer"
+	"github.com/docker/docker/v24/pkg/archive"
+	"github.com/docker/docker/v24/pkg/progress"
+	"github.com/docker/docker/v24/pkg/streamformatter"
+	"github.com/docker/docker/v24/pkg/system"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/pkg/errors"
 )

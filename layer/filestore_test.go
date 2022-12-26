@@ -1,4 +1,4 @@
-package layer // import "github.com/docker/docker/layer"
+package layer
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"syscall"
 	"testing"
 
-	"github.com/docker/docker/pkg/stringid"
+	"github.com/docker/docker/v24/pkg/stringid"
 	"github.com/opencontainers/go-digest"
 )
 

@@ -6,10 +6,10 @@ package builtin
 import (
 	"errors"
 
-	"github.com/docker/docker/libnetwork/datastore"
-	"github.com/docker/docker/libnetwork/ipam"
-	"github.com/docker/docker/libnetwork/ipamapi"
-	"github.com/docker/docker/libnetwork/ipamutils"
+	"github.com/docker/docker/v24/libnetwork/datastore"
+	"github.com/docker/docker/v24/libnetwork/ipam"
+	"github.com/docker/docker/v24/libnetwork/ipamapi"
+	"github.com/docker/docker/v24/libnetwork/ipamutils"
 )
 
 var (

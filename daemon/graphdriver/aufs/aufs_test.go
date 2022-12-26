@@ -1,7 +1,7 @@
 //go:build linux
 // +build linux
 
-package aufs // import "github.com/docker/docker/daemon/graphdriver/aufs"
+package aufs
 
 import (
 	"crypto/sha256"
@@ -14,11 +14,11 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/docker/docker/daemon/graphdriver"
-	"github.com/docker/docker/pkg/archive"
-	"github.com/docker/docker/pkg/idtools"
-	"github.com/docker/docker/pkg/reexec"
-	"github.com/docker/docker/pkg/stringid"
+	"github.com/docker/docker/v24/daemon/graphdriver"
+	"github.com/docker/docker/v24/pkg/archive"
+	"github.com/docker/docker/v24/pkg/idtools"
+	"github.com/docker/docker/v24/pkg/reexec"
+	"github.com/docker/docker/v24/pkg/stringid"
 	"gotest.tools/v3/assert"
 	is "gotest.tools/v3/assert/cmp"
 )

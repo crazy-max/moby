@@ -4,7 +4,7 @@
 // Package local provides the default implementation for volumes. It
 // is used to mount data volume containers and directories local to
 // the host server.
-package local // import "github.com/docker/docker/volume/local"
+package local
 
 import (
 	"fmt"
@@ -14,8 +14,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/quota"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/quota"
 	units "github.com/docker/go-units"
 	"github.com/moby/sys/mount"
 	"github.com/moby/sys/mountinfo"

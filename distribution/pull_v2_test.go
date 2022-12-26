@@ -1,4 +1,4 @@
-package distribution // import "github.com/docker/docker/distribution"
+package distribution
 
 import (
 	"context"
@@ -16,9 +16,9 @@ import (
 
 	"github.com/docker/distribution/manifest/schema1"
 	"github.com/docker/distribution/reference"
-	registrytypes "github.com/docker/docker/api/types/registry"
-	"github.com/docker/docker/image"
-	"github.com/docker/docker/registry"
+	registrytypes "github.com/docker/docker/v24/api/types/registry"
+	"github.com/docker/docker/v24/image"
+	"github.com/docker/docker/v24/registry"
 	"github.com/opencontainers/go-digest"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 	"gotest.tools/v3/assert"

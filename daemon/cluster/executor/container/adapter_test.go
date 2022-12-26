@@ -1,4 +1,4 @@
-package container // import "github.com/docker/docker/daemon/cluster/executor/container"
+package container
 
 import (
 	"testing"
@@ -6,7 +6,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/docker/docker/daemon"
+	"github.com/docker/docker/v24/daemon"
 	"github.com/moby/swarmkit/v2/api"
 )
 

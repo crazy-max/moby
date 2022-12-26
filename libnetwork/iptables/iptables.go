@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/docker/docker/rootless"
+	"github.com/docker/docker/v24/rootless"
 	"github.com/sirupsen/logrus"
 )
 

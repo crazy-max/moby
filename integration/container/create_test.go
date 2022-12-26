@@ -1,4 +1,4 @@
-package container // import "github.com/docker/docker/integration/container"
+package container
 
 import (
 	"context"
@@ -8,15 +8,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/container"
-	containertypes "github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/api/types/network"
-	"github.com/docker/docker/api/types/versions"
-	"github.com/docker/docker/client"
-	"github.com/docker/docker/errdefs"
-	ctr "github.com/docker/docker/integration/internal/container"
-	"github.com/docker/docker/oci"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/container"
+	containertypes "github.com/docker/docker/v24/api/types/container"
+	"github.com/docker/docker/v24/api/types/network"
+	"github.com/docker/docker/v24/api/types/versions"
+	"github.com/docker/docker/v24/client"
+	"github.com/docker/docker/v24/errdefs"
+	ctr "github.com/docker/docker/v24/integration/internal/container"
+	"github.com/docker/docker/v24/oci"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 	"gotest.tools/v3/assert"
 	is "gotest.tools/v3/assert/cmp"

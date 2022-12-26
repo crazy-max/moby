@@ -1,4 +1,4 @@
-package plugin // import "github.com/docker/docker/daemon/cluster/controllers/plugin"
+package plugin
 
 import (
 	"context"
@@ -10,11 +10,11 @@ import (
 	"time"
 
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/registry"
-	"github.com/docker/docker/api/types/swarm/runtime"
-	"github.com/docker/docker/plugin"
-	v2 "github.com/docker/docker/plugin/v2"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/registry"
+	"github.com/docker/docker/v24/api/types/swarm/runtime"
+	"github.com/docker/docker/v24/plugin"
+	v2 "github.com/docker/docker/v24/plugin/v2"
 	"github.com/moby/pubsub"
 	"github.com/sirupsen/logrus"
 )

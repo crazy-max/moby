@@ -1,12 +1,12 @@
-package runconfig // import "github.com/docker/docker/runconfig"
+package runconfig
 
 import (
 	"encoding/json"
 	"io"
 
-	"github.com/docker/docker/api/types/container"
-	networktypes "github.com/docker/docker/api/types/network"
-	"github.com/docker/docker/pkg/sysinfo"
+	"github.com/docker/docker/v24/api/types/container"
+	networktypes "github.com/docker/docker/v24/api/types/network"
+	"github.com/docker/docker/v24/pkg/sysinfo"
 )
 
 // ContainerDecoder implements httputils.ContainerDecoder

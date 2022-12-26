@@ -1,4 +1,4 @@
-package logger // import "github.com/docker/docker/daemon/logger"
+package logger
 
 import (
 	"fmt"
@@ -6,11 +6,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/docker/docker/api/types/plugins/logdriver"
-	"github.com/docker/docker/errdefs"
-	getter "github.com/docker/docker/pkg/plugingetter"
-	"github.com/docker/docker/pkg/plugins"
-	"github.com/docker/docker/pkg/stringid"
+	"github.com/docker/docker/v24/api/types/plugins/logdriver"
+	"github.com/docker/docker/v24/errdefs"
+	getter "github.com/docker/docker/v24/pkg/plugingetter"
+	"github.com/docker/docker/v24/pkg/plugins"
+	"github.com/docker/docker/v24/pkg/stringid"
 	"github.com/pkg/errors"
 )
 

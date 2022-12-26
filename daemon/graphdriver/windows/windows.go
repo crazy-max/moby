@@ -1,7 +1,7 @@
 //go:build windows
 // +build windows
 
-package windows // import "github.com/docker/docker/daemon/graphdriver/windows"
+package windows
 
 import (
 	"archive/tar"
@@ -24,12 +24,12 @@ import (
 	"github.com/Microsoft/go-winio/vhd"
 	"github.com/Microsoft/hcsshim"
 	"github.com/Microsoft/hcsshim/osversion"
-	"github.com/docker/docker/daemon/graphdriver"
-	"github.com/docker/docker/pkg/archive"
-	"github.com/docker/docker/pkg/idtools"
-	"github.com/docker/docker/pkg/ioutils"
-	"github.com/docker/docker/pkg/longpath"
-	"github.com/docker/docker/pkg/reexec"
+	"github.com/docker/docker/v24/daemon/graphdriver"
+	"github.com/docker/docker/v24/pkg/archive"
+	"github.com/docker/docker/v24/pkg/idtools"
+	"github.com/docker/docker/v24/pkg/ioutils"
+	"github.com/docker/docker/v24/pkg/longpath"
+	"github.com/docker/docker/v24/pkg/reexec"
 	units "github.com/docker/go-units"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"

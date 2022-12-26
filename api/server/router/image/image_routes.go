@@ -1,4 +1,4 @@
-package image // import "github.com/docker/docker/api/server/router/image"
+package image
 
 import (
 	"context"
@@ -9,16 +9,16 @@ import (
 
 	"github.com/containerd/containerd/platforms"
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/api/server/httputils"
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/filters"
-	opts "github.com/docker/docker/api/types/image"
-	"github.com/docker/docker/api/types/registry"
-	"github.com/docker/docker/api/types/versions"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/image"
-	"github.com/docker/docker/pkg/ioutils"
-	"github.com/docker/docker/pkg/streamformatter"
+	"github.com/docker/docker/v24/api/server/httputils"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/filters"
+	opts "github.com/docker/docker/v24/api/types/image"
+	"github.com/docker/docker/v24/api/types/registry"
+	"github.com/docker/docker/v24/api/types/versions"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/image"
+	"github.com/docker/docker/v24/pkg/ioutils"
+	"github.com/docker/docker/v24/pkg/streamformatter"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/pkg/errors"
 )

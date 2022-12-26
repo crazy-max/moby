@@ -6,12 +6,12 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/docker/docker/libnetwork/bitseq"
-	"github.com/docker/docker/libnetwork/datastore"
-	"github.com/docker/docker/libnetwork/discoverapi"
-	"github.com/docker/docker/libnetwork/ipamapi"
-	"github.com/docker/docker/libnetwork/ipamutils"
-	"github.com/docker/docker/libnetwork/types"
+	"github.com/docker/docker/v24/libnetwork/bitseq"
+	"github.com/docker/docker/v24/libnetwork/datastore"
+	"github.com/docker/docker/v24/libnetwork/discoverapi"
+	"github.com/docker/docker/v24/libnetwork/ipamapi"
+	"github.com/docker/docker/v24/libnetwork/ipamutils"
+	"github.com/docker/docker/v24/libnetwork/types"
 	"github.com/sirupsen/logrus"
 )
 

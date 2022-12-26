@@ -8,9 +8,9 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/docker/docker/libnetwork/drivers/overlay/overlayutils"
-	"github.com/docker/docker/libnetwork/netutils"
-	"github.com/docker/docker/libnetwork/ns"
+	"github.com/docker/docker/v24/libnetwork/drivers/overlay/overlayutils"
+	"github.com/docker/docker/v24/libnetwork/netutils"
+	"github.com/docker/docker/v24/libnetwork/ns"
 	"github.com/sirupsen/logrus"
 	"github.com/vishvananda/netlink"
 	"github.com/vishvananda/netns"

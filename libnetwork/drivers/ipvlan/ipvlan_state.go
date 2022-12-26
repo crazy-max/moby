@@ -6,7 +6,7 @@ package ipvlan
 import (
 	"fmt"
 
-	"github.com/docker/docker/libnetwork/types"
+	"github.com/docker/docker/v24/libnetwork/types"
 	"github.com/sirupsen/logrus"
 )
 

@@ -1,7 +1,7 @@
-package logger // import "github.com/docker/docker/daemon/logger"
+package logger
 
 import (
-	"github.com/docker/docker/api/types/backend"
+	"github.com/docker/docker/v24/api/types/backend"
 )
 
 func (m *Message) copy() *Message {

@@ -1,12 +1,12 @@
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"sort"
 
-	"github.com/docker/docker/api/types/mount"
-	"github.com/docker/docker/container"
-	"github.com/docker/docker/pkg/idtools"
-	volumemounts "github.com/docker/docker/volume/mounts"
+	"github.com/docker/docker/v24/api/types/mount"
+	"github.com/docker/docker/v24/container"
+	"github.com/docker/docker/v24/pkg/idtools"
+	volumemounts "github.com/docker/docker/v24/volume/mounts"
 )
 
 // setupMounts configures the mount points for a container by appending each

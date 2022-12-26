@@ -1,8 +1,8 @@
-package chrootarchive // import "github.com/docker/docker/pkg/chrootarchive"
+package chrootarchive
 
 import (
-	"github.com/docker/docker/internal/mounttree"
-	"github.com/docker/docker/internal/unshare"
+	"github.com/docker/docker/v24/internal/mounttree"
+	"github.com/docker/docker/v24/internal/unshare"
 	"github.com/moby/sys/mount"
 	"golang.org/x/sys/unix"
 )

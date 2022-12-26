@@ -10,7 +10,7 @@
 //
 // Each container log message generates an ETW event that also contains:
 // the container name and ID, the timestamp, and the stream type.
-package etwlogs // import "github.com/docker/docker/daemon/logger/etwlogs"
+package etwlogs
 
 import (
 	"fmt"
@@ -19,7 +19,7 @@ import (
 
 	"github.com/Microsoft/go-winio/pkg/etw"
 	"github.com/Microsoft/go-winio/pkg/guid"
-	"github.com/docker/docker/daemon/logger"
+	"github.com/docker/docker/v24/daemon/logger"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/sys/windows"
 )

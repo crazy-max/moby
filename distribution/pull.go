@@ -1,12 +1,12 @@
-package distribution // import "github.com/docker/docker/distribution"
+package distribution
 
 import (
 	"context"
 	"fmt"
 
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/api"
-	refstore "github.com/docker/docker/reference"
+	"github.com/docker/docker/v24/api"
+	refstore "github.com/docker/docker/v24/reference"
 	"github.com/opencontainers/go-digest"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"

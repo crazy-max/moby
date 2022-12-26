@@ -1,4 +1,4 @@
-package local // import "github.com/docker/docker/libcontainerd/local"
+package local
 
 // This package contains the legacy in-proc calls in HCS using the v1 schema
 // for Windows runtime purposes.
@@ -20,11 +20,11 @@ import (
 	"github.com/containerd/containerd/cio"
 	containerderrdefs "github.com/containerd/containerd/errdefs"
 
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/libcontainerd/queue"
-	libcontainerdtypes "github.com/docker/docker/libcontainerd/types"
-	"github.com/docker/docker/pkg/sysinfo"
-	"github.com/docker/docker/pkg/system"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/libcontainerd/queue"
+	libcontainerdtypes "github.com/docker/docker/v24/libcontainerd/types"
+	"github.com/docker/docker/v24/pkg/sysinfo"
+	"github.com/docker/docker/v24/pkg/system"
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"

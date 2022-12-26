@@ -1,4 +1,4 @@
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"context"
@@ -8,13 +8,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	containertypes "github.com/docker/docker/api/types/container"
-	imagetypes "github.com/docker/docker/api/types/image"
-	"github.com/docker/docker/container"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/oci"
-	"github.com/docker/docker/pkg/sysinfo"
-	"github.com/docker/docker/pkg/system"
+	containertypes "github.com/docker/docker/v24/api/types/container"
+	imagetypes "github.com/docker/docker/v24/api/types/image"
+	"github.com/docker/docker/v24/container"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/oci"
+	"github.com/docker/docker/v24/pkg/sysinfo"
+	"github.com/docker/docker/v24/pkg/system"
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"

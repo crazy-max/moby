@@ -1,7 +1,7 @@
 //go:build linux && cgo && !static_build && journald
 // +build linux,cgo,!static_build,journald
 
-package journald // import "github.com/docker/docker/daemon/logger/journald"
+package journald
 
 import (
 	"testing"
@@ -10,9 +10,9 @@ import (
 	"github.com/coreos/go-systemd/v22/journal"
 	"gotest.tools/v3/assert"
 
-	"github.com/docker/docker/daemon/logger"
-	"github.com/docker/docker/daemon/logger/journald/internal/fake"
-	"github.com/docker/docker/daemon/logger/loggertest"
+	"github.com/docker/docker/v24/daemon/logger"
+	"github.com/docker/docker/v24/daemon/logger/journald/internal/fake"
+	"github.com/docker/docker/v24/daemon/logger/loggertest"
 )
 
 func TestLogRead(t *testing.T) {

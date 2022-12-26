@@ -1,9 +1,9 @@
-package client // import "github.com/docker/docker/client"
+package client
 
 import (
 	"context"
 
-	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/v24/api/types"
 )
 
 // CheckpointCreate creates a checkpoint from the given container with the given name

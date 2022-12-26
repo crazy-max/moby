@@ -1,9 +1,9 @@
-package plugin // import "github.com/docker/docker/plugin"
+package plugin
 
 import (
 	"fmt"
 
-	v2 "github.com/docker/docker/plugin/v2"
+	v2 "github.com/docker/docker/v24/plugin/v2"
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 )
 

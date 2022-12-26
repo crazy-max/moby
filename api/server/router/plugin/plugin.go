@@ -1,6 +1,6 @@
-package plugin // import "github.com/docker/docker/api/server/router/plugin"
+package plugin
 
-import "github.com/docker/docker/api/server/router"
+import "github.com/docker/docker/v24/api/server/router"
 
 // pluginRouter is a router to talk with the plugin controller
 type pluginRouter struct {

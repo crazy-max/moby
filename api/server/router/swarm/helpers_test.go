@@ -1,10 +1,10 @@
-package swarm // import "github.com/docker/docker/api/server/router/swarm"
+package swarm
 
 import (
 	"reflect"
 	"testing"
 
-	"github.com/docker/docker/api/types/swarm"
+	"github.com/docker/docker/v24/api/types/swarm"
 	"github.com/docker/go-units"
 )
 

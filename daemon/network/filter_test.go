@@ -1,14 +1,14 @@
 //go:build !windows
 // +build !windows
 
-package network // import "github.com/docker/docker/daemon/network"
+package network
 
 import (
 	"strings"
 	"testing"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/filters"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/filters"
 )
 
 func TestFilterNetworks(t *testing.T) {

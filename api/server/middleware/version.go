@@ -1,4 +1,4 @@
-package middleware // import "github.com/docker/docker/api/server/middleware"
+package middleware
 
 import (
 	"context"
@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"runtime"
 
-	"github.com/docker/docker/api/server/httputils"
-	"github.com/docker/docker/api/types/versions"
+	"github.com/docker/docker/v24/api/server/httputils"
+	"github.com/docker/docker/v24/api/types/versions"
 )
 
 // VersionMiddleware is a middleware that

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"io"
 
-	"github.com/docker/docker/api/types/registry"
-	"github.com/docker/docker/errdefs"
+	"github.com/docker/docker/v24/api/types/registry"
+	"github.com/docker/docker/v24/errdefs"
 )
 
 // PushImage initiates a push operation on the repository named localName.

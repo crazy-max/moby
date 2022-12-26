@@ -1,9 +1,9 @@
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"os"
 
-	"github.com/docker/docker/pkg/ioutils"
+	"github.com/docker/docker/v24/pkg/ioutils"
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 )

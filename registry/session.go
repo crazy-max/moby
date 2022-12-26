@@ -1,4 +1,4 @@
-package registry // import "github.com/docker/docker/registry"
+package registry
 
 import (
 	// this is required for some certificates
@@ -11,10 +11,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/docker/docker/api/types/registry"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/pkg/ioutils"
-	"github.com/docker/docker/pkg/jsonmessage"
+	"github.com/docker/docker/v24/api/types/registry"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/pkg/ioutils"
+	"github.com/docker/docker/v24/pkg/jsonmessage"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

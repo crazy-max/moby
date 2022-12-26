@@ -5,7 +5,7 @@ import (
 
 	"github.com/docker/distribution"
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/errdefs"
+	"github.com/docker/docker/v24/errdefs"
 )
 
 // GetRepository returns a repository from the registry.

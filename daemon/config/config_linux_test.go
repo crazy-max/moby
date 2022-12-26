@@ -1,10 +1,10 @@
-package config // import "github.com/docker/docker/daemon/config"
+package config
 
 import (
 	"testing"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/opts"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/opts"
 	units "github.com/docker/go-units"
 	"github.com/imdario/mergo"
 	"github.com/spf13/pflag"

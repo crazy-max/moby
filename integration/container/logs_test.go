@@ -1,4 +1,4 @@
-package container // import "github.com/docker/docker/integration/container"
+package container
 
 import (
 	"bytes"
@@ -8,12 +8,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/daemon/logger/jsonfilelog"
-	"github.com/docker/docker/daemon/logger/local"
-	"github.com/docker/docker/integration/internal/container"
-	"github.com/docker/docker/integration/internal/termtest"
-	"github.com/docker/docker/pkg/stdcopy"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/daemon/logger/jsonfilelog"
+	"github.com/docker/docker/v24/daemon/logger/local"
+	"github.com/docker/docker/v24/integration/internal/container"
+	"github.com/docker/docker/v24/integration/internal/termtest"
+	"github.com/docker/docker/v24/pkg/stdcopy"
 	"gotest.tools/v3/assert"
 	"gotest.tools/v3/assert/cmp"
 	"gotest.tools/v3/poll"

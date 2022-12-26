@@ -1,13 +1,13 @@
-package events // import "github.com/docker/docker/daemon/events"
+package events
 
 import (
 	"fmt"
 	"testing"
 	"time"
 
-	"github.com/docker/docker/api/types/events"
-	timetypes "github.com/docker/docker/api/types/time"
-	eventstestutils "github.com/docker/docker/daemon/events/testutils"
+	"github.com/docker/docker/v24/api/types/events"
+	timetypes "github.com/docker/docker/v24/api/types/time"
+	eventstestutils "github.com/docker/docker/v24/daemon/events/testutils"
 )
 
 func TestEventsLog(t *testing.T) {

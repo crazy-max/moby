@@ -1,4 +1,4 @@
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"context"
@@ -10,13 +10,13 @@ import (
 	"time"
 
 	"github.com/containerd/containerd"
-	"github.com/docker/docker/api/types"
-	containertypes "github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/api/types/strslice"
-	"github.com/docker/docker/container"
-	"github.com/docker/docker/container/stream"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/pkg/pools"
+	"github.com/docker/docker/v24/api/types"
+	containertypes "github.com/docker/docker/v24/api/types/container"
+	"github.com/docker/docker/v24/api/types/strslice"
+	"github.com/docker/docker/v24/container"
+	"github.com/docker/docker/v24/container/stream"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/pkg/pools"
 	"github.com/moby/sys/signal"
 	"github.com/moby/term"
 	specs "github.com/opencontainers/runtime-spec/specs-go"

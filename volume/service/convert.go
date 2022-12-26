@@ -6,11 +6,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/docker/docker/api/types/filters"
-	volumetypes "github.com/docker/docker/api/types/volume"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/pkg/directory"
-	"github.com/docker/docker/volume"
+	"github.com/docker/docker/v24/api/types/filters"
+	volumetypes "github.com/docker/docker/v24/api/types/volume"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/pkg/directory"
+	"github.com/docker/docker/v24/volume"
 	"github.com/sirupsen/logrus"
 )
 

@@ -7,11 +7,11 @@ import (
 	"net"
 	"path/filepath"
 
-	"github.com/docker/docker/daemon/config"
-	"github.com/docker/docker/opts"
-	"github.com/docker/docker/pkg/homedir"
-	"github.com/docker/docker/registry"
-	"github.com/docker/docker/rootless"
+	"github.com/docker/docker/v24/daemon/config"
+	"github.com/docker/docker/v24/opts"
+	"github.com/docker/docker/v24/pkg/homedir"
+	"github.com/docker/docker/v24/registry"
+	"github.com/docker/docker/v24/rootless"
 	"github.com/spf13/pflag"
 )
 

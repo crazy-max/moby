@@ -1,8 +1,8 @@
-package server // import "github.com/docker/docker/api/server"
+package server
 
 import (
-	"github.com/docker/docker/api/server/httputils"
-	"github.com/docker/docker/api/server/middleware"
+	"github.com/docker/docker/v24/api/server/httputils"
+	"github.com/docker/docker/v24/api/server/middleware"
 	"github.com/sirupsen/logrus"
 )
 

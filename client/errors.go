@@ -1,10 +1,10 @@
-package client // import "github.com/docker/docker/client"
+package client
 
 import (
 	"fmt"
 
-	"github.com/docker/docker/api/types/versions"
-	"github.com/docker/docker/errdefs"
+	"github.com/docker/docker/v24/api/types/versions"
+	"github.com/docker/docker/v24/errdefs"
 	"github.com/pkg/errors"
 )
 

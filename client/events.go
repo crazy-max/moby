@@ -1,4 +1,4 @@
-package client // import "github.com/docker/docker/client"
+package client
 
 import (
 	"context"
@@ -6,10 +6,10 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/events"
-	"github.com/docker/docker/api/types/filters"
-	timetypes "github.com/docker/docker/api/types/time"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/events"
+	"github.com/docker/docker/v24/api/types/filters"
+	timetypes "github.com/docker/docker/v24/api/types/time"
 )
 
 // Events returns a stream of events in the daemon. It's up to the caller to close the stream

@@ -21,12 +21,12 @@ import (
 	"sync"
 
 	"github.com/Microsoft/hcsshim"
-	"github.com/docker/docker/libnetwork/datastore"
-	"github.com/docker/docker/libnetwork/discoverapi"
-	"github.com/docker/docker/libnetwork/driverapi"
-	"github.com/docker/docker/libnetwork/netlabel"
-	"github.com/docker/docker/libnetwork/portmapper"
-	"github.com/docker/docker/libnetwork/types"
+	"github.com/docker/docker/v24/libnetwork/datastore"
+	"github.com/docker/docker/v24/libnetwork/discoverapi"
+	"github.com/docker/docker/v24/libnetwork/driverapi"
+	"github.com/docker/docker/v24/libnetwork/netlabel"
+	"github.com/docker/docker/v24/libnetwork/portmapper"
+	"github.com/docker/docker/v24/libnetwork/types"
 	"github.com/sirupsen/logrus"
 )
 

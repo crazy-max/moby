@@ -27,7 +27,7 @@ import (
 
 	"github.com/containerd/containerd/mount"
 	"github.com/containerd/containerd/pkg/userns"
-	"github.com/docker/docker/pkg/parsers/kernel"
+	"github.com/docker/docker/v24/pkg/parsers/kernel"
 	"github.com/sirupsen/logrus"
 )
 

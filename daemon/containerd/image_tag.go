@@ -4,8 +4,8 @@ import (
 	"errors"
 
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/image"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/image"
 )
 
 // TagImage creates the tag specified by newTag, pointing to the image named

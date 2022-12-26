@@ -7,9 +7,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/docker/docker/libnetwork/ipamapi"
-	"github.com/docker/docker/libnetwork/osl"
-	"github.com/docker/docker/libnetwork/testutils"
+	"github.com/docker/docker/v24/libnetwork/ipamapi"
+	"github.com/docker/docker/v24/libnetwork/osl"
+	"github.com/docker/docker/v24/libnetwork/testutils"
 )
 
 func TestHostsEntries(t *testing.T) {

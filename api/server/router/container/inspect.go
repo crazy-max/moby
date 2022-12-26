@@ -1,10 +1,10 @@
-package container // import "github.com/docker/docker/api/server/router/container"
+package container
 
 import (
 	"context"
 	"net/http"
 
-	"github.com/docker/docker/api/server/httputils"
+	"github.com/docker/docker/v24/api/server/httputils"
 )
 
 // getContainersByName inspects container's configuration and serializes it as json.

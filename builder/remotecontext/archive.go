@@ -1,16 +1,16 @@
-package remotecontext // import "github.com/docker/docker/builder/remotecontext"
+package remotecontext
 
 import (
 	"io"
 	"os"
 	"path/filepath"
 
-	"github.com/docker/docker/builder"
-	"github.com/docker/docker/pkg/archive"
-	"github.com/docker/docker/pkg/chrootarchive"
-	"github.com/docker/docker/pkg/containerfs"
-	"github.com/docker/docker/pkg/ioutils"
-	"github.com/docker/docker/pkg/tarsum"
+	"github.com/docker/docker/v24/builder"
+	"github.com/docker/docker/v24/pkg/archive"
+	"github.com/docker/docker/v24/pkg/chrootarchive"
+	"github.com/docker/docker/v24/pkg/containerfs"
+	"github.com/docker/docker/v24/pkg/ioutils"
+	"github.com/docker/docker/v24/pkg/tarsum"
 	"github.com/pkg/errors"
 )
 

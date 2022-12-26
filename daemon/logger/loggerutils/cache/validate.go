@@ -3,8 +3,8 @@ package cache
 import (
 	"strconv"
 
-	"github.com/docker/docker/daemon/logger"
-	"github.com/docker/docker/daemon/logger/local"
+	"github.com/docker/docker/v24/daemon/logger"
+	"github.com/docker/docker/v24/daemon/logger/local"
 	"github.com/pkg/errors"
 )
 

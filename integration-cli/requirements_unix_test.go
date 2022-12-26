@@ -9,7 +9,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/docker/docker/pkg/sysinfo"
+	"github.com/docker/docker/v24/pkg/sysinfo"
 )
 
 var (

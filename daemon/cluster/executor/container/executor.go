@@ -1,4 +1,4 @@
-package container // import "github.com/docker/docker/daemon/cluster/executor/container"
+package container
 
 import (
 	"context"
@@ -7,16 +7,16 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/filters"
-	"github.com/docker/docker/api/types/network"
-	swarmtypes "github.com/docker/docker/api/types/swarm"
-	"github.com/docker/docker/daemon/cluster/controllers/plugin"
-	"github.com/docker/docker/daemon/cluster/convert"
-	executorpkg "github.com/docker/docker/daemon/cluster/executor"
-	clustertypes "github.com/docker/docker/daemon/cluster/provider"
-	"github.com/docker/docker/libnetwork"
-	networktypes "github.com/docker/docker/libnetwork/types"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/filters"
+	"github.com/docker/docker/v24/api/types/network"
+	swarmtypes "github.com/docker/docker/v24/api/types/swarm"
+	"github.com/docker/docker/v24/daemon/cluster/controllers/plugin"
+	"github.com/docker/docker/v24/daemon/cluster/convert"
+	executorpkg "github.com/docker/docker/v24/daemon/cluster/executor"
+	clustertypes "github.com/docker/docker/v24/daemon/cluster/provider"
+	"github.com/docker/docker/v24/libnetwork"
+	networktypes "github.com/docker/docker/v24/libnetwork/types"
 	"github.com/moby/swarmkit/v2/agent"
 	"github.com/moby/swarmkit/v2/agent/exec"
 	"github.com/moby/swarmkit/v2/api"

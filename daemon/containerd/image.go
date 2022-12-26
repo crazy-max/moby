@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
-	imagetype "github.com/docker/docker/api/types/image"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/image"
+	imagetype "github.com/docker/docker/v24/api/types/image"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/image"
 )
 
 // GetImage returns an image corresponding to the image referred to by refOrID.

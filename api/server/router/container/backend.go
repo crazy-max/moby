@@ -1,15 +1,15 @@
-package container // import "github.com/docker/docker/api/server/router/container"
+package container
 
 import (
 	"context"
 	"io"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/backend"
-	"github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/api/types/filters"
-	containerpkg "github.com/docker/docker/container"
-	"github.com/docker/docker/pkg/archive"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/backend"
+	"github.com/docker/docker/v24/api/types/container"
+	"github.com/docker/docker/v24/api/types/filters"
+	containerpkg "github.com/docker/docker/v24/container"
+	"github.com/docker/docker/v24/pkg/archive"
 )
 
 // execBackend includes functions to implement to provide exec functionality.

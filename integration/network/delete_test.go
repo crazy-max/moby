@@ -1,13 +1,13 @@
-package network // import "github.com/docker/docker/integration/network"
+package network
 
 import (
 	"context"
 	"testing"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/versions"
-	dclient "github.com/docker/docker/client"
-	"github.com/docker/docker/integration/internal/network"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/versions"
+	dclient "github.com/docker/docker/v24/client"
+	"github.com/docker/docker/v24/integration/internal/network"
 	"gotest.tools/v3/assert"
 	is "gotest.tools/v3/assert/cmp"
 	"gotest.tools/v3/skip"

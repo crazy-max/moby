@@ -3,8 +3,8 @@ package main
 import (
 	cdcgroups "github.com/containerd/cgroups"
 	systemdDaemon "github.com/coreos/go-systemd/v22/daemon"
-	"github.com/docker/docker/daemon/config"
-	"github.com/docker/docker/pkg/sysinfo"
+	"github.com/docker/docker/v24/daemon/config"
+	"github.com/docker/docker/v24/pkg/sysinfo"
 	"github.com/pkg/errors"
 )
 

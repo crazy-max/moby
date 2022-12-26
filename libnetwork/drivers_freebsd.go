@@ -1,8 +1,8 @@
 package libnetwork
 
 import (
-	"github.com/docker/docker/libnetwork/drivers/null"
-	"github.com/docker/docker/libnetwork/drivers/remote"
+	"github.com/docker/docker/v24/libnetwork/drivers/null"
+	"github.com/docker/docker/v24/libnetwork/drivers/remote"
 )
 
 func getInitializers() []initializer {

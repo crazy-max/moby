@@ -1,4 +1,4 @@
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"context"
@@ -9,16 +9,16 @@ import (
 	"time"
 
 	"github.com/containerd/containerd/platforms"
-	"github.com/docker/docker/api/types"
-	containertypes "github.com/docker/docker/api/types/container"
-	imagetypes "github.com/docker/docker/api/types/image"
-	networktypes "github.com/docker/docker/api/types/network"
-	"github.com/docker/docker/container"
-	"github.com/docker/docker/daemon/images"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/image"
-	"github.com/docker/docker/pkg/idtools"
-	"github.com/docker/docker/runconfig"
+	"github.com/docker/docker/v24/api/types"
+	containertypes "github.com/docker/docker/v24/api/types/container"
+	imagetypes "github.com/docker/docker/v24/api/types/image"
+	networktypes "github.com/docker/docker/v24/api/types/network"
+	"github.com/docker/docker/v24/container"
+	"github.com/docker/docker/v24/daemon/images"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/image"
+	"github.com/docker/docker/v24/pkg/idtools"
+	"github.com/docker/docker/v24/runconfig"
 	v1 "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/opencontainers/selinux/go-selinux"
 	"github.com/pkg/errors"

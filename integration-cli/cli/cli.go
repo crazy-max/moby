@@ -1,4 +1,4 @@
-package cli // import "github.com/docker/docker/integration-cli/cli"
+package cli
 
 import (
 	"fmt"
@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/docker/docker/integration-cli/daemon"
-	"github.com/docker/docker/integration-cli/environment"
+	"github.com/docker/docker/v24/integration-cli/daemon"
+	"github.com/docker/docker/v24/integration-cli/environment"
 	"github.com/pkg/errors"
 	"gotest.tools/v3/icmd"
 )

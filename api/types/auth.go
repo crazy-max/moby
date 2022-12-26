@@ -1,5 +1,6 @@
-package types // import "github.com/docker/docker/api/types"
-import "github.com/docker/docker/api/types/registry"
+package types
+
+import "github.com/docker/docker/v24/api/types/registry"
 
 // AuthConfig contains authorization information for connecting to a Registry.
 //

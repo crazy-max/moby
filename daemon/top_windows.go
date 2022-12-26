@@ -1,4 +1,4 @@
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"context"
@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	containertypes "github.com/docker/docker/api/types/container"
-	libcontainerdtypes "github.com/docker/docker/libcontainerd/types"
+	containertypes "github.com/docker/docker/v24/api/types/container"
+	libcontainerdtypes "github.com/docker/docker/v24/libcontainerd/types"
 	units "github.com/docker/go-units"
 )
 

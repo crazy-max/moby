@@ -1,12 +1,12 @@
-package client // import "github.com/docker/docker/client"
+package client
 
 import (
 	"context"
 	"encoding/json"
 	"net/url"
 
-	"github.com/docker/docker/api/types/filters"
-	"github.com/docker/docker/api/types/volume"
+	"github.com/docker/docker/v24/api/types/filters"
+	"github.com/docker/docker/v24/api/types/volume"
 )
 
 // VolumeList returns the volumes configured in the docker host.

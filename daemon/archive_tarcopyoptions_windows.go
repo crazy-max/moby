@@ -1,8 +1,8 @@
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
-	"github.com/docker/docker/container"
-	"github.com/docker/docker/pkg/archive"
+	"github.com/docker/docker/v24/container"
+	"github.com/docker/docker/v24/pkg/archive"
 )
 
 func (daemon *Daemon) tarCopyOptions(container *container.Container, noOverwriteDirNonDir bool) (*archive.TarOptions, error) {

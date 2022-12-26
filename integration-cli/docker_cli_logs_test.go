@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/docker/docker/integration-cli/cli"
-	"github.com/docker/docker/pkg/jsonmessage"
+	"github.com/docker/docker/v24/integration-cli/cli"
+	"github.com/docker/docker/v24/pkg/jsonmessage"
 	"gotest.tools/v3/assert"
 	"gotest.tools/v3/icmd"
 )

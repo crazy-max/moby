@@ -1,4 +1,4 @@
-package images // import "github.com/docker/docker/daemon/images"
+package images
 
 import (
 	"context"
@@ -7,10 +7,10 @@ import (
 
 	"github.com/docker/distribution/manifest/schema2"
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/api/types/registry"
-	"github.com/docker/docker/distribution"
-	progressutils "github.com/docker/docker/distribution/utils"
-	"github.com/docker/docker/pkg/progress"
+	"github.com/docker/docker/v24/api/types/registry"
+	"github.com/docker/docker/v24/distribution"
+	progressutils "github.com/docker/docker/v24/distribution/utils"
+	"github.com/docker/docker/v24/pkg/progress"
 )
 
 // PushImage initiates a push operation on the repository named localName.

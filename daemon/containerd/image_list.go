@@ -5,8 +5,8 @@ import (
 
 	"github.com/containerd/containerd"
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/filters"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/filters"
 	"github.com/opencontainers/go-digest"
 	"github.com/opencontainers/image-spec/identity"
 )

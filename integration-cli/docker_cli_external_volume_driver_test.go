@@ -13,12 +13,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/docker/docker/api/types"
-	volumetypes "github.com/docker/docker/api/types/volume"
-	"github.com/docker/docker/integration-cli/daemon"
-	"github.com/docker/docker/pkg/stringid"
-	testdaemon "github.com/docker/docker/testutil/daemon"
-	"github.com/docker/docker/volume"
+	"github.com/docker/docker/v24/api/types"
+	volumetypes "github.com/docker/docker/v24/api/types/volume"
+	"github.com/docker/docker/v24/integration-cli/daemon"
+	"github.com/docker/docker/v24/pkg/stringid"
+	testdaemon "github.com/docker/docker/v24/testutil/daemon"
+	"github.com/docker/docker/v24/volume"
 	"gotest.tools/v3/assert"
 )
 

@@ -1,4 +1,4 @@
-package config // import "github.com/docker/docker/daemon/config"
+package config
 
 import (
 	"bytes"
@@ -12,9 +12,9 @@ import (
 	"sync"
 
 	"github.com/containerd/containerd/runtime/v2/shim"
-	"github.com/docker/docker/opts"
-	"github.com/docker/docker/pkg/authorization"
-	"github.com/docker/docker/registry"
+	"github.com/docker/docker/v24/opts"
+	"github.com/docker/docker/v24/pkg/authorization"
+	"github.com/docker/docker/v24/registry"
 	"github.com/imdario/mergo"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"

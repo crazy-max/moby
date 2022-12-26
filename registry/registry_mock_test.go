@@ -1,4 +1,4 @@
-package registry // import "github.com/docker/docker/registry"
+package registry
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/docker/docker/api/types/registry"
+	"github.com/docker/docker/v24/api/types/registry"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 	"gotest.tools/v3/assert"

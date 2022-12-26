@@ -1,4 +1,4 @@
-package images // import "github.com/docker/docker/daemon/images"
+package images
 
 import (
 	"context"
@@ -10,13 +10,13 @@ import (
 	"github.com/containerd/containerd/namespaces"
 	dist "github.com/docker/distribution"
 	"github.com/docker/distribution/reference"
-	imagetypes "github.com/docker/docker/api/types/image"
-	"github.com/docker/docker/api/types/registry"
-	"github.com/docker/docker/distribution"
-	progressutils "github.com/docker/docker/distribution/utils"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/pkg/progress"
-	"github.com/docker/docker/pkg/streamformatter"
+	imagetypes "github.com/docker/docker/v24/api/types/image"
+	"github.com/docker/docker/v24/api/types/registry"
+	"github.com/docker/docker/v24/distribution"
+	progressutils "github.com/docker/docker/v24/distribution/utils"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/pkg/progress"
+	"github.com/docker/docker/v24/pkg/streamformatter"
 	"github.com/opencontainers/go-digest"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/pkg/errors"

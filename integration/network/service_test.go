@@ -1,17 +1,17 @@
-package network // import "github.com/docker/docker/integration/network"
+package network
 
 import (
 	"context"
 	"testing"
 	"time"
 
-	"github.com/docker/docker/api/types"
-	swarmtypes "github.com/docker/docker/api/types/swarm"
-	"github.com/docker/docker/api/types/versions"
-	"github.com/docker/docker/client"
-	"github.com/docker/docker/integration/internal/network"
-	"github.com/docker/docker/integration/internal/swarm"
-	"github.com/docker/docker/testutil/daemon"
+	"github.com/docker/docker/v24/api/types"
+	swarmtypes "github.com/docker/docker/v24/api/types/swarm"
+	"github.com/docker/docker/v24/api/types/versions"
+	"github.com/docker/docker/v24/client"
+	"github.com/docker/docker/v24/integration/internal/network"
+	"github.com/docker/docker/v24/integration/internal/swarm"
+	"github.com/docker/docker/v24/testutil/daemon"
 	"gotest.tools/v3/assert"
 	"gotest.tools/v3/icmd"
 	"gotest.tools/v3/poll"

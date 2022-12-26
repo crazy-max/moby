@@ -6,11 +6,11 @@ import (
 	"github.com/containerd/containerd"
 	"github.com/containerd/containerd/plugin"
 	"github.com/containerd/containerd/snapshots"
-	"github.com/docker/docker/container"
-	"github.com/docker/docker/daemon/images"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/image"
-	"github.com/docker/docker/layer"
+	"github.com/docker/docker/v24/container"
+	"github.com/docker/docker/v24/daemon/images"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/image"
+	"github.com/docker/docker/v24/layer"
 	"github.com/pkg/errors"
 )
 

@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/docker/docker/api"
+	"github.com/docker/docker/v24/api"
 	"gotest.tools/v3/assert"
 )
 

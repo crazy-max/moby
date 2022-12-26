@@ -6,9 +6,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/docker/docker/daemon/config"
-	"github.com/docker/docker/libcontainerd/supervisor"
-	"github.com/docker/docker/pkg/system"
+	"github.com/docker/docker/v24/daemon/config"
+	"github.com/docker/docker/v24/libcontainerd/supervisor"
+	"github.com/docker/docker/v24/pkg/system"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/sys/windows"
 )

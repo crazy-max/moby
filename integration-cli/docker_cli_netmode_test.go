@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/docker/docker/runconfig"
+	"github.com/docker/docker/v24/runconfig"
 	"gotest.tools/v3/assert"
 )
 

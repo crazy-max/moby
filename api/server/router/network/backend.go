@@ -1,12 +1,12 @@
-package network // import "github.com/docker/docker/api/server/router/network"
+package network
 
 import (
 	"context"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/filters"
-	"github.com/docker/docker/api/types/network"
-	"github.com/docker/docker/libnetwork"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/filters"
+	"github.com/docker/docker/v24/api/types/network"
+	"github.com/docker/docker/v24/libnetwork"
 )
 
 // Backend is all the methods that need to be implemented

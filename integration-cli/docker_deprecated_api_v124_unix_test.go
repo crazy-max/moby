@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/docker/docker/testutil/request"
+	"github.com/docker/docker/v24/testutil/request"
 	"gotest.tools/v3/assert"
 )
 

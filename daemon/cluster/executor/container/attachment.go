@@ -1,9 +1,9 @@
-package container // import "github.com/docker/docker/daemon/cluster/executor/container"
+package container
 
 import (
 	"context"
 
-	executorpkg "github.com/docker/docker/daemon/cluster/executor"
+	executorpkg "github.com/docker/docker/v24/daemon/cluster/executor"
 	"github.com/moby/swarmkit/v2/agent/exec"
 	"github.com/moby/swarmkit/v2/api"
 )

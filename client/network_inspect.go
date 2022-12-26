@@ -1,4 +1,4 @@
-package client // import "github.com/docker/docker/client"
+package client
 
 import (
 	"bytes"
@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/url"
 
-	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/v24/api/types"
 )
 
 // NetworkInspect returns the information for a specific network configured in the docker host.

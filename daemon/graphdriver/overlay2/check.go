@@ -1,7 +1,7 @@
 //go:build linux
 // +build linux
 
-package overlay2 // import "github.com/docker/docker/daemon/graphdriver/overlay2"
+package overlay2
 
 import (
 	"fmt"
@@ -12,8 +12,8 @@ import (
 
 	"github.com/containerd/containerd/mount"
 	"github.com/containerd/containerd/pkg/userns"
-	"github.com/docker/docker/daemon/graphdriver/overlayutils"
-	"github.com/docker/docker/pkg/system"
+	"github.com/docker/docker/v24/daemon/graphdriver/overlayutils"
+	"github.com/docker/docker/v24/pkg/system"
 	"github.com/pkg/errors"
 	"golang.org/x/sys/unix"
 )

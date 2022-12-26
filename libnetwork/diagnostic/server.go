@@ -11,8 +11,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/docker/docker/libnetwork/internal/caller"
-	"github.com/docker/docker/pkg/stack"
+	"github.com/docker/docker/v24/libnetwork/internal/caller"
+	"github.com/docker/docker/v24/pkg/stack"
 	"github.com/sirupsen/logrus"
 )
 

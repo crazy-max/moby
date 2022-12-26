@@ -11,8 +11,8 @@ import (
 	"testing"
 
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/api/types/versions"
-	"github.com/docker/docker/integration-cli/cli/build"
+	"github.com/docker/docker/v24/api/types/versions"
+	"github.com/docker/docker/v24/integration-cli/cli/build"
 	"gotest.tools/v3/assert"
 	"gotest.tools/v3/icmd"
 )

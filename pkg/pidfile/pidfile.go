@@ -1,7 +1,7 @@
 // Package pidfile provides structure and helper functions to create and remove
 // PID file. A PID file is usually a file used to store the process ID of a
 // running process.
-package pidfile // import "github.com/docker/docker/pkg/pidfile"
+package pidfile
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/docker/docker/pkg/process"
+	"github.com/docker/docker/v24/pkg/process"
 )
 
 // Read reads the "PID file" at path, and returns the PID if it contains a

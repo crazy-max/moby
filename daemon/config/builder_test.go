@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/docker/docker/api/types/filters"
+	"github.com/docker/docker/v24/api/types/filters"
 	"github.com/google/go-cmp/cmp"
 	"gotest.tools/v3/assert"
 	"gotest.tools/v3/fs"

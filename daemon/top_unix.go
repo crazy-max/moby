@@ -1,7 +1,7 @@
 //go:build !windows
 // +build !windows
 
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"bytes"
@@ -12,9 +12,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/errdefs"
-	libcontainerdtypes "github.com/docker/docker/libcontainerd/types"
+	"github.com/docker/docker/v24/api/types/container"
+	"github.com/docker/docker/v24/errdefs"
+	libcontainerdtypes "github.com/docker/docker/v24/libcontainerd/types"
 	"github.com/pkg/errors"
 )
 

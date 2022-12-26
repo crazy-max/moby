@@ -1,7 +1,7 @@
 //go:build linux || freebsd
 // +build linux freebsd
 
-package graphtest // import "github.com/docker/docker/daemon/graphdriver/graphtest"
+package graphtest
 
 import (
 	"bytes"
@@ -10,9 +10,9 @@ import (
 	"path"
 	"testing"
 
-	"github.com/docker/docker/daemon/graphdriver"
-	"github.com/docker/docker/pkg/stringid"
-	"github.com/docker/docker/quota"
+	"github.com/docker/docker/v24/daemon/graphdriver"
+	"github.com/docker/docker/v24/pkg/stringid"
+	"github.com/docker/docker/v24/quota"
 	units "github.com/docker/go-units"
 	"golang.org/x/sys/unix"
 	"gotest.tools/v3/assert"

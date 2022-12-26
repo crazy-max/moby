@@ -1,14 +1,14 @@
-package container // import "github.com/docker/docker/container"
+package container
 
 import (
 	"fmt"
 	"os"
 	"path/filepath"
 
-	"github.com/docker/docker/api/types"
-	containertypes "github.com/docker/docker/api/types/container"
-	swarmtypes "github.com/docker/docker/api/types/swarm"
-	"github.com/docker/docker/pkg/system"
+	"github.com/docker/docker/v24/api/types"
+	containertypes "github.com/docker/docker/v24/api/types/container"
+	swarmtypes "github.com/docker/docker/v24/api/types/swarm"
+	"github.com/docker/docker/v24/pkg/system"
 )
 
 const (

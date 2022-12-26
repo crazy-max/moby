@@ -3,7 +3,7 @@
 
 package system
 
-import "github.com/docker/docker/pkg/process"
+import "github.com/docker/docker/v24/pkg/process"
 
 var (
 	// IsProcessAlive returns true if process with a given pid is running.

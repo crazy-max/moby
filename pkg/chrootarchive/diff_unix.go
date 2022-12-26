@@ -1,14 +1,14 @@
 //go:build !windows
 // +build !windows
 
-package chrootarchive // import "github.com/docker/docker/pkg/chrootarchive"
+package chrootarchive
 
 import (
 	"io"
 	"path/filepath"
 
 	"github.com/containerd/containerd/pkg/userns"
-	"github.com/docker/docker/pkg/archive"
+	"github.com/docker/docker/v24/pkg/archive"
 	"golang.org/x/sys/unix"
 )
 

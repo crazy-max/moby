@@ -1,14 +1,14 @@
-package image // import "github.com/docker/docker/api/server/router/image"
+package image
 
 import (
 	"context"
 	"io"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/filters"
-	"github.com/docker/docker/api/types/image"
-	"github.com/docker/docker/api/types/registry"
-	dockerimage "github.com/docker/docker/image"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/filters"
+	"github.com/docker/docker/v24/api/types/image"
+	"github.com/docker/docker/v24/api/types/registry"
+	dockerimage "github.com/docker/docker/v24/image"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 )
 

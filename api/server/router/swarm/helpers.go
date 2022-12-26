@@ -1,15 +1,15 @@
-package swarm // import "github.com/docker/docker/api/server/router/swarm"
+package swarm
 
 import (
 	"context"
 	"fmt"
 	"net/http"
 
-	"github.com/docker/docker/api/server/httputils"
-	basictypes "github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/backend"
-	"github.com/docker/docker/api/types/swarm"
-	"github.com/docker/docker/api/types/versions"
+	"github.com/docker/docker/v24/api/server/httputils"
+	basictypes "github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/backend"
+	"github.com/docker/docker/v24/api/types/swarm"
+	"github.com/docker/docker/v24/api/types/versions"
 )
 
 // swarmLogs takes an http response, request, and selector, and writes the logs

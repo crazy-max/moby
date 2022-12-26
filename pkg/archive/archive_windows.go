@@ -1,12 +1,12 @@
-package archive // import "github.com/docker/docker/pkg/archive"
+package archive
 
 import (
 	"archive/tar"
 	"os"
 	"path/filepath"
 
-	"github.com/docker/docker/pkg/idtools"
-	"github.com/docker/docker/pkg/longpath"
+	"github.com/docker/docker/v24/pkg/idtools"
+	"github.com/docker/docker/v24/pkg/longpath"
 )
 
 // fixVolumePathPrefix does platform specific processing to ensure that if

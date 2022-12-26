@@ -1,7 +1,7 @@
 //go:build !windows
 // +build !windows
 
-package authz // import "github.com/docker/docker/integration/plugin/authz"
+package authz
 
 import (
 	"encoding/json"
@@ -13,10 +13,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/docker/docker/pkg/authorization"
-	"github.com/docker/docker/pkg/plugins"
-	"github.com/docker/docker/testutil/daemon"
-	"github.com/docker/docker/testutil/environment"
+	"github.com/docker/docker/v24/pkg/authorization"
+	"github.com/docker/docker/v24/pkg/plugins"
+	"github.com/docker/docker/v24/testutil/daemon"
+	"github.com/docker/docker/v24/testutil/environment"
 	"gotest.tools/v3/skip"
 )
 

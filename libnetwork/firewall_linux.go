@@ -1,7 +1,7 @@
 package libnetwork
 
 import (
-	"github.com/docker/docker/libnetwork/iptables"
+	"github.com/docker/docker/v24/libnetwork/iptables"
 	"github.com/sirupsen/logrus"
 )
 

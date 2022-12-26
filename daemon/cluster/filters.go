@@ -1,11 +1,11 @@
-package cluster // import "github.com/docker/docker/daemon/cluster"
+package cluster
 
 import (
 	"fmt"
 	"strings"
 
-	"github.com/docker/docker/api/types/filters"
-	runconfigopts "github.com/docker/docker/runconfig/opts"
+	"github.com/docker/docker/v24/api/types/filters"
+	runconfigopts "github.com/docker/docker/v24/runconfig/opts"
 	swarmapi "github.com/moby/swarmkit/v2/api"
 )
 

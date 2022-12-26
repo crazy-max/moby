@@ -1,4 +1,4 @@
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"errors"
@@ -9,19 +9,19 @@ import (
 	"strings"
 	"time"
 
-	containertypes "github.com/docker/docker/api/types/container"
-	networktypes "github.com/docker/docker/api/types/network"
-	"github.com/docker/docker/container"
-	"github.com/docker/docker/daemon/network"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/libnetwork"
-	netconst "github.com/docker/docker/libnetwork/datastore"
-	"github.com/docker/docker/libnetwork/netlabel"
-	"github.com/docker/docker/libnetwork/options"
-	"github.com/docker/docker/libnetwork/types"
-	"github.com/docker/docker/opts"
-	"github.com/docker/docker/pkg/stringid"
-	"github.com/docker/docker/runconfig"
+	containertypes "github.com/docker/docker/v24/api/types/container"
+	networktypes "github.com/docker/docker/v24/api/types/network"
+	"github.com/docker/docker/v24/container"
+	"github.com/docker/docker/v24/daemon/network"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/libnetwork"
+	netconst "github.com/docker/docker/v24/libnetwork/datastore"
+	"github.com/docker/docker/v24/libnetwork/netlabel"
+	"github.com/docker/docker/v24/libnetwork/options"
+	"github.com/docker/docker/v24/libnetwork/types"
+	"github.com/docker/docker/v24/opts"
+	"github.com/docker/docker/v24/pkg/stringid"
+	"github.com/docker/docker/v24/runconfig"
 	"github.com/docker/go-connections/nat"
 	"github.com/sirupsen/logrus"
 )

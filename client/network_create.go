@@ -1,10 +1,10 @@
-package client // import "github.com/docker/docker/client"
+package client
 
 import (
 	"context"
 	"encoding/json"
 
-	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/v24/api/types"
 )
 
 // NetworkCreate creates a new network in the docker host.

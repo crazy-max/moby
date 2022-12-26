@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/v24/api/types"
 	"gotest.tools/v3/assert"
 )
 

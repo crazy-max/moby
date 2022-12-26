@@ -1,13 +1,13 @@
-package system // import "github.com/docker/docker/integration/system"
+package system
 
 import (
 	"context"
 	"fmt"
 	"testing"
 
-	"github.com/docker/docker/api/types/registry"
-	"github.com/docker/docker/integration/internal/requirement"
-	registrypkg "github.com/docker/docker/registry"
+	"github.com/docker/docker/v24/api/types/registry"
+	"github.com/docker/docker/v24/integration/internal/requirement"
+	registrypkg "github.com/docker/docker/v24/registry"
 	"gotest.tools/v3/assert"
 	is "gotest.tools/v3/assert/cmp"
 	"gotest.tools/v3/skip"

@@ -1,4 +1,4 @@
-package cluster // import "github.com/docker/docker/daemon/cluster"
+package cluster
 
 import (
 	"context"
@@ -7,13 +7,13 @@ import (
 	"strings"
 	"time"
 
-	apitypes "github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/filters"
-	types "github.com/docker/docker/api/types/swarm"
-	"github.com/docker/docker/daemon/cluster/convert"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/opts"
-	"github.com/docker/docker/pkg/stack"
+	apitypes "github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/filters"
+	types "github.com/docker/docker/v24/api/types/swarm"
+	"github.com/docker/docker/v24/daemon/cluster/convert"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/opts"
+	"github.com/docker/docker/v24/pkg/stack"
 	swarmapi "github.com/moby/swarmkit/v2/api"
 	"github.com/moby/swarmkit/v2/manager/encryption"
 	swarmnode "github.com/moby/swarmkit/v2/node"

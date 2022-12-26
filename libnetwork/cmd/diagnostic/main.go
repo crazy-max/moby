@@ -11,9 +11,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/docker/docker/libnetwork"
-	"github.com/docker/docker/libnetwork/diagnostic"
-	"github.com/docker/docker/libnetwork/drivers/overlay"
+	"github.com/docker/docker/v24/libnetwork"
+	"github.com/docker/docker/v24/libnetwork/diagnostic"
+	"github.com/docker/docker/v24/libnetwork/drivers/overlay"
 	"github.com/sirupsen/logrus"
 )
 

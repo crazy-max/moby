@@ -1,4 +1,4 @@
-package image // import "github.com/docker/docker/image"
+package image
 
 import (
 	"encoding/json"
@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/dockerversion"
-	"github.com/docker/docker/layer"
+	"github.com/docker/docker/v24/api/types/container"
+	"github.com/docker/docker/v24/dockerversion"
+	"github.com/docker/docker/v24/layer"
 	"github.com/opencontainers/go-digest"
 )
 

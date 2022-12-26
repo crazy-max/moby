@@ -1,6 +1,6 @@
-package distribution // import "github.com/docker/docker/api/server/router/distribution"
+package distribution
 
-import "github.com/docker/docker/api/server/router"
+import "github.com/docker/docker/v24/api/server/router"
 
 // distributionRouter is a router to talk with the registry
 type distributionRouter struct {

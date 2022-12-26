@@ -1,13 +1,13 @@
 //go:build linux
 // +build linux
 
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"fmt"
 
 	"github.com/containerd/containerd/pkg/apparmor"
-	aaprofile "github.com/docker/docker/profiles/apparmor"
+	aaprofile "github.com/docker/docker/v24/profiles/apparmor"
 )
 
 // Define constants for native driver

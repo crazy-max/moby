@@ -1,4 +1,4 @@
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"context"
@@ -8,13 +8,13 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/events"
-	"github.com/docker/docker/api/types/filters"
-	timetypes "github.com/docker/docker/api/types/time"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/libnetwork"
-	"github.com/docker/docker/runconfig"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/events"
+	"github.com/docker/docker/v24/api/types/filters"
+	timetypes "github.com/docker/docker/v24/api/types/time"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/libnetwork"
+	"github.com/docker/docker/v24/runconfig"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

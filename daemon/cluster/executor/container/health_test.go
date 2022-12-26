@@ -1,17 +1,17 @@
 //go:build !windows
 // +build !windows
 
-package container // import "github.com/docker/docker/daemon/cluster/executor/container"
+package container
 
 import (
 	"context"
 	"testing"
 	"time"
 
-	containertypes "github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/container"
-	"github.com/docker/docker/daemon"
-	"github.com/docker/docker/daemon/events"
+	containertypes "github.com/docker/docker/v24/api/types/container"
+	"github.com/docker/docker/v24/container"
+	"github.com/docker/docker/v24/daemon"
+	"github.com/docker/docker/v24/daemon/events"
 	"github.com/moby/swarmkit/v2/api"
 )
 

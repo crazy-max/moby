@@ -12,11 +12,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/testutil/fakecontext"
-	"github.com/docker/docker/testutil/fakegit"
-	"github.com/docker/docker/testutil/fakestorage"
-	"github.com/docker/docker/testutil/request"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/testutil/fakecontext"
+	"github.com/docker/docker/v24/testutil/fakegit"
+	"github.com/docker/docker/v24/testutil/fakestorage"
+	"github.com/docker/docker/v24/testutil/request"
 	"gotest.tools/v3/assert"
 	is "gotest.tools/v3/assert/cmp"
 )

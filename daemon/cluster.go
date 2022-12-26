@@ -1,9 +1,9 @@
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
-	apitypes "github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/filters"
-	lncluster "github.com/docker/docker/libnetwork/cluster"
+	apitypes "github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/filters"
+	lncluster "github.com/docker/docker/v24/libnetwork/cluster"
 )
 
 // Cluster is the interface for github.com/docker/docker/daemon/cluster.(*Cluster).

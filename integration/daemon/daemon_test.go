@@ -1,4 +1,4 @@
-package daemon // import "github.com/docker/docker/integration/daemon"
+package daemon
 
 import (
 	"context"
@@ -13,12 +13,12 @@ import (
 	"syscall"
 	"testing"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/mount"
-	"github.com/docker/docker/api/types/volume"
-	"github.com/docker/docker/daemon/config"
-	"github.com/docker/docker/integration/internal/container"
-	"github.com/docker/docker/testutil/daemon"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/mount"
+	"github.com/docker/docker/v24/api/types/volume"
+	"github.com/docker/docker/v24/daemon/config"
+	"github.com/docker/docker/v24/integration/internal/container"
+	"github.com/docker/docker/v24/testutil/daemon"
 	"gotest.tools/v3/assert"
 	is "gotest.tools/v3/assert/cmp"
 	"gotest.tools/v3/skip"

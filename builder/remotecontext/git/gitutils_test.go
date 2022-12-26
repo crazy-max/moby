@@ -1,4 +1,4 @@
-package git // import "github.com/docker/docker/builder/remotecontext/git"
+package git
 
 import (
 	"bytes"
@@ -347,7 +347,7 @@ func TestValidGitTransport(t *testing.T) {
 		"http://github.com/docker/docker.git#:dir",
 	}
 	incompleteGitUrls := []string{
-		"github.com/docker/docker",
+		"github.com/docker/docker/v24",
 	}
 
 	for _, url := range gitUrls {

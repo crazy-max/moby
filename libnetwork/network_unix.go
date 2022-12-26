@@ -3,7 +3,7 @@
 
 package libnetwork
 
-import "github.com/docker/docker/libnetwork/ipamapi"
+import "github.com/docker/docker/v24/libnetwork/ipamapi"
 
 // Stub implementations for DNS related functions
 

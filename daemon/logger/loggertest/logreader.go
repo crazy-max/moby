@@ -1,4 +1,4 @@
-package loggertest // import "github.com/docker/docker/daemon/logger/loggertest"
+package loggertest
 
 import (
 	"runtime"
@@ -12,8 +12,8 @@ import (
 	"gotest.tools/v3/assert"
 	"gotest.tools/v3/assert/opt"
 
-	"github.com/docker/docker/api/types/backend"
-	"github.com/docker/docker/daemon/logger"
+	"github.com/docker/docker/v24/api/types/backend"
+	"github.com/docker/docker/v24/daemon/logger"
 )
 
 type syncer interface {

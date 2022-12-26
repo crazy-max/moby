@@ -14,11 +14,11 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/docker/docker/libnetwork/datastore"
-	"github.com/docker/docker/libnetwork/discoverapi"
-	"github.com/docker/docker/libnetwork/driverapi"
-	"github.com/docker/docker/libnetwork/types"
-	"github.com/docker/docker/pkg/plugins"
+	"github.com/docker/docker/v24/libnetwork/datastore"
+	"github.com/docker/docker/v24/libnetwork/discoverapi"
+	"github.com/docker/docker/v24/libnetwork/driverapi"
+	"github.com/docker/docker/v24/libnetwork/types"
+	"github.com/docker/docker/v24/pkg/plugins"
 )
 
 func decodeToMap(r *http.Request) (res map[string]interface{}, err error) {

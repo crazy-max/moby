@@ -1,12 +1,12 @@
-package images // import "github.com/docker/docker/daemon/images"
+package images
 
 import (
 	"encoding/json"
 	"fmt"
 	"time"
 
-	"github.com/docker/docker/image"
-	"github.com/docker/docker/layer"
+	"github.com/docker/docker/v24/image"
+	"github.com/docker/docker/v24/layer"
 	"github.com/pkg/errors"
 )
 

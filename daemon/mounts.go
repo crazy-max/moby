@@ -1,13 +1,13 @@
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"context"
 	"fmt"
 	"strings"
 
-	mounttypes "github.com/docker/docker/api/types/mount"
-	"github.com/docker/docker/container"
-	volumesservice "github.com/docker/docker/volume/service"
+	mounttypes "github.com/docker/docker/v24/api/types/mount"
+	"github.com/docker/docker/v24/container"
+	volumesservice "github.com/docker/docker/v24/volume/service"
 )
 
 func (daemon *Daemon) prepareMountPoints(container *container.Container) error {

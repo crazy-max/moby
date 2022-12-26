@@ -1,7 +1,7 @@
 //go:build linux
 // +build linux
 
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"os"
@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	containertypes "github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/daemon/config"
+	containertypes "github.com/docker/docker/v24/api/types/container"
+	"github.com/docker/docker/v24/daemon/config"
 	"github.com/moby/sys/mount"
 	"github.com/moby/sys/mountinfo"
 	"gotest.tools/v3/assert"

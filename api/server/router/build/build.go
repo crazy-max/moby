@@ -1,10 +1,10 @@
-package build // import "github.com/docker/docker/api/server/router/build"
+package build
 
 import (
 	"runtime"
 
-	"github.com/docker/docker/api/server/router"
-	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/v24/api/server/router"
+	"github.com/docker/docker/v24/api/types"
 )
 
 // buildRouter is a router to talk with the build controller

@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 LDFLAGS="${LDFLAGS} \
-	-X \"github.com/docker/docker/dockerversion.Version=${VERSION}\" \
-	-X \"github.com/docker/docker/dockerversion.GitCommit=${GITCOMMIT}\" \
-	-X \"github.com/docker/docker/dockerversion.BuildTime=${BUILDTIME}\" \
-	-X \"github.com/docker/docker/dockerversion.IAmStatic=${IAMSTATIC:-true}\" \
-	-X \"github.com/docker/docker/dockerversion.PlatformName=${PLATFORM}\" \
-	-X \"github.com/docker/docker/dockerversion.ProductName=${PRODUCT}\" \
-	-X \"github.com/docker/docker/dockerversion.DefaultProductLicense=${DEFAULT_PRODUCT_LICENSE}\" \
+	-X \"github.com/docker/docker/v24/dockerversion.Version=${VERSION}\" \
+	-X \"github.com/docker/docker/v24/dockerversion.GitCommit=${GITCOMMIT}\" \
+	-X \"github.com/docker/docker/v24/dockerversion.BuildTime=${BUILDTIME}\" \
+	-X \"github.com/docker/docker/v24/dockerversion.IAmStatic=${IAMSTATIC:-true}\" \
+	-X \"github.com/docker/docker/v24/dockerversion.PlatformName=${PLATFORM}\" \
+	-X \"github.com/docker/docker/v24/dockerversion.ProductName=${PRODUCT}\" \
+	-X \"github.com/docker/docker/v24/dockerversion.DefaultProductLicense=${DEFAULT_PRODUCT_LICENSE}\" \
 "
 
 # Compile the Windows resources into the sources

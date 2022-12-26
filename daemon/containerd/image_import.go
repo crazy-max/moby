@@ -5,7 +5,7 @@ import (
 	"errors"
 	"io"
 
-	"github.com/docker/docker/errdefs"
+	"github.com/docker/docker/v24/errdefs"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 )
 

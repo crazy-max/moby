@@ -9,9 +9,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/docker/docker/api"
-	"github.com/docker/docker/api/types/versions"
-	"github.com/docker/docker/testutil/request"
+	"github.com/docker/docker/v24/api"
+	"github.com/docker/docker/v24/api/types/versions"
+	"github.com/docker/docker/v24/testutil/request"
 	"gotest.tools/v3/assert"
 )
 

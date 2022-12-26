@@ -1,7 +1,7 @@
 package daemon
 
 import (
-	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/v24/api/types"
 	"github.com/pkg/errors"
 )
 

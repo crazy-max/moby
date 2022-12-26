@@ -1,12 +1,12 @@
-package common // import "github.com/docker/docker/integration/plugin/common"
+package common
 
 import (
 	"fmt"
 	"os"
 	"testing"
 
-	"github.com/docker/docker/pkg/reexec"
-	"github.com/docker/docker/testutil/environment"
+	"github.com/docker/docker/v24/pkg/reexec"
+	"github.com/docker/docker/v24/testutil/environment"
 )
 
 var testEnv *environment.Execution

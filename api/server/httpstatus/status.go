@@ -1,4 +1,4 @@
-package httpstatus // import "github.com/docker/docker/api/server/httpstatus"
+package httpstatus
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 
 	containerderrors "github.com/containerd/containerd/errdefs"
 	"github.com/docker/distribution/registry/api/errcode"
-	"github.com/docker/docker/errdefs"
+	"github.com/docker/docker/v24/errdefs"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

@@ -1,10 +1,10 @@
-package network // import "github.com/docker/docker/daemon/network"
+package network
 
 import (
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/filters"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/runconfig"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/filters"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/runconfig"
 	"github.com/pkg/errors"
 )
 

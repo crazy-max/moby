@@ -1,4 +1,4 @@
-package trap // import "github.com/docker/docker/cmd/dockerd/trap"
+package trap
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"sync/atomic"
 	"syscall"
 
-	"github.com/docker/docker/pkg/stack"
+	"github.com/docker/docker/v24/pkg/stack"
 )
 
 // Trap sets up a simplified signal "trap", appropriate for common

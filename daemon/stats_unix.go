@@ -1,11 +1,11 @@
 //go:build !windows
 // +build !windows
 
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/container"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/container"
 	"github.com/pkg/errors"
 )
 

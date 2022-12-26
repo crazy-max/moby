@@ -1,11 +1,11 @@
-package container // import "github.com/docker/docker/container"
+package container
 
 import (
 	"os"
 	"path/filepath"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/pkg/archive"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/pkg/archive"
 	"github.com/pkg/errors"
 )
 

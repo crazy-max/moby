@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/docker/docker/daemon/config"
+	"github.com/docker/docker/v24/daemon/config"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/pflag"
 	"gotest.tools/v3/assert"

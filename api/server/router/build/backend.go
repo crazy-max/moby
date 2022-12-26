@@ -1,10 +1,10 @@
-package build // import "github.com/docker/docker/api/server/router/build"
+package build
 
 import (
 	"context"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/backend"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/backend"
 )
 
 // Backend abstracts an image builder whose only purpose is to build an image referenced by an imageID.

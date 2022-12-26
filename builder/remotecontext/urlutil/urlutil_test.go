@@ -1,4 +1,4 @@
-package urlutil // import "github.com/docker/docker/builder/remotecontext/urlutil"
+package urlutil
 
 import "testing"
 
@@ -13,7 +13,7 @@ var (
 		"http://github.com/docker/docker.git#:dir",
 	}
 	incompleteGitUrls = []string{
-		"github.com/docker/docker",
+		"github.com/docker/docker/v24",
 	}
 	invalidGitUrls = []string{
 		"http://github.com/docker/docker.git:#branch",

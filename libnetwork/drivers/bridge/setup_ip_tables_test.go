@@ -7,9 +7,9 @@ import (
 	"net"
 	"testing"
 
-	"github.com/docker/docker/libnetwork/iptables"
-	"github.com/docker/docker/libnetwork/portmapper"
-	"github.com/docker/docker/libnetwork/testutils"
+	"github.com/docker/docker/v24/libnetwork/iptables"
+	"github.com/docker/docker/v24/libnetwork/portmapper"
+	"github.com/docker/docker/v24/libnetwork/testutils"
 	"github.com/vishvananda/netlink"
 )
 

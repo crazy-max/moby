@@ -5,7 +5,7 @@ import (
 	"net"
 	"sync"
 
-	"github.com/docker/docker/libnetwork/internal/setmatrix"
+	"github.com/docker/docker/v24/libnetwork/internal/setmatrix"
 )
 
 var (

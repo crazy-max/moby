@@ -1,4 +1,4 @@
-package network // import "github.com/docker/docker/integration/network"
+package network
 
 import (
 	"bytes"
@@ -9,11 +9,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/integration/internal/container"
-	"github.com/docker/docker/integration/internal/network"
-	"github.com/docker/docker/testutil/daemon"
-	"github.com/docker/docker/testutil/request"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/integration/internal/container"
+	"github.com/docker/docker/v24/integration/internal/network"
+	"github.com/docker/docker/v24/testutil/daemon"
+	"github.com/docker/docker/v24/testutil/request"
 	"gotest.tools/v3/assert"
 	is "gotest.tools/v3/assert/cmp"
 	"gotest.tools/v3/icmd"

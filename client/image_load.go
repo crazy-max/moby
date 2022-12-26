@@ -1,11 +1,11 @@
-package client // import "github.com/docker/docker/client"
+package client
 
 import (
 	"context"
 	"io"
 	"net/url"
 
-	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/v24/api/types"
 )
 
 // ImageLoad loads an image in the docker host from the client host.

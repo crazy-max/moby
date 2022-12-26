@@ -1,4 +1,4 @@
-package logger // import "github.com/docker/docker/daemon/logger"
+package logger
 
 import (
 	"bytes"
@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
-	types "github.com/docker/docker/api/types/backend"
-	"github.com/docker/docker/pkg/stringid"
+	types "github.com/docker/docker/v24/api/types/backend"
+	"github.com/docker/docker/v24/pkg/stringid"
 	"github.com/sirupsen/logrus"
 )
 

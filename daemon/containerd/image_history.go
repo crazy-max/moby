@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	imagetype "github.com/docker/docker/api/types/image"
-	"github.com/docker/docker/errdefs"
+	imagetype "github.com/docker/docker/v24/api/types/image"
+	"github.com/docker/docker/v24/errdefs"
 )
 
 // ImageHistory returns a slice of ImageHistory structures for the specified

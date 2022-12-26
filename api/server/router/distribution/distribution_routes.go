@@ -1,4 +1,4 @@
-package distribution // import "github.com/docker/docker/api/server/router/distribution"
+package distribution
 
 import (
 	"context"
@@ -9,9 +9,9 @@ import (
 	"github.com/docker/distribution/manifest/schema1"
 	"github.com/docker/distribution/manifest/schema2"
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/api/server/httputils"
-	"github.com/docker/docker/api/types/registry"
-	"github.com/docker/docker/errdefs"
+	"github.com/docker/docker/v24/api/server/httputils"
+	"github.com/docker/docker/v24/api/types/registry"
+	"github.com/docker/docker/v24/errdefs"
 	v1 "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/pkg/errors"
 )

@@ -1,10 +1,10 @@
-package client // import "github.com/docker/docker/client"
+package client
 
 import (
 	"context"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/network"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/network"
 )
 
 // NetworkConnect connects a container to an existent network in the docker host.

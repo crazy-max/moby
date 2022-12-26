@@ -1,9 +1,9 @@
-package oci // import "github.com/docker/docker/oci"
+package oci
 
 import (
 	"runtime"
 
-	"github.com/docker/docker/oci/caps"
+	"github.com/docker/docker/v24/oci/caps"
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 )
 

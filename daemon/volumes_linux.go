@@ -3,8 +3,8 @@ package daemon
 import (
 	"strings"
 
-	"github.com/docker/docker/api/types/mount"
-	"github.com/docker/docker/errdefs"
+	"github.com/docker/docker/v24/api/types/mount"
+	"github.com/docker/docker/v24/errdefs"
 	"github.com/pkg/errors"
 )
 

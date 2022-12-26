@@ -1,11 +1,11 @@
-package container // import "github.com/docker/docker/api/types/container"
+package container
 
 import (
 	"strings"
 
-	"github.com/docker/docker/api/types/blkiodev"
-	"github.com/docker/docker/api/types/mount"
-	"github.com/docker/docker/api/types/strslice"
+	"github.com/docker/docker/v24/api/types/blkiodev"
+	"github.com/docker/docker/v24/api/types/mount"
+	"github.com/docker/docker/v24/api/types/strslice"
 	"github.com/docker/go-connections/nat"
 	units "github.com/docker/go-units"
 )

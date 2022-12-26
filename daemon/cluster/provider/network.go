@@ -1,6 +1,6 @@
-package provider // import "github.com/docker/docker/daemon/cluster/provider"
+package provider
 
-import "github.com/docker/docker/api/types"
+import "github.com/docker/docker/v24/api/types"
 
 // NetworkCreateRequest is a request when creating a network.
 type NetworkCreateRequest struct {

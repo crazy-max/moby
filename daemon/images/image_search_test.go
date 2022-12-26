@@ -1,14 +1,14 @@
-package images // import "github.com/docker/docker/daemon/images"
+package images
 
 import (
 	"context"
 	"errors"
 	"testing"
 
-	"github.com/docker/docker/api/types/filters"
-	"github.com/docker/docker/api/types/registry"
-	"github.com/docker/docker/errdefs"
-	registrypkg "github.com/docker/docker/registry"
+	"github.com/docker/docker/v24/api/types/filters"
+	"github.com/docker/docker/v24/api/types/registry"
+	"github.com/docker/docker/v24/errdefs"
+	registrypkg "github.com/docker/docker/v24/registry"
 	"gotest.tools/v3/assert"
 )
 

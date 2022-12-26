@@ -3,7 +3,7 @@ package containerd
 import (
 	"context"
 
-	"github.com/docker/docker/builder"
+	"github.com/docker/docker/v24/builder"
 )
 
 // MakeImageCache creates a stateful image cache.

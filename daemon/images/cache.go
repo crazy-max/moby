@@ -1,11 +1,11 @@
-package images // import "github.com/docker/docker/daemon/images"
+package images
 
 import (
 	"context"
 
-	imagetypes "github.com/docker/docker/api/types/image"
-	"github.com/docker/docker/builder"
-	"github.com/docker/docker/image/cache"
+	imagetypes "github.com/docker/docker/v24/api/types/image"
+	"github.com/docker/docker/v24/builder"
+	"github.com/docker/docker/v24/image/cache"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

@@ -1,9 +1,9 @@
 //go:build !linux
 // +build !linux
 
-package vfs // import "github.com/docker/docker/daemon/graphdriver/vfs"
+package vfs
 
-import "github.com/docker/docker/quota"
+import "github.com/docker/docker/v24/quota"
 
 type driverQuota struct {
 }

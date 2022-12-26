@@ -1,7 +1,7 @@
 //go:build !linux && !windows && !freebsd && !darwin
 // +build !linux,!windows,!freebsd,!darwin
 
-package reexec // import "github.com/docker/docker/pkg/reexec"
+package reexec
 
 import (
 	"os/exec"

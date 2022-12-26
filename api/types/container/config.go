@@ -1,10 +1,10 @@
-package container // import "github.com/docker/docker/api/types/container"
+package container
 
 import (
 	"io"
 	"time"
 
-	"github.com/docker/docker/api/types/strslice"
+	"github.com/docker/docker/v24/api/types/strslice"
 	"github.com/docker/go-connections/nat"
 )
 

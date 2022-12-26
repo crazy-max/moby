@@ -1,4 +1,4 @@
-package system // import "github.com/docker/docker/api/server/router/system"
+package system
 
 import (
 	"context"
@@ -7,16 +7,16 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/docker/docker/api/server/httputils"
-	"github.com/docker/docker/api/server/router/build"
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/events"
-	"github.com/docker/docker/api/types/filters"
-	"github.com/docker/docker/api/types/registry"
-	"github.com/docker/docker/api/types/swarm"
-	timetypes "github.com/docker/docker/api/types/time"
-	"github.com/docker/docker/api/types/versions"
-	"github.com/docker/docker/pkg/ioutils"
+	"github.com/docker/docker/v24/api/server/httputils"
+	"github.com/docker/docker/v24/api/server/router/build"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/events"
+	"github.com/docker/docker/v24/api/types/filters"
+	"github.com/docker/docker/v24/api/types/registry"
+	"github.com/docker/docker/v24/api/types/swarm"
+	timetypes "github.com/docker/docker/v24/api/types/time"
+	"github.com/docker/docker/v24/api/types/versions"
+	"github.com/docker/docker/v24/pkg/ioutils"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/sync/errgroup"

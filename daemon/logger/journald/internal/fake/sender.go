@@ -7,7 +7,7 @@
 // The systemd-journal-remote command reads serialized journal entries in the
 // Journal Export Format and writes them to journal files. This format is
 // well-documented and straightforward to generate.
-package fake // import "github.com/docker/docker/daemon/logger/journald/internal/fake"
+package fake
 
 import (
 	"bytes"
@@ -24,7 +24,7 @@ import (
 	"github.com/coreos/go-systemd/v22/journal"
 	"gotest.tools/v3/assert"
 
-	"github.com/docker/docker/daemon/logger/journald/internal/export"
+	"github.com/docker/docker/v24/daemon/logger/journald/internal/export"
 )
 
 // The systemd-journal-remote command is not conventionally installed on $PATH.

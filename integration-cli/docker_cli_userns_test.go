@@ -14,7 +14,7 @@ import (
 	"syscall"
 	"testing"
 
-	"github.com/docker/docker/pkg/stringid"
+	"github.com/docker/docker/v24/pkg/stringid"
 	"gotest.tools/v3/assert"
 )
 

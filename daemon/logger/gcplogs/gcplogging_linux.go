@@ -1,10 +1,10 @@
-package gcplogs // import "github.com/docker/docker/daemon/logger/gcplogs"
+package gcplogs
 
 import (
 	"os"
 
-	"github.com/docker/docker/dockerversion"
-	"github.com/docker/docker/pkg/homedir"
+	"github.com/docker/docker/v24/dockerversion"
+	"github.com/docker/docker/v24/pkg/homedir"
 	"github.com/sirupsen/logrus"
 )
 

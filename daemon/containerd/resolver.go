@@ -3,8 +3,8 @@ package containerd
 import (
 	"github.com/containerd/containerd/remotes"
 	"github.com/containerd/containerd/remotes/docker"
-	registrytypes "github.com/docker/docker/api/types/registry"
-	"github.com/docker/docker/registry"
+	registrytypes "github.com/docker/docker/v24/api/types/registry"
+	"github.com/docker/docker/v24/registry"
 	"github.com/sirupsen/logrus"
 )
 

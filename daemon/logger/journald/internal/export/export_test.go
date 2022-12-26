@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/docker/docker/daemon/logger/journald/internal/export"
+	"github.com/docker/docker/v24/daemon/logger/journald/internal/export"
 	"gotest.tools/v3/assert"
 	"gotest.tools/v3/golden"
 )

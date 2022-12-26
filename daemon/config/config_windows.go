@@ -1,10 +1,10 @@
-package config // import "github.com/docker/docker/daemon/config"
+package config
 
 import (
 	"os"
 	"path/filepath"
 
-	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/v24/api/types"
 )
 
 const (

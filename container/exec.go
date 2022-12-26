@@ -1,13 +1,13 @@
-package container // import "github.com/docker/docker/container"
+package container
 
 import (
 	"runtime"
 	"sync"
 
 	"github.com/containerd/containerd/cio"
-	"github.com/docker/docker/container/stream"
-	"github.com/docker/docker/libcontainerd/types"
-	"github.com/docker/docker/pkg/stringid"
+	"github.com/docker/docker/v24/container/stream"
+	"github.com/docker/docker/v24/libcontainerd/types"
+	"github.com/docker/docker/v24/pkg/stringid"
 	"github.com/sirupsen/logrus"
 )
 

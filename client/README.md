@@ -11,8 +11,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/client"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/client"
 )
 
 func main() {

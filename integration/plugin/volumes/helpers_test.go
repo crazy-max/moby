@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/testutil/fixtures/plugin"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/testutil/fixtures/plugin"
 	"github.com/moby/locker"
 	"github.com/pkg/errors"
 	"gotest.tools/v3/assert"

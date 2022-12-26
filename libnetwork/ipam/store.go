@@ -3,8 +3,8 @@ package ipam
 import (
 	"encoding/json"
 
-	"github.com/docker/docker/libnetwork/datastore"
-	"github.com/docker/docker/libnetwork/types"
+	"github.com/docker/docker/v24/libnetwork/datastore"
+	"github.com/docker/docker/v24/libnetwork/types"
 	"github.com/sirupsen/logrus"
 )
 

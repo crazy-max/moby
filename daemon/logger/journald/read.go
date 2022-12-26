@@ -1,7 +1,7 @@
 //go:build linux && cgo && !static_build && journald
 // +build linux,cgo,!static_build,journald
 
-package journald // import "github.com/docker/docker/daemon/logger/journald"
+package journald
 
 import (
 	"errors"
@@ -13,9 +13,9 @@ import (
 	"github.com/coreos/go-systemd/v22/journal"
 	"github.com/sirupsen/logrus"
 
-	"github.com/docker/docker/api/types/backend"
-	"github.com/docker/docker/daemon/logger"
-	"github.com/docker/docker/daemon/logger/journald/internal/sdjournal"
+	"github.com/docker/docker/v24/api/types/backend"
+	"github.com/docker/docker/v24/daemon/logger"
+	"github.com/docker/docker/v24/daemon/logger/journald/internal/sdjournal"
 )
 
 const closedDrainTimeout = 5 * time.Second

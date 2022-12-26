@@ -1,11 +1,11 @@
-package client // import "github.com/docker/docker/client"
+package client
 
 import (
 	"context"
 	"encoding/json"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/versions"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/versions"
 )
 
 // ContainerExecCreate creates a new exec configuration to run an exec process.

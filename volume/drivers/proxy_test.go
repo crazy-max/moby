@@ -1,4 +1,4 @@
-package drivers // import "github.com/docker/docker/volume/drivers"
+package drivers
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/docker/docker/pkg/plugins"
+	"github.com/docker/docker/v24/pkg/plugins"
 	"github.com/docker/go-connections/tlsconfig"
 )
 

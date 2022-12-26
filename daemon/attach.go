@@ -1,16 +1,16 @@
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"context"
 	"fmt"
 	"io"
 
-	"github.com/docker/docker/api/types/backend"
-	"github.com/docker/docker/container"
-	"github.com/docker/docker/container/stream"
-	"github.com/docker/docker/daemon/logger"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/pkg/stdcopy"
+	"github.com/docker/docker/v24/api/types/backend"
+	"github.com/docker/docker/v24/container"
+	"github.com/docker/docker/v24/container/stream"
+	"github.com/docker/docker/v24/daemon/logger"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/pkg/stdcopy"
 	"github.com/moby/term"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"

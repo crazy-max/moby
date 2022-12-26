@@ -1,11 +1,11 @@
-package distribution // import "github.com/docker/docker/integration/distribution"
+package distribution
 
 import (
 	"fmt"
 	"os"
 	"testing"
 
-	"github.com/docker/docker/internal/test/environment"
+	"github.com/docker/docker/v24/internal/test/environment"
 )
 
 var testEnv *environment.Execution

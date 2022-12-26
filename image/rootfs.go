@@ -1,9 +1,9 @@
-package image // import "github.com/docker/docker/image"
+package image
 
 import (
 	"runtime"
 
-	"github.com/docker/docker/layer"
+	"github.com/docker/docker/v24/layer"
 	"github.com/sirupsen/logrus"
 )
 

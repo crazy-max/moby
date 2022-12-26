@@ -1,4 +1,4 @@
-package archive // import "github.com/docker/docker/pkg/archive"
+package archive
 
 import (
 	"archive/tar"
@@ -9,8 +9,8 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/docker/docker/pkg/pools"
-	"github.com/docker/docker/pkg/system"
+	"github.com/docker/docker/v24/pkg/pools"
+	"github.com/docker/docker/v24/pkg/system"
 	"github.com/sirupsen/logrus"
 )
 

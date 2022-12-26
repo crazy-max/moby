@@ -1,7 +1,7 @@
-package vfs // import "github.com/docker/docker/daemon/graphdriver/vfs"
+package vfs
 
 import (
-	"github.com/docker/docker/quota"
+	"github.com/docker/docker/v24/quota"
 	"github.com/sirupsen/logrus"
 )
 

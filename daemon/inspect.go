@@ -1,18 +1,18 @@
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"errors"
 	"fmt"
 	"time"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/backend"
-	networktypes "github.com/docker/docker/api/types/network"
-	"github.com/docker/docker/api/types/versions"
-	"github.com/docker/docker/api/types/versions/v1p20"
-	"github.com/docker/docker/container"
-	"github.com/docker/docker/daemon/network"
-	"github.com/docker/docker/errdefs"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/backend"
+	networktypes "github.com/docker/docker/v24/api/types/network"
+	"github.com/docker/docker/v24/api/types/versions"
+	"github.com/docker/docker/v24/api/types/versions/v1p20"
+	"github.com/docker/docker/v24/container"
+	"github.com/docker/docker/v24/daemon/network"
+	"github.com/docker/docker/v24/errdefs"
 	"github.com/docker/go-connections/nat"
 )
 

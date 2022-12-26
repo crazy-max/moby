@@ -10,8 +10,8 @@ import (
 	"github.com/containerd/containerd/remotes"
 	"github.com/containerd/containerd/remotes/docker"
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/api/types/registry"
-	"github.com/docker/docker/dockerversion"
+	"github.com/docker/docker/v24/api/types/registry"
+	"github.com/docker/docker/v24/dockerversion"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

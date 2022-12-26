@@ -1,4 +1,4 @@
-package images // import "github.com/docker/docker/daemon/images"
+package images
 
 import (
 	"context"
@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/api/types/image"
-	"github.com/docker/docker/layer"
+	"github.com/docker/docker/v24/api/types/image"
+	"github.com/docker/docker/v24/layer"
 )
 
 // ImageHistory returns a slice of ImageHistory structures for the specified image

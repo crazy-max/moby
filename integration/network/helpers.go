@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/client"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/client"
 	"gotest.tools/v3/assert/cmp"
 	"gotest.tools/v3/icmd"
 )

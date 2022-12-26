@@ -1,4 +1,4 @@
-package distribution // import "github.com/docker/docker/distribution"
+package distribution
 
 import (
 	"context"
@@ -16,14 +16,14 @@ import (
 	"github.com/docker/distribution/reference"
 	"github.com/docker/distribution/registry/api/errcode"
 	"github.com/docker/distribution/registry/client"
-	apitypes "github.com/docker/docker/api/types"
-	"github.com/docker/docker/distribution/metadata"
-	"github.com/docker/docker/distribution/xfer"
-	"github.com/docker/docker/layer"
-	"github.com/docker/docker/pkg/ioutils"
-	"github.com/docker/docker/pkg/progress"
-	"github.com/docker/docker/pkg/stringid"
-	"github.com/docker/docker/registry"
+	apitypes "github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/distribution/metadata"
+	"github.com/docker/docker/v24/distribution/xfer"
+	"github.com/docker/docker/v24/layer"
+	"github.com/docker/docker/v24/pkg/ioutils"
+	"github.com/docker/docker/v24/pkg/progress"
+	"github.com/docker/docker/v24/pkg/stringid"
+	"github.com/docker/docker/v24/registry"
 	"github.com/docker/libtrust"
 	"github.com/opencontainers/go-digest"
 	"github.com/pkg/errors"

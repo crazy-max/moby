@@ -1,13 +1,13 @@
-package graphdriver // import "github.com/docker/docker/daemon/graphdriver"
+package graphdriver
 
 import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/pkg/plugingetter"
-	"github.com/docker/docker/pkg/plugins"
-	v2 "github.com/docker/docker/plugin/v2"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/pkg/plugingetter"
+	"github.com/docker/docker/v24/pkg/plugins"
+	v2 "github.com/docker/docker/v24/plugin/v2"
 	"github.com/pkg/errors"
 )
 

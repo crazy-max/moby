@@ -1,12 +1,12 @@
-package container // import "github.com/docker/docker/container"
+package container
 
 import (
 	"context"
 	"testing"
 	"time"
 
-	"github.com/docker/docker/api/types"
-	libcontainerdtypes "github.com/docker/docker/libcontainerd/types"
+	"github.com/docker/docker/v24/api/types"
+	libcontainerdtypes "github.com/docker/docker/v24/libcontainerd/types"
 )
 
 func TestIsValidHealthString(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/docker/docker/api/types/filters"
+	"github.com/docker/docker/v24/api/types/filters"
 )
 
 // BuilderGCRule represents a GC rule for buildkit cache

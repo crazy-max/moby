@@ -11,12 +11,12 @@ import (
 	"time"
 
 	"github.com/containerd/containerd/plugin"
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/swarm"
-	"github.com/docker/docker/api/types/versions"
-	"github.com/docker/docker/client"
-	"github.com/docker/docker/integration-cli/requirement"
-	"github.com/docker/docker/testutil/registry"
+	"github.com/docker/docker/v24/api/types"
+	"github.com/docker/docker/v24/api/types/swarm"
+	"github.com/docker/docker/v24/api/types/versions"
+	"github.com/docker/docker/v24/client"
+	"github.com/docker/docker/v24/integration-cli/requirement"
+	"github.com/docker/docker/v24/testutil/registry"
 )
 
 func ArchitectureIsNot(arch string) bool {

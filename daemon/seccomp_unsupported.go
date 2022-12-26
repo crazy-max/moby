@@ -1,14 +1,14 @@
 //go:build !linux
 // +build !linux
 
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"context"
 
 	"github.com/containerd/containerd/containers"
 	coci "github.com/containerd/containerd/oci"
-	"github.com/docker/docker/container"
+	"github.com/docker/docker/v24/container"
 )
 
 const supportsSeccomp = false

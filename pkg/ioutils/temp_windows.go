@@ -1,9 +1,9 @@
-package ioutils // import "github.com/docker/docker/pkg/ioutils"
+package ioutils
 
 import (
 	"os"
 
-	"github.com/docker/docker/pkg/longpath"
+	"github.com/docker/docker/v24/pkg/longpath"
 )
 
 // TempDir is the equivalent of os.MkdirTemp, except that the result is in Windows longpath format.

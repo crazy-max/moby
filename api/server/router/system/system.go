@@ -1,8 +1,8 @@
-package system // import "github.com/docker/docker/api/server/router/system"
+package system
 
 import (
-	"github.com/docker/docker/api/server/router"
-	buildkit "github.com/docker/docker/builder/builder-next"
+	"github.com/docker/docker/v24/api/server/router"
+	buildkit "github.com/docker/docker/v24/builder/builder-next"
 )
 
 // systemRouter provides information about the Docker system overall.

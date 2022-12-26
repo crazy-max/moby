@@ -1,7 +1,7 @@
 //go:build !windows
 // +build !windows
 
-package daemon // import "github.com/docker/docker/daemon"
+package daemon
 
 import (
 	"fmt"
@@ -10,9 +10,9 @@ import (
 	"strconv"
 	"strings"
 
-	mounttypes "github.com/docker/docker/api/types/mount"
-	"github.com/docker/docker/container"
-	volumemounts "github.com/docker/docker/volume/mounts"
+	mounttypes "github.com/docker/docker/v24/api/types/mount"
+	"github.com/docker/docker/v24/container"
+	volumemounts "github.com/docker/docker/v24/volume/mounts"
 )
 
 // setupMounts iterates through each of the mount points for a container and

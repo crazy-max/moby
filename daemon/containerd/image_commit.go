@@ -3,9 +3,9 @@ package containerd
 import (
 	"errors"
 
-	"github.com/docker/docker/api/types/backend"
-	"github.com/docker/docker/errdefs"
-	"github.com/docker/docker/image"
+	"github.com/docker/docker/v24/api/types/backend"
+	"github.com/docker/docker/v24/errdefs"
+	"github.com/docker/docker/v24/image"
 )
 
 // CommitImage creates a new image from a commit config.
