@@ -8,6 +8,7 @@ set -e
 	export BUILDFLAGS=("${BUILDFLAGS[@]/osusergo /}")     # ditto for osusergo
 	export BUILDFLAGS=("${BUILDFLAGS[@]/static_build /}") # we're not building a "static" binary here
 
+	DOCKER_STATIC=0
 	GO_PACKAGE='github.com/docker/docker/cmd/docker-proxy'
 	BINARY_NAME='docker-proxy'
 	source "${MAKEDIR}/.binary"
