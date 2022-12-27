@@ -122,7 +122,7 @@ func New(info logger.Info) (logger.Logger, error) {
 	// However, in static binary, os/user.Current() leads to segfault due to a glibc issue that won't be fixed
 	// in a short term. (golang/go#13470, https://sourceware.org/bugzilla/show_bug.cgi?id=19341)
 	// So we forcibly set HOME so as to avoid call to os/user/Current()
-	if err := ensureHomeIfIAmStatic(); err != nil {
+	if err := ensureHomeIfStatic(); err != nil {
 		return nil, err
 	}
 

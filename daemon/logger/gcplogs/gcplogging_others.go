@@ -3,6 +3,6 @@
 
 package gcplogs // import "github.com/docker/docker/daemon/logger/gcplogs"
 
-func ensureHomeIfIAmStatic() error {
+func ensureHomeIfStatic() error {
 	return nil
 }
