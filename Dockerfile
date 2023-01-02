@@ -552,6 +552,7 @@ ARG TARGETPLATFORM
 RUN --mount=type=cache,sharing=locked,id=moby-build-aptlib,target=/var/lib/apt \
     --mount=type=cache,sharing=locked,id=moby-build-aptcache,target=/var/cache/apt \
         xx-apt-get install --no-install-recommends -y \
+            binutils \
             gcc \
             libapparmor-dev \
             libbtrfs-dev \
@@ -560,7 +561,8 @@ RUN --mount=type=cache,sharing=locked,id=moby-build-aptlib,target=/var/lib/apt \
             libseccomp-dev \
             libsecret-1-dev \
             libsystemd-dev \
-            libudev-dev
+            libudev-dev \
+            pkg-config
 ARG DOCKER_BUILDTAGS
 ARG DOCKER_DEBUG
 ARG DOCKER_GITCOMMIT=HEAD
