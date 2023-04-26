@@ -30,6 +30,7 @@ type Opt struct {
 	ImageStore     image.Store
 	ReferenceStore reference.Store
 	Differ         Differ
+	TagImage       func(context.Context, image.ID, distref.Named) error
 }
 
 type imageExporter struct {
@@ -171,7 +172,7 @@ func (e *imageExporterInstance) Export(ctx context.Context, inp *exporter.Source
 	if e.opt.ReferenceStore != nil {
 		for _, targetName := range e.targetNames {
 			tagDone := oneOffProgress(ctx, "naming to "+targetName.String())
-			if err := e.opt.ReferenceStore.AddTag(targetName, digest.Digest(id), true); err != nil {
+			if err := e.opt.TagImage(ctx, id, targetName); err != nil {
 				return nil, nil, tagDone(err)
 			}
 			_ = tagDone(nil)

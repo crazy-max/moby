@@ -278,6 +278,7 @@ func newGraphDriverController(ctx context.Context, rt http.RoundTripper, opt Opt
 		ImageStore:     dist.ImageStore,
 		ReferenceStore: dist.ReferenceStore,
 		Differ:         differ,
+		TagImage:       opt.TagImage,
 	})
 	if err != nil {
 		return nil, err

@@ -13,6 +13,7 @@ import (
 	"time"
 
 	containerddefaults "github.com/containerd/containerd/defaults"
+	"github.com/docker/distribution/reference"
 	"github.com/docker/docker/api"
 	apiserver "github.com/docker/docker/api/server"
 	buildbackend "github.com/docker/docker/api/server/backend/build"
@@ -39,6 +40,7 @@ import (
 	"github.com/docker/docker/daemon/config"
 	"github.com/docker/docker/daemon/listeners"
 	"github.com/docker/docker/dockerversion"
+	dockerimage "github.com/docker/docker/image"
 	"github.com/docker/docker/libcontainerd/supervisor"
 	dopts "github.com/docker/docker/opts"
 	"github.com/docker/docker/pkg/authorization"
@@ -309,6 +311,9 @@ func newRouterOptions(ctx context.Context, config *config.Config, d *daemon.Daem
 		Snapshotter:         d.ImageService().StorageDriver(),
 		ContainerdAddress:   config.ContainerdAddr,
 		ContainerdNamespace: config.ContainerdNamespace,
+		TagImage: func(ctx context.Context, id dockerimage.ID, named reference.Named) error {
+			return d.ImageService().TagImage(ctx, id, named)
+		},
 	})
 	if err != nil {
 		return opts, err
