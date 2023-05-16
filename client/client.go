@@ -48,6 +48,7 @@ import (
 	"net/url"
 	"path"
 	"strings"
+	"time"
 
 	"github.com/docker/docker/api"
 	"github.com/docker/docker/api/types"
@@ -177,6 +178,9 @@ func defaultHTTPClient(hostURL *url.URL) (*http.Client, error) {
 	if err != nil {
 		return nil, err
 	}
+	transport.MaxIdleConns = 6
+	transport.IdleConnTimeout = 30 * time.Second
+	// transport.DisableKeepAlives = true
 	return &http.Client{
 		Transport:     transport,
 		CheckRedirect: CheckRedirect,
