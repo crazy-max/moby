@@ -38,6 +38,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 )
 
 // DockerContainerBundlePath is the label key pointing to the container's bundle path
@@ -209,10 +210,10 @@ func (c *container) Start(ctx context.Context, checkpointDir string, withStdin b
 	if runtime.GOOS != "windows" {
 		taskOpts = append(taskOpts, func(_ context.Context, _ *containerd.Client, info *containerd.TaskInfo) error {
 			if c.v2runcoptions != nil {
-				opts := *c.v2runcoptions
+				opts := proto.Clone(c.v2runcoptions).(*v2runcoptions.Options)
 				opts.IoUid = uint32(uid)
 				opts.IoGid = uint32(gid)
-				info.Options = &opts
+				info.Options = opts
 			}
 			return nil
 		})
