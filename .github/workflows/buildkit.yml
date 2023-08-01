@@ -74,6 +74,9 @@ jobs:
           fi
           echo "BUILDKIT_TEST_DISABLE_FEATURES=${disabledFeatures}" >> $GITHUB_ENV
       -
+        name: Expose GitHub Runtime
+        uses: crazy-max/ghaction-github-runtime@v2
+      -
         name: Checkout
         uses: actions/checkout@v3
         with:
