@@ -9,9 +9,7 @@ import (
 
 	ctd "github.com/containerd/containerd"
 	"github.com/containerd/containerd/content/local"
-	"github.com/containerd/containerd/leases"
 	ctdmetadata "github.com/containerd/containerd/metadata"
-	"github.com/containerd/containerd/namespaces"
 	"github.com/containerd/containerd/snapshots"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/filters"
@@ -44,7 +42,6 @@ import (
 	"github.com/moby/buildkit/solver/bboltcachestorage"
 	"github.com/moby/buildkit/util/archutil"
 	"github.com/moby/buildkit/util/entitlements"
-	"github.com/moby/buildkit/util/leaseutil"
 	"github.com/moby/buildkit/util/network/netproviders"
 	"github.com/moby/buildkit/worker"
 	"github.com/moby/buildkit/worker/containerd"
@@ -207,20 +204,15 @@ func newGraphDriverController(ctx context.Context, rt http.RoundTripper, opt Opt
 
 	store := containerdsnapshot.NewContentStore(mdb.ContentStore(), "buildkit")
 
-	ilm := lmWithNamespace(ctdmetadata.NewLeaseManager(mdb), "buildkit")
-
-	snapshotter, wlm, err := snapshot.NewSnapshotter(snapshot.Opt{
+	snapshotter, lm, err := snapshot.NewSnapshotter(snapshot.Opt{
 		GraphDriver:     driver,
 		LayerStore:      dist.LayerStore,
 		Root:            root,
 		IdentityMapping: opt.IdentityMapping,
-	}, ilm)
+	}, ctdmetadata.NewLeaseManager(mdb), "buildkit")
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO(neersighted): figure out a better way to handle the types here, instead of triple-wrapping
-	lm := leaseutil.WithNamespace(wlm, "buildkit")
 
 	if err := cache.MigrateV2(context.Background(), filepath.Join(root, "metadata.db"), filepath.Join(root, "metadata_v2.db"), store, snapshotter, lm); err != nil {
 		return nil, err
@@ -427,59 +419,4 @@ func getLabels(opt Opt, labels map[string]string) map[string]string {
 	}
 	labels[wlabel.HostGatewayIP] = opt.DNSConfig.HostGatewayIP.String()
 	return labels
-}
-
-func lmWithNamespace(lm leases.Manager, ns string) *leaseManagerWrapper {
-	return &leaseManagerWrapper{manager: lm, ns: ns}
-}
-
-type leaseManagerWrapper struct {
-	manager leases.Manager
-	ns      string
-}
-
-func (l *leaseManagerWrapper) Namespace() string {
-	return l.ns
-}
-
-func (l *leaseManagerWrapper) Create(ctx context.Context, opts ...leases.Opt) (leases.Lease, error) {
-	if _, ok := namespaces.Namespace(ctx); !ok {
-		ctx = namespaces.WithNamespace(ctx, l.ns)
-	}
-	return l.manager.Create(ctx, opts...)
-}
-
-func (l *leaseManagerWrapper) Delete(ctx context.Context, lease leases.Lease, opts ...leases.DeleteOpt) error {
-	if _, ok := namespaces.Namespace(ctx); !ok {
-		ctx = namespaces.WithNamespace(ctx, l.ns)
-	}
-	return l.manager.Delete(ctx, lease, opts...)
-}
-
-func (l *leaseManagerWrapper) List(ctx context.Context, filters ...string) ([]leases.Lease, error) {
-	if _, ok := namespaces.Namespace(ctx); !ok {
-		ctx = namespaces.WithNamespace(ctx, l.ns)
-	}
-	return l.manager.List(ctx, filters...)
-}
-
-func (l *leaseManagerWrapper) AddResource(ctx context.Context, lease leases.Lease, resource leases.Resource) error {
-	if _, ok := namespaces.Namespace(ctx); !ok {
-		ctx = namespaces.WithNamespace(ctx, l.ns)
-	}
-	return l.manager.AddResource(ctx, lease, resource)
-}
-
-func (l *leaseManagerWrapper) DeleteResource(ctx context.Context, lease leases.Lease, resource leases.Resource) error {
-	if _, ok := namespaces.Namespace(ctx); !ok {
-		ctx = namespaces.WithNamespace(ctx, l.ns)
-	}
-	return l.manager.DeleteResource(ctx, lease, resource)
-}
-
-func (l *leaseManagerWrapper) ListResources(ctx context.Context, lease leases.Lease) ([]leases.Resource, error) {
-	if _, ok := namespaces.Namespace(ctx); !ok {
-		ctx = namespaces.WithNamespace(ctx, l.ns)
-	}
-	return l.manager.ListResources(ctx, lease)
 }
