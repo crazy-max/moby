@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs:
       - validate-dco
+    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
     strategy:
       fail-fast: false
       matrix:
@@ -56,6 +57,7 @@ jobs:
 
   test-prepare:
     uses: ./.github/workflows/.test-prepare.yml
+    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
     needs:
       - validate-dco
 
@@ -75,6 +77,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs:
       - validate-dco
+    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
     outputs:
       matrix: ${{ steps.scripts.outputs.matrix }}
     steps:
@@ -130,6 +133,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs:
       - validate-dco
+    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
     outputs:
       matrix: ${{ steps.platforms.outputs.matrix }}
     steps:
