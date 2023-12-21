@@ -142,6 +142,16 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
+  test:
+    runs-on: ubuntu-20.04
+    needs:
+      - build
+    if: always()
+    steps:
+      -
+        name: Dump context
+        uses: crazy-max/ghaction-dump-context@v2
+
   merge:
     runs-on: ubuntu-20.04
     needs:
