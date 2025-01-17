@@ -14,9 +14,9 @@ import (
 	"github.com/containerd/log"
 	"github.com/docker/docker/api/types/backend"
 	"github.com/docker/docker/builder"
-	"github.com/docker/docker/builder/remotecontext/urlutil"
 	"github.com/docker/docker/errdefs"
 	"github.com/moby/buildkit/frontend/dockerfile/parser"
+	"github.com/moby/buildkit/util/gitutil"
 	"github.com/moby/patternmatcher"
 	"github.com/moby/patternmatcher/ignorefile"
 	"github.com/moby/sys/symlink"
@@ -37,9 +37,9 @@ func Detect(config backend.BuildConfig) (remote builder.Source, dockerfile *pars
 		remote, dockerfile, err = newArchiveRemote(config.Source, dockerfilePath)
 	case remoteURL == ClientSessionRemote:
 		return nil, nil, errdefs.InvalidParameter(errors.New("experimental session with v1 builder is no longer supported, use builder version v2 (BuildKit) instead"))
-	case urlutil.IsGitURL(remoteURL):
+	case isGitURL(remoteURL):
 		remote, dockerfile, err = newGitRemote(remoteURL, dockerfilePath)
-	case urlutil.IsURL(remoteURL):
+	case isURL(remoteURL):
 		remote, dockerfile, err = newURLRemote(remoteURL, dockerfilePath, config.ProgressWriter.ProgressReaderFunc)
 	default:
 		err = fmt.Errorf("remoteURL (%s) could not be recognized as URL", remoteURL)
@@ -187,4 +187,15 @@ func FullPath(remote builder.Source, path string) (string, error) {
 		return "", fmt.Errorf("forbidden path outside the build context: %s (%s)", path, fullPath) // backwards compat with old error
 	}
 	return fullPath, nil
+}
+
+func isURL(str string) bool {
+	return strings.HasPrefix(str, "https://") || strings.HasPrefix(str, "http://")
+}
+
+func isGitURL(url string) bool {
+	if _, err := gitutil.ParseGitRef(url); err == nil {
+		return true
+	}
+	return false
 }

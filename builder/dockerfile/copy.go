@@ -14,7 +14,6 @@ import (
 
 	"github.com/docker/docker/builder"
 	"github.com/docker/docker/builder/remotecontext"
-	"github.com/docker/docker/builder/remotecontext/urlutil"
 	"github.com/docker/docker/pkg/archive"
 	"github.com/docker/docker/pkg/idtools"
 	"github.com/docker/docker/pkg/longpath"
@@ -129,7 +128,7 @@ func (o *copier) getCopyInfosForSourcePaths(sources []string, dest string) ([]co
 }
 
 func (o *copier) getCopyInfoForSourcePath(orig, dest string) ([]copyInfo, error) {
-	if !urlutil.IsURL(orig) {
+	if !isURL(orig) {
 		return o.calcCopyInfo(orig, true)
 	}
 
@@ -530,4 +529,8 @@ func isExistingDirectory(path string) (bool, error) {
 		return false, err
 	}
 	return destStat.IsDir(), nil
+}
+
+func isURL(str string) bool {
+	return strings.HasPrefix(str, "https://") || strings.HasPrefix(str, "http://")
 }
