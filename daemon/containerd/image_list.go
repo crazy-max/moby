@@ -66,6 +66,9 @@ func (i *ImageService) Images(ctx context.Context, opts imagebackend.ListOptions
 	if err := opts.Filters.Validate(acceptedImageFilterTags); err != nil {
 		return nil, err
 	}
+	if opts.Identity {
+		opts.Manifests = true
+	}
 
 	filter, err := i.setupFilters(ctx, opts.Filters)
 	if err != nil {
@@ -212,6 +215,8 @@ type multiPlatformSummary struct {
 
 	// Manifests contains the summaries of manifests present in this image.
 	Manifests []imagetypes.ManifestSummary
+	// ManifestImages maps image manifest digests to image manifests.
+	ManifestImages map[digest.Digest]*ImageManifest
 
 	// AllChainIDs contains the chainIDs of all the layers of the image (including all its platforms).
 	AllChainIDs []digest.Digest
@@ -252,6 +257,10 @@ func (i *ImageService) multiPlatformSummary(ctx context.Context, img c8dimages.I
 			Descriptor: target,
 			Kind:       imagetypes.ManifestKindUnknown,
 		}
+		if summary.ManifestImages == nil {
+			summary.ManifestImages = map[digest.Digest]*ImageManifest{}
+		}
+		summary.ManifestImages[target.Digest] = img
 
 		defer func() {
 			summary.Manifests = append(summary.Manifests, mfstSummary)
@@ -380,6 +389,13 @@ func (i *ImageService) imageSummary(ctx context.Context, img c8dimages.Image, pl
 	summary, err := i.multiPlatformSummary(ctx, img, platformMatcher)
 	if err != nil {
 		return nil, nil, err
+	}
+
+	if opts.Identity {
+		err = i.manifestIdentitiesFromCache(ctx, img.Target, summary)
+		if err != nil {
+			log.G(ctx).WithError(err).Warn("failed to determine manifest identity properties")
+		}
 	}
 
 	best := summary.Best

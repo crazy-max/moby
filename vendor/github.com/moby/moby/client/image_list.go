@@ -41,6 +41,13 @@ func (cli *Client) ImageList(ctx context.Context, options ImageListOptions) (Ima
 			query.Set("manifests", "1")
 		}
 	}
+	if options.Identity {
+		if err := cli.requiresVersion(ctx, "1.54", "identity"); err != nil {
+			return ImageListResult{}, err
+		}
+		query.Set("manifests", "1")
+		query.Set("identity", "1")
+	}
 
 	resp, err := cli.get(ctx, "/images/json", query, nil)
 	defer ensureReaderClosed(resp)

@@ -16,6 +16,10 @@ type ImageListOptions struct {
 
 	// Manifests indicates whether the image manifests should be returned.
 	Manifests bool
+
+	// Identity indicates whether manifest identity information should be returned.
+	// Enabling this option also enables the Manifests option.
+	Identity bool
 }
 
 // ImageListResult holds the result from ImageList.

@@ -60,6 +60,12 @@ type ManifestSummary struct {
 
 	// Fields below are specific to the kind of the image manifest.
 
+	// Identity holds information about the identity and origin of the image
+	// manifest.
+	// This is trusted information verified by the daemon and cannot be modified
+	// by tagging an image to a different name.
+	Identity *Identity `json:"Identity,omitempty"`
+
 	// Present only if Kind == ManifestKindImage.
 	ImageData *ImageProperties `json:"ImageData,omitempty"`
 

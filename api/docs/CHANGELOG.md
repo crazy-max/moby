@@ -13,6 +13,12 @@ keywords: "API, Docker, rcli, REST, documentation"
      will be rejected.
 -->
 
+## v1.54 API changes
+
+* `GET /images/json` now supports an `identity` query parameter. When set,
+  the response may include per-manifest identity information in
+  `Manifests[].Identity` with trusted identity and origin metadata.
+
 ## v1.53 API changes
 
 * `GET /info` now includes an `NRI` field. If the Node Resource Interface (NRI)
