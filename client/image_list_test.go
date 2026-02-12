@@ -88,6 +88,7 @@ func TestImageList(t *testing.T) {
 				Identity: true,
 			},
 			expectedQueryParams: map[string]string{
+				"manifests": "1",
 				"identity": "1",
 			},
 		},
