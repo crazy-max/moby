@@ -70,10 +70,6 @@ func (i *ImageService) ImageInspect(ctx context.Context, refOrID string, opts im
 	}
 
 	var manifests []imagetypes.ManifestSummary
-	if opts.Manifests {
-		manifests = multi.Manifests
-	}
-
 	repoTags, repoDigests := collectRepoTagsAndDigests(ctx, tagged)
 
 	if requestedPlatform != nil {
@@ -87,6 +83,15 @@ func (i *ImageService) ImageInspect(ctx context.Context, refOrID string, opts im
 		if err != nil {
 			log.G(ctx).WithError(err).Warn("failed to determine Identity property")
 		}
+	}
+
+	if opts.Manifests {
+		if opts.Identity {
+			if err := i.manifestIdentities(ctx, c8dImg.Target, multi); err != nil {
+				log.G(ctx).WithError(err).Warn("failed to determine manifest identity properties")
+			}
+		}
+		manifests = multi.Manifests
 	}
 
 	resp := &imagebackend.InspectData{
